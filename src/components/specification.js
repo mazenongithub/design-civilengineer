@@ -5,7 +5,7 @@ import * as actions from './actions';
 import { MyStylesheet } from './styles'
 import Design from './design'
 import { specSection, makeID, sectionContent, contentSubcontent, LetterCounter, sortpart } from './functions'
-import { upArrowIcon, downArrowIcon, removeIconSmall } from './svg';
+import { upArrowIcon, downArrowIcon, removeIconSmall,saveProjectSpecs } from './svg';
 
 
 class Specification extends Component {
@@ -682,7 +682,7 @@ class Specification extends Component {
                                         } else {
                                             const content = design.getcontentbyid.call(this, projectid, csiid, this.state.activesectionid, this.state.activecontentid)
                                             const subcontentid = makeID(16);
-                                            const newContent = contentSubcontent(subcontentid, content)
+                                            const newContent = contentSubcontent(subcontentid, subcontent)
                                             if (content.hasOwnProperty("subcontent")) {
                                                 myuser.company.projects[i].specifications[j].sections[k].content[l].subcontent.push(newContent);
                                             } else {
@@ -872,6 +872,7 @@ class Specification extends Component {
         const design = new Design();
         const headerFont = design.getHeaderFont.call(this);
         const regularFont = design.getRegularFont.call(this)
+        const saveprojecticon = design.getsaveprojecticon.call(this)
         return (<div style={{ ...styles.generalFlex }}>
             <div style={{ ...styles.flex1 }}>
 
@@ -925,7 +926,27 @@ class Specification extends Component {
                     </div>
                 </div>
 
+               
+
+                <div style={{...styles.generalFlex}}>
+                    <div style={{...styles.flex1,...styles.alignCenter,...regularFont,...styles.generalFont}}>
+                        {this.state.message}
+                     </div>
+                </div>
+
+                <div style={{...styles.generalFlex}}>
+                    <div style={{...styles.flex1,...styles.alignCenter}}>
+                    <button style={{...styles.generalButton,...saveprojecticon}} onClick={()=>{design.saveprojectspecs.call(this)}}>{saveProjectSpecs()}</button>
+                     </div>
+                </div>
+
+                <div style={{...styles.generalFlex,...styles.bottomMargin15}}>
+                    <div style={{...styles.flex1}}>
+
                 {this.showspecification()}
+
+                </div>
+                </div>
 
 
             </div>

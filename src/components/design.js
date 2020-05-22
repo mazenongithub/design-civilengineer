@@ -1,4 +1,5 @@
-import { sortpart } from "./functions";
+import { sortpart,inputUTCStringForLaborID} from "./functions";
+import {SaveSpecs} from './actions/api'
 
 class Design {
 
@@ -261,6 +262,15 @@ class Design {
 return projects;
     }
 
+    getsaveprojecticon() {
+        if(this.state.width>1200) {
+            return({width:'480px',height:'107px'}) 
+        } else if (this.state.width>800) {
+            return({width:'340px',height:'80px'}) 
+        } else {
+            return({width:'200px',height:'44px'}) 
+        }
+    }
     getremoveicon() {
         if (this.state.width > 800) {
             return ({ width: '47px', height: '47px' })
@@ -303,6 +313,47 @@ return projects;
             return ({ fontSize: '36px' })
         } else {
             return ({ fontSize: '30px' })
+        }
+    }
+
+    async saveprojectspecs() {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if(myuser) {
+            const myproject = design.getprojectbytitle.call(this,this.props.match.params.title)
+            if(myproject) {
+                const projectid = myproject.projectid;
+                const i = design.getprojectbykeyid.call(this,myproject.projectid)
+                const specs = design.getspecficationsbyprojectid.call(this,projectid)
+                if(specs.hasOwnProperty("sections")) {
+                    specs.sections.sort((b,a)=>{
+                        return sortpart(b,a)
+                    })
+                }
+                const values = {projectid, specs}
+                console.log(values)
+                try {
+                let response = await SaveSpecs(values);
+                if(response.hasOwnProperty("specifications")) {
+                    myuser.company.projects[i].specifications = response.specifications;
+                    this.props.reduxUser({myuser})
+                    this.setState({render:'render'})
+                    
+                }
+                if(response.hasOwnProperty("message") || response.hasOwnProperty("lastupdated")) {
+                    const lastupdated = response.lastupdated;
+                    let  message = " ";
+                    if(response.hasOwnProperty("message")) {
+                    message+=response.message
+                    }
+                    this.setState({message:`${message} last updated ${inputUTCStringForLaborID(lastupdated)}`})
+                }
+
+                } catch(err) {
+                    alert(err)
+                }
+                
+            }
         }
     }
 }

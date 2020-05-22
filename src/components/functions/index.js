@@ -1,3 +1,38 @@
+export function inputUTCStringForLaborID(timein) {
+
+    let datein = new Date(`${timein.replace(/-/g, '/')}-00:00`)
+    let hours = datein.getHours();
+    let ampm
+    if (hours > 12) {
+        hours = hours - 12;
+        ampm = "PM"
+    }
+    else if (hours < 12) {
+        ampm = "AM"
+    }
+    else if (hours === 0) {
+        hours = 12;
+        ampm = "AM"
+    }
+    else if (hours === 12) {
+        ampm = "PM"
+    }
+    let minutes = datein.getMinutes();
+    if (minutes < 10) {
+        minutes = `0${minutes}`
+    }
+    let date = datein.getDate();
+    if (date < 10) {
+        date = `0${date}`
+    }
+    let year = datein.getFullYear()
+    let month = datein.getMonth() + 1;
+    if (month < 10) {
+        month = `0${month}`
+    }
+    return (`${month}/${date}/${year} ${hours}:${minutes} ${ampm}`)
+
+}
 export function LetterCounter(i) {
     switch (Number(i)) {
         case 1:

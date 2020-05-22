@@ -1,3 +1,35 @@
+export async function SaveSpecs(values) {
+    console.log(values)
+    let APIURL = `https://civilengineer.io/design/api/savespecifications.php`
+    return fetch(APIURL, {
+        method: 'post',
+        credentials: 'include',
+        headers: new Headers({
+            'Content-Type': 'application/json',
+        }),
+
+        body: JSON.stringify(values)
+    })
+        .then(resp => {
+
+            if (!resp.ok) {
+                if (resp.status >= 400 && resp.status < 500) {
+                    return resp.json().then(data => {
+
+                        throw data.message;
+                    })
+                }
+                else {
+                    let err = { errorMessage: 'Please try again later, server is not responding' };
+                    throw err;
+                }
+            }
+
+            return resp.json();
+        })
+
+}
+
 export async function  CheckUser() {
 
     let APIURL = `https://civilengineer.io/design/api/loadprofile.php?providerid=mazen`
