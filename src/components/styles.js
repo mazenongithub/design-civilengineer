@@ -7,12 +7,18 @@ export function MyStylesheet() {
         alignCenter: {
             textAlign: 'center'
         },
+        alignRight:{
+            float: 'right'
+        },
         flex1: {
             flex: 1,
         },
         generalField: {
             width: '95%',
             padding: '3px'
+        },
+        generalLinkonly:{
+            textDecoration: 'none',
         },
         generalLink: {
             textDecoration: 'none',
@@ -21,8 +27,46 @@ export function MyStylesheet() {
         width80:{
             width:'80%'
         },
+        topHeader:{
+            backgroundColor:'#D7A22A',
+            borderRadius:'5px',
+            height:'110px',
+            border:'1px solid',
+            color:'#000000'
+        },
+        largeFont:{
+            fontSize:'50px',
+          
+        },
+        navigationFont:{
+            color:'#D7A22A'
+        },
+        navigationbutton:{
+            backgroundColor:'#006778',
+            border:'0px'
+        },
+        navigation:{
+            backgroundColor:'#006778',
+            borderRadius:'5px',
+            border:'1px solid'
+        },
+        marginTop20:{
+            marginTop:'20px'
+        },
+        headerFamily:{
+            fontFamily:'Roboto, sans-serif'
+        },
+        boldFont:{
+            fontWeight:'700'
+        },
         marginLeft30:{
             marginLeft:'30px'
+        },
+        activeBackground:{
+            backgroundColor:'#D7A22A'
+        },
+        generalContainer:{
+            display:'block'
         },
         marginLeft60:{
             marginLeft:'60px'

@@ -9,15 +9,21 @@ import 'firebase/auth';
 import { firebaseConfig } from './firebaseconfig';
 import Specifications from './components/specifications'
 import Specification from './components/specification'
+import Header from './components/header'
+import Profile from './components/profile';
+import Projects from './components/projects'
+import Project from './components/project'
+import Login from './components/login'
 const showlanding = () => {
   return(<div>Landing</div>)
 }
 
 
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { render: '', width: 0, height: 0 }
+    this.state = { render: '', width: 0, height: 0,natigation:false }
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
   }
   componentDidMount() {
@@ -32,6 +38,7 @@ class App extends Component {
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
+  
 
   async checkuser() {
     let response = await CheckUser();
@@ -42,15 +49,21 @@ class App extends Component {
 
   render() {
 
- 
+ const header = new Header();
+
 
     return (
       <BrowserRouter>
       <div>
+        {header.showheader.call(this)}
         <Switch>
           <Route exact path="/" component={showlanding} />
-          <Route exact path="/:profile/company/:url/projects/:title/specifications" component={Specifications} />
-          <Route exact path="/:profile/company/:url/projects/:title/specifications/:csiid" component={Specification} />
+          <Route exact path="/profile/login" component={Login} />
+          <Route exact path="/:profile/profile" component={Profile} />
+          <Route exact path="/:profile/projects" component={Projects} />
+          <Route exact path="/:profile/projects/:title" component={Project} />
+          <Route exact path="/:profile/projects/:title/specifications" component={Specifications} />
+          <Route exact path="/:profile/projects/:title/specifications/:csiid" component={Specification} />
         </Switch>
 
       </div>
@@ -63,7 +76,8 @@ function mapStateToProps(state) {
   return {
     myusermodel: state.myusermodel,
     allusers: state.allusers,
-    allcompanys: state.allcompanys
+    allcompanys: state.allcompanys,
+    project:state.project
   }
 }
 

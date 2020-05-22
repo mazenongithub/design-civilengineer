@@ -1,4 +1,9 @@
-import { MYUSERMODEL, ALLUSERS, ALLCOMPANYS } from './types';
+import { MYUSERMODEL, ALLUSERS, ALLCOMPANYS, PROJECT } from './types';
+
+export const reduxProject = (project) => async dispatch => {
+
+    dispatch({ type: PROJECT, payload: project })
+}
 
 export const reduxUser = (myusermodel) => async dispatch => {
 

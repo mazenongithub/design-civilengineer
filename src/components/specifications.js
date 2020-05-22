@@ -17,6 +17,7 @@ class Specifications extends Component {
     componentDidMount() {
         window.addEventListener('resize', this.updateWindowDimensions);
         this.updateWindowDimensions();
+        this.props.reduxProject({ title: this.props.match.params.title })
     }
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
@@ -71,11 +72,10 @@ class Specifications extends Component {
         const styles = MyStylesheet();
         const regularFont = design.getRegularFont.call(this)
         const profile = this.props.match.params.profile;
-        const url = this.props.match.params.url;
         const projectid = this.props.match.params.title;
         return (
-        <div style={{ ...styles.generalFont, ...regularFont }}>
-        <Link to={`/${profile}/company/${url}/projects/${projectid}/specifications/${csi.csiid}`}>{csi.csi} - {csi.title}</Link>
+        <div style={{ ...styles.generalContainer }}>
+        <Link style={{...styles.generalFont, ...regularFont,...styles.generalLink}} to={`/${profile}/projects/${projectid}/specifications/${csi.csiid}`}>{csi.csi} - {csi.title}</Link>
         </div>
         )
 

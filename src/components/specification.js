@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from './actions';
@@ -17,6 +16,7 @@ class Specification extends Component {
     componentDidMount() {
         window.addEventListener('resize', this.updateWindowDimensions);
         this.updateWindowDimensions();
+        this.props.reduxProject({ title: this.props.match.params.title })
     }
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
@@ -29,8 +29,21 @@ class Specification extends Component {
         const design = new Design()
         const styles = MyStylesheet();
         const headerFont = design.getHeaderFont.call(this)
+     
+        const extra = () => {
+            switch(Number(section.part)) {
+                case 1:
+                    return("GENERAL INFORMATION")  
+                case 2:
+                    return('MATERIALS')       
+                case 3:
+                    return('EXECUTION')
+                default:
+                    break;
+            }
+        }
 
-        return (<div style={{ ...styles.generalFont, ...headerFont }} key={`${section.sectionid}part`}>Part {section.part} </div>)
+        return (<div style={{ ...styles.generalFont, ...headerFont }} key={`${section.sectionid}part`}>Part {section.part} {extra()}</div>)
     }
 
     makesubcontentactive(subcontentid) {
@@ -162,7 +175,16 @@ class Specification extends Component {
         const csiid = this.props.match.params.csiid;
         const sectionnumber = design.getsectionnumberbyid.call(this, projectid, csiid, section.sectionid);
         const getremoveicon = design.getremoveicon.call(this)
-        return (<div style={{ ...styles.generalFont, ...headerFont }} key={`${section.sectionid}section`}><span onClick={() => { this.makesectionactive(section.sectionid) }}>{section.part}.{sectionnumber} {section.title} </span><button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesectionup(section.sectionid) }}>{upArrowIcon()}</button> <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesectiondown(section.sectionid) }}>{downArrowIcon()}</button><button style={{ ...styles.generalButton, ...getremoveicon }} onClick={()=>{this.removesection(section.sectionid)}}>{removeIconSmall()}</button></div>)
+
+        const activebackground = () => {
+            if(this.state.activesectionid === section.sectionid) {
+                return(styles.activeBackground)
+            } else {
+                return;
+            }
+        }
+        
+        return (<div style={{ ...styles.generalFont, ...headerFont }} key={`${section.sectionid}section`} ><span style={{...activebackground(section.sectionid)}} onClick={() => { this.makesectionactive(section.sectionid) }}>{section.part}.{sectionnumber} {section.title} </span><button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesectionup(section.sectionid) }}>{upArrowIcon()}</button> <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesectiondown(section.sectionid) }}>{downArrowIcon()}</button><button style={{ ...styles.generalButton, ...getremoveicon }} onClick={()=>{this.removesection(section.sectionid)}}>{removeIconSmall()}</button></div>)
     }
 
     movecontentup(contentid) {
@@ -302,9 +324,16 @@ class Specification extends Component {
         const styles = MyStylesheet();
         const counter = LetterCounter(i + 1)
         const getremoveicon = design.getremoveicon.call(this)
+        const activebackground = (contentid) => {
+            if(this.state.activecontentid === contentid) {
+                return(styles.activeBackground)
+            } else {
+                return;
+            }
+        }
         return (
             <div style={{ ...styles.generalFont, ...regularFont, ...styles.marginLeft30 }} key={content.contentid}>
-                <span onClick={() => {
+                <span style={{...activebackground(content.contentid)}} onClick={() => {
                     this.makecontentactive(content.contentid)
                 }}>{counter}. {content.content}
                 </span> <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movecontentup(content.contentid) }}>{upArrowIcon()}</button> <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movecontentdown(content.contentid) }}>{downArrowIcon()}</button><button style={{ ...styles.generalButton, ...getremoveicon }} onClick={() => { this.removecontent(content.contentid) }}>{removeIconSmall()}</button></div>
@@ -474,9 +503,16 @@ class Specification extends Component {
         const regularFont = design.getRegularFont.call(this)
         const styles = MyStylesheet();
         const getremoveicon = design.getremoveicon.call(this)
-
+        const activebackground = (subcontentid) => {
+            if(this.state.activesubcontentid === subcontentid) {
+                return(styles.activeBackground)
+            } else {
+                return;
+            }
+        }
+        
         return (<div style={{ ...styles.generalFont, ...regularFont, ...styles.marginLeft60 }} key={subcontent.subcontentid}
-        ><span onClick={() => { this.makesubcontentactive(subcontent.subcontentid) }}>{j + 1}. {subcontent.subcontent} </span>  <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesubcontentup(subcontent.subcontentid) }}>{upArrowIcon()}</button> <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesubcontentdown(subcontent.subcontentid) }}>{downArrowIcon()}</button><button style={{ ...styles.generalButton, ...getremoveicon }} onClick={() => { this.removesubcontent(subcontent.subcontentid) }}>{removeIconSmall()}</button></div>)
+        ><span style={{...activebackground(subcontent.subcontentid)}} onClick={() => { this.makesubcontentactive(subcontent.subcontentid) }}>{j + 1}. {subcontent.subcontent} </span>  <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesubcontentup(subcontent.subcontentid) }}>{upArrowIcon()}</button> <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesubcontentdown(subcontent.subcontentid) }}>{downArrowIcon()}</button><button style={{ ...styles.generalButton, ...getremoveicon }} onClick={() => { this.removesubcontent(subcontent.subcontentid) }}>{removeIconSmall()}</button></div>)
 
     }
     handlesection(title) {
@@ -872,7 +908,8 @@ class Specification extends Component {
         const design = new Design();
         const headerFont = design.getHeaderFont.call(this);
         const regularFont = design.getRegularFont.call(this)
-        const saveprojecticon = design.getsaveprojecticon.call(this)
+        const saveprojecticon = design.getsaveprojecticon.call(this);
+        const csi = design.getcsibyid.call(this,this.props.match.params.csiid)
         return (<div style={{ ...styles.generalFlex }}>
             <div style={{ ...styles.flex1 }}>
 
@@ -880,7 +917,9 @@ class Specification extends Component {
                     <div style={{ ...styles.flex1, ...headerFont, ...styles.alignCenter }}>
                         /{this.props.match.params.title} <br />
                             Specifications <br />
-                            CSI {this.props.match.params.csiid}
+                            CSI {this.props.match.params.csiid} <br/>
+                            {csi.title}
+
                     </div>
                 </div>
 

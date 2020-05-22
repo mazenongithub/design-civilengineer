@@ -1,8 +1,55 @@
 import { sortpart,inputUTCStringForLaborID} from "./functions";
-import {SaveSpecs} from './actions/api'
+import {SaveSpecs,ClientLogin,LogoutUser} from './actions/api'
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
 
 class Design {
 
+    getblackx() {
+        if (this.state.width > 1200) {
+            return ({ width:'49px', height:'49px' })
+        } else if (this.state.width > 800) {
+            return ({ width:'49px', height:'49px' })
+        } else {
+            return ({ width:'49px', height:'49px' })
+        }
+    }
+    
+    getappleicon() {
+
+        if (this.state.width > 1200) {
+            return ({width:'373px',height:'88px'})
+        } else if (this.state.width > 800) {
+            return ({ width:'277px', height:'65px' })
+        } else {
+            return ({ width:'140px', height:'33px' })
+        }
+    
+      
+    }
+
+    getgoogleicon() {
+
+        if (this.state.width > 1200) {
+            return ({width:'365px',height:'87px'})
+        } else if (this.state.width > 800) {
+            return ({ width:'277px', height:'66px' })
+        } else {
+            return ({ width:'140px', height:'33px' })
+        }
+    
+    }
+
+    getMenuicon() {
+        if (this.state.width > 1200) {
+            return ({ width:'63px', height:'55px' })
+        } else if (this.state.width > 800) {
+            return ({ width:'63px', height:'55px' })
+        } else {
+            return ({ width:'63px', height:'55px' })
+        }
+    }
     getcsibyid(csiid) {
         const design = new Design();
         const codes = design.getallcsicodes.call(this)
@@ -278,6 +325,84 @@ return projects;
             return ({ width: '36px', height: '36px' })
         }
     }
+    getloginnow() {
+        if (this.state.width > 1200) {
+            return (
+                {
+                    width: '479px',
+                    height: '115px'
+                })
+
+        } else if (this.state.width > 800) {
+            return (
+                {
+                    width: '360px',
+                    height: '86px'
+                })
+
+        } else {
+            return (
+                {
+                    width: '242px',
+                    height: '58px'
+                })
+        }
+
+    }
+    getFolderSize() {
+        if (this.state.width > 1200) {
+            return (
+                {
+                    width: '142px',
+                    height: '88px'
+                })
+
+        } else if (this.state.width > 800) {
+            return (
+                {
+                    width: '93px',
+                    height: '76px'
+                })
+
+        } else {
+            return (
+                {
+                    width: '88px',
+                    height: '61px'
+                })
+        }
+
+    }
+    getprofiledimensions() {
+        if (this.state.width > 1200) {
+            return (
+                {
+                    width: '392px',
+                    height: '327px'
+                })
+
+        } else if (this.state.width > 800) {
+            return (
+                {
+                    width: '285px',
+                    height: '249px'
+                })
+
+        } else {
+            return (
+                {
+                    width: '167px',
+                    height: '145px'
+                })
+        }
+    }
+    getactiveproject() {
+        let activeproject = false;
+        if(this.props.project) {
+            activeproject= this.props.project;
+        }
+        return activeproject;
+    }
     getuser() {
         let myuser = false;
         if(this.props.myusermodel) {
@@ -354,6 +479,148 @@ return projects;
                 }
                 
             }
+        }
+    }
+
+    async googleSignIn() {
+
+
+        try {
+
+
+            let provider = new firebase.auth.GoogleAuthProvider();
+            provider.addScope('email');
+            provider.addScope('profile');
+            let result = await firebase.auth().signInWithPopup(provider)
+            var user = result.user;
+            console.log(user)
+            let client = 'google';
+            let clientid = user.providerData[0].uid;
+            let firstname = '';
+            if (user.providerData[0].displayName) {
+                firstname = user.providerData[0].displayName.split(' ')[0]
+            }
+
+            let lastname = '';
+            if (user.providerData[0].displayName) {
+                lastname = user.providerData[0].displayName.split(' ')[1]
+            }
+            let emailaddress = user.providerData[0].email;
+            let emailaddresscheck = false;
+            if (emailaddress) {
+                emailaddresscheck = true;
+            }
+            let profileurl = user.providerData[0].photoURL;
+            let phonenumber = user.phoneNumber;
+            this.setState({ client, clientid, emailaddress, firstname, lastname, profileurl, phonenumber, emailaddresscheck })
+
+            if (emailaddress && clientid && client && (this.state.login || this.state.profile)) {
+                let profile = this.state.profile;
+                try {
+
+
+                    let values = { client, clientid, firstname, lastname, emailaddress, profileurl, phonenumber, profile }
+
+                   console.log(values)
+                } catch (err) {
+                    alert(err)
+                }
+
+            } else {
+                this.setState({ client, clientid, firstname, lastname, emailaddress, profileurl, phonenumber })
+            }
+
+
+
+
+
+        } catch (error) {
+            alert(error)
+        }
+
+
+    }
+
+    async appleSignIn() {
+        let provider = new firebase.auth.OAuthProvider('apple.com');
+        provider.addScope('email');
+        provider.addScope('name');
+        try {
+            let result = await firebase.auth().signInWithPopup(provider)
+            // The signed-in user info.
+            var user = result.user;
+            console.log(user)
+            let firstname = "";
+            let lastname = "";
+            if (user.providerData[0].displayName) {
+                firstname = user.providerData[0].displayName.split(' ')[0]
+                lastname = user.providerData[0].displayName.split(' ')[1]
+            }
+            let phonenumber = user.providerData[0].phoneNumber
+            let profileurl = user.providerData[0].photoURL;
+            let client = 'apple';
+            let clientid = user.providerData[0].uid;
+            let emailaddress = user.providerData[0].email;
+            let emailaddresscheck = false;
+            if (emailaddress) {
+                emailaddresscheck = true;
+            }
+            let profile = this.state.profile;
+            this.setState({ client, clientid, firstname, lastname, profileurl, phonenumber, emailaddress, emailaddresscheck })
+            if (emailaddress && clientid && client && (this.state.login || this.state.profile)) {
+                try {
+
+                    let values = { client, clientid, firstname, lastname, emailaddress, profileurl, phonenumber, profile }
+                    console.log(values)
+                } catch (err) {
+                    alert(err)
+                }
+
+            }
+
+        } catch (err) {
+            alert(err)
+        }
+
+    }
+    async logoutuser() {
+        const design = new Design();
+        const myuser = design.getuser.call(this);
+        if(myuser) {
+        try {
+    
+          let response = await LogoutUser(myuser.providerid);
+          console.log(response)
+          this.props.reduxUser(response)
+        
+        } catch (err) {
+          alert(err)
+        }
+    
+      }
+    
+      }
+    async clientlogin() {
+        try {
+
+            let client = this.state.client;
+            let clientid = this.state.clientid;
+            let firstname = this.state.firstname;
+            let lastname = this.state.lastname;
+            let emailaddress = this.state.emailaddress;
+            let profileurl = this.state.profileurl;
+            let phonenumber = this.state.phonumber;
+            let profile = this.state.profile
+            let values = { client, clientid, firstname, lastname, emailaddress, profileurl, phonenumber, profile }
+            const response = await ClientLogin(values);
+            console.log(response)
+            this.props.reduxUser(response)
+            this.setState({render:'render'})
+            
+            
+
+        } catch (err) {
+            alert(err)
         }
     }
 }
