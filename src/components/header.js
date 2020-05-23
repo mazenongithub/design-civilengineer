@@ -18,7 +18,7 @@ class Header {
             if(myuser) {
                 return(
                 <div style={{...styles.generalContainer}}>
-                <div  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} onClick={()=>{design.logoutuser.call(this)}}>logout</div>
+                <div className="headerFont createlink" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} onClick={()=>{design.logoutuser.call(this)}}>logout</div>
                 </div>)
             } else {
                 return(<div style={{...styles.generalContainer}}>
@@ -73,7 +73,7 @@ class Header {
                    {loginlink()}
                 </div>
                 <div style={{...styles.flex1,...styles.alignCenter}}>
-                    <button style={{...getblackx,...styles.navigationbutton}} onClick={()=>{this.setState({navigation:false})}}>{blackx()}</button>
+                    <button className="createlink" style={{...getblackx,...styles.navigationbutton}} onClick={()=>{this.setState({navigation:false})}}>{blackx()}</button>
                     
                 </div>
                 </div>
@@ -84,7 +84,7 @@ class Header {
 
         } else {
             return(<div style={{...styles.generalContainer}}>
-                <button 
+                <button className="createlink"
                 style={{...styles.generalButton, ...menuicon}} onClick={()=>{this.setState({navigation:true})}}>{menuIcon()}</button>
 
             </div>)

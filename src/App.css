@@ -13,3 +13,6 @@
   -webkit-text-stroke-width: 1px;
 -webkit-text-stroke-color: black;
 }
+.createlink:hover{
+  cursor:pointer;
+}

@@ -412,6 +412,49 @@ return projects;
         }
         return myuser;
     }
+    getslidebyid(id) {
+        const design = new Design();
+        const slides = design.getslides.call(this)
+        let myslide = false;
+        if(slides) {
+            // eslint-disable-next-line
+            slides.map(slide=>{
+                if(slide.id === id) {
+                    myslide = slide;
+                }
+            })
+        }
+        return myslide;
+    }
+    getslides() {
+        const slides = () => {
+            return([
+                {
+                    title:'Design',
+                    id:'design',
+                    url:'http://civilengineer.io/design/slides/project.png',
+                    caption:`Design By Civil Engineering`
+
+                },
+                {
+                    title:'Specifications',
+                    id:'specifications',
+                    url:'http://civilengineer.io/design/slides/specs.png',
+                    caption:`Create Specfication by Project, Search Specification by code and select to add project`
+
+                },
+                {
+                    title:'Specification',
+                    id:'specification',
+                    url:'http://civilengineer.io/design/slides/spec.png',
+                    caption:`Draft Project Specfication by Code`
+
+                },
+                
+        ])
+        }
+        return slides();
+    }
     getallcsicodes() {
         const design = new Design();
         const myuser = design.getuser.call(this)
@@ -420,6 +463,25 @@ return projects;
             codes = myuser.csicodes;
         }
         return codes;
+    }
+    getsmallslide() {
+        if (this.state.width > 1200) {
+            return ({ width:'362px',height:'345px' })
+        } else if (this.state.width > 800) {
+            return ({ width:'254px',height:'241px' })
+        } else {
+            return ({ width:'178px',height:'169px' })
+        }
+    
+    }
+    getmainslide() {
+        if (this.state.width > 1200) {
+            return ({ width:'1087px',height:'1035px' })
+        } else if (this.state.width > 800) {
+            return ({ width:'762px',height:'725px' })
+        } else {
+            return ({ width:'356px',height:'339px' })
+        }
     }
     getLargeFont() {
         if (this.state.width > 1200) {

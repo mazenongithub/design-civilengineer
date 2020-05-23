@@ -14,16 +14,14 @@ import Profile from './components/profile';
 import Projects from './components/projects'
 import Project from './components/project'
 import Login from './components/login'
-const showlanding = () => {
-  return(<div>Landing</div>)
-}
-
+import Landing from './components/landing'
+import Design from './components/design';
 
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { render: '', width: 0, height: 0,natigation:false }
+    this.state = { render: '', width: 0, height: 0,natigation:false, activeslideid:'design' }
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
   }
   componentDidMount() {
@@ -49,7 +47,27 @@ class App extends Component {
 
   render() {
 
- const header = new Header();
+const header = new Header();
+const landing = new Landing();
+const design = new Design();
+const myuser = design.getuser.call(this)
+const showlanding = () => {
+  if(myuser) {
+    return(<Profile/>)
+
+  } else {
+  return(landing.showlanding.call(this))
+  }
+}
+
+const showlogin = () => {
+  if(myuser) {
+    return(<Profile/>)
+
+  } else {
+  return(<Login/>)
+  }
+}
 
 
     return (
@@ -58,7 +76,7 @@ class App extends Component {
         {header.showheader.call(this)}
         <Switch>
           <Route exact path="/" component={showlanding} />
-          <Route exact path="/profile/login" component={Login} />
+          <Route exact path="/profile/login" component={showlogin} />
           <Route exact path="/:profile/profile" component={Profile} />
           <Route exact path="/:profile/projects" component={Projects} />
           <Route exact path="/:profile/projects/:title" component={Project} />

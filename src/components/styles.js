@@ -7,11 +7,27 @@ export function MyStylesheet() {
         alignCenter: {
             textAlign: 'center'
         },
+        marginAuto:{
+            margin:'auto'
+        },
+        generalGrid:{
+            display:'grid',
+            gridRowGap:'15px'
+        },
+        doublegrid:{
+            gridTemplateColumns:'50% 50%'
+        },
+        triplegrid:{
+            gridTemplateColumns:'33% 33% 33%'
+        },
         alignRight:{
             float: 'right'
         },
         flex1: {
             flex: 1,
+        },
+        showBorder: {
+            border: '1px solid'
         },
         generalField: {
             width: '95%',
@@ -35,8 +51,7 @@ export function MyStylesheet() {
             color:'#000000'
         },
         largeFont:{
-            fontSize:'50px',
-          
+            fontSize:'50px', 
         },
         navigationFont:{
             color:'#D7A22A'
@@ -99,7 +114,6 @@ export function MyStylesheet() {
         },
         flex5: {
             flex:5
-
         },
         addMargin: {
             margin: '3px'
