@@ -30,7 +30,7 @@ export function MyStylesheet() {
         topHeader:{
             backgroundColor:'#D7A22A',
             borderRadius:'5px',
-            height:'110px',
+            minHeight:'110px',
             border:'1px solid',
             color:'#000000'
         },

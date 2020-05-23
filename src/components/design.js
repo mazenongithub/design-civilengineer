@@ -421,6 +421,15 @@ return projects;
         }
         return codes;
     }
+    getLargeFont() {
+        if (this.state.width > 1200) {
+            return ({ fontSize: '48px' })
+        } else if (this.state.width > 800) {
+            return ({ fontSize: '40px' })
+        } else {
+            return ({ fontSize: '36px' })
+        }
+    }
     getRegularFont() {
         if (this.state.width > 1200) {
             return ({ fontSize: '36px' })

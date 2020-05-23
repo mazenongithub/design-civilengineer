@@ -96,6 +96,7 @@ class Header {
         const design = new Design();
         const headerFont = design.getHeaderFont.call(this)
         const header  = new Header();
+        const largeFont = design.getLargeFont.call(this)
         return (
             <div style={{ ...styles.generalFlex }}>
                 <div style={{ ...styles.flex1 }}>
@@ -105,7 +106,7 @@ class Header {
 
                             <div style={{ ...styles.generalContainer, ...styles.topHeader }}>
                                 <div style={{ ...styles.generalContainer, ...styles.alignCenter }}>
-                                    <span style={{ ...styles.largeFont, ...styles.boldFont, ...styles.headerFamily }}>CIVILENGINEER.IO DESIGN</span>
+                                    <span style={{ ...largeFont, ...styles.boldFont, ...styles.headerFamily }}>CIVILENGINEER.IO DESIGN</span>
                                 </div>
 
 
