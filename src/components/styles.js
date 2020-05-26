@@ -10,6 +10,9 @@ export function MyStylesheet() {
         marginAuto:{
             margin:'auto'
         },
+        redHighlight:{
+            backgroundColor: '#F2C4D2'
+        },
         generalGrid:{
             display:'grid',
             gridRowGap:'15px'

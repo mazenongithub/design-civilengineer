@@ -50,6 +50,22 @@ class Design {
             return ({ width:'63px', height:'55px' })
         }
     }
+
+    getcsikeybyid(csiid) {
+        const design = new Design();
+        console.log(csiid)
+        const codes = design.getallcsicodes.call(this)
+        let key = false;
+        if(codes) {
+            // eslint-disable-next-line
+            codes.map((code,i)=> {
+                if(code.csiid === csiid) {
+                    key = i;
+                }
+            })
+        }
+        return key;
+    }
     getcsibyid(csiid) {
         const design = new Design();
         const codes = design.getallcsicodes.call(this)
@@ -509,6 +525,29 @@ return projects;
             return ({ fontSize: '36px' })
         } else {
             return ({ fontSize: '30px' })
+        }
+    }
+
+    async savespecs() {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        let mycsis = [];
+        if(myuser) {
+            const csis = design.getallcsicodes.call(this)
+            if(csis) {
+                // eslint-disable-next-line
+                csis.map(csi=> {
+                    if(csi.providerid === myuser.providerid) {
+                       mycsis.push(csi)
+                    }
+                })
+            }
+
+
+        }
+        if(mycsis.length>0) {
+            let values = {csis:mycsis}
+            console.log(values)
         }
     }
 

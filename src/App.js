@@ -16,6 +16,7 @@ import Project from './components/project'
 import Login from './components/login'
 import Landing from './components/landing'
 import Design from './components/design';
+import CSIS from './components/csis'
 
 
 class App extends Component {
@@ -70,6 +71,8 @@ const showlogin = () => {
 }
 
 
+
+
     return (
       <BrowserRouter>
       <div>
@@ -77,6 +80,7 @@ const showlogin = () => {
         <Switch>
           <Route exact path="/" component={showlanding} />
           <Route exact path="/profile/login" component={showlogin} />
+          <Route exact path="/:profile/csis" component={CSIS} />
           <Route exact path="/:profile/profile" component={Profile} />
           <Route exact path="/:profile/projects" component={Projects} />
           <Route exact path="/:profile/projects/:title" component={Project} />

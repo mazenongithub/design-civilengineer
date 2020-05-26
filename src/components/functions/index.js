@@ -89,3 +89,6 @@ export function makeID(length) {
     }
     return result;
 }
+export function CreateCSI(csiid,providerid,csi,title) {
+    return({csiid, providerid, csi, title})
+}

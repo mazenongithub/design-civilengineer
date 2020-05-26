@@ -88,7 +88,7 @@ export async function ClientLogin(values) {
 
 export async function  CheckUser() {
 
-    let APIURL = `https://civilengineer.io/design/api/loadprofile.php`
+    let APIURL = `https://civilengineer.io/design/api/loadprofile.php?providerid=mazen`
     console.log(APIURL)
 
     return fetch(APIURL, { credentials: 'include' }).then(resp => {
