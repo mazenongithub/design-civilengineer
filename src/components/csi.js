@@ -184,27 +184,27 @@ class CSI {
                         </div>
                         <div style={{ ...styles.flex1 }}>
                             <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.getcsi_1()}
-                                onChange={event => { this.handlecsi_1(event.target.value) }}
+                                value={this.state.csi_1}
+                                onChange={event => { this.setState({csi_1:event.target.value}) }}
                             />
 
                         </div>
                         <div style={{ ...styles.flex1 }}>
                             <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.getcsi_2()}
-                                onChange={event => { this.handlecsi_2(event.target.value) }}
+                                value={this.state.csi_2}
+                                onChange={event => { this.setState({csi_2:event.target.value}) }}
                             />
                         </div>
                         <div style={{ ...styles.flex1 }}>
                             <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.state.csi_3}
-                                onChange={event => { this.handlecsi_3(event.target.value) }}
+                                 value={this.state.csi_3}
+                                onChange={event => { this.setState({csi_3:event.target.value}) }}
                             />
                         </div>
                         <div style={{ ...styles.flex1 }}>
                             <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
                                 value={this.state.csi_4}
-                                onChange={event => { this.handlecsi_4(event.target.value) }}
+                                onChange={event => { this.setState({csi_4:event.target.value}) }}
                             />
                         </div>
                     </div>

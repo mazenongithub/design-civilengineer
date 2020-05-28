@@ -46,6 +46,15 @@ class Header {
 
         }
 
+        const csilink = () => {
+            if(myuser.profile) {
+                return( <div style={{...styles.generalContainer}}>
+                <Link  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} to={`/${myuser.profile}/csis`}>/{myuser.profile}/csis</Link>
+                </div>)
+            }
+
+        }
+
         const activeproject = () => {
             const title = design.getactiveproject.call(this);
             console.log(title)
@@ -69,6 +78,7 @@ class Header {
 
                    {profilelink()}
                    {projectlink()}
+                   {csilink()}
                    {activeproject()}
                    {loginlink()}
                 </div>
