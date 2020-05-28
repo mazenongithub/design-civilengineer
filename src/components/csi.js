@@ -1,7 +1,7 @@
 import React from 'react';
 import Design from './design';
 import { MyStylesheet } from './styles';
-import { removeIconSmall } from './svg';
+import { removeIconSmall, saveIcon } from './svg';
 import { sortcode } from './functions';
 
 
@@ -23,6 +23,7 @@ class CSI {
         let csi_1 = this.state.csi_1;
         let csi_2 = this.state.csi_2;
         let csi_3 = this.state.csi_3;
+        let csi_4 = this.state.csi_4;
         let searchcsi = "";
         let results = [];
         const validatecode = (results, code) => {
@@ -38,17 +39,27 @@ class CSI {
             }
             return validate;
         }
-        if (csi_1) {
+        if (csi_1.length>1) {
             searchcsi += csi_1.substr(0, 2)
-        }
-        if (csi_2) {
+        
+        if (csi_2.length>1) {
             searchcsi += csi_2.substr(0, 2)
-        }
-        if (csi_3) {
+        
+        if (csi_3.length>1) {
             searchcsi += csi_3.substr(0, 2)
+        
+            if(csi_4.length>1) {
+                searchcsi += `.${csi_4.substr(0, 2)}`
+            }
+        
         }
 
-        if (searchcsi) {
+
+    }
+
+    }
+
+        if (searchcsi.length >1) {
             const codes = design.getallcsicodes.call(this)
 
             if (codes) {
@@ -92,6 +103,7 @@ class CSI {
         const styles = MyStylesheet();
         const design = new Design();
         const regularFont = design.getRegularFont.call(this);
+        const getsaveicon = design.getsaveicon.call(this)
         const removeIconWidth = design.getremoveicon.call(this);
         const myuser = design.getuser.call(this)
         const csibackground = () => {
@@ -103,26 +115,43 @@ class CSI {
         }
         const checkcsi = () => {
             let csicheck = false;
-            const mycsis = design.getallcsicodes.call(this);
+            if(this.state.activecsiid) {
+            const mycsi = design.getcsibyid.call(this,this.state.activecsiid)
             
-            if (mycsis) {
-                // eslint-disable-next-line
-                mycsis.map(mycsi => {
+            if (mycsi) {       
 
-                    if (mycsi.providerid=== myuser.providerid) {
+                    if (mycsi.providerid === myuser.providerid) {
                         csicheck = true;
                     }
-                })
+              
             }
+
+        }
             return csicheck;
         }
 
-        const removeIcon = () => {
+        const updateIcon = () => {
+            
 
             if ( checkcsi()) {
                 return (
                     <div style={{ ...styles.flex1 }}>
-                        <button style={{ ...styles.generalButton, ...removeIconWidth }} onClick={() => { this.removecsi(csi) }}>{removeIconSmall()} </button>
+                        <button style={{ ...styles.generalButton, ...getsaveicon }} onClick={() => { design.savespecs.call(this) }}>{saveIcon()} </button>
+                    </div>
+                )
+            } else {
+                return;
+            }
+
+        }
+
+        const removeIcon = () => {
+            
+
+            if ( checkcsi()) {
+                return (
+                    <div style={{ ...styles.flex1 }}>
+                    <button style={{ ...styles.generalButton, ...removeIconWidth }} onClick={() =>{ design.deletecsi.call(this)}}>{removeIconSmall()} </button>
                     </div>
                 )
             } else {
@@ -134,6 +163,7 @@ class CSI {
             <div style={{ ...styles.flex5 }} onClick={() => { this.handlecsiid(csi.csiid) }}>
                 {csi.csi} - {csi.title}
             </div>
+            {updateIcon()}
             {removeIcon()}
         </div>)
     }

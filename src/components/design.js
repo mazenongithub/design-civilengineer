@@ -1,5 +1,5 @@
 import { sortpart, inputUTCStringForLaborID } from "./functions";
-import { SaveSpecs, ClientLogin, LogoutUser, SaveCSI } from './actions/api'
+import { SaveSpecs, ClientLogin, LogoutUser, SaveCSI, DeleteCSI } from './actions/api'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -323,6 +323,15 @@ class Design {
 
         return projects;
     }
+    getsaveicon() {
+        if (this.state.width > 1200) {
+            return ({ width: '122px', height: '52px' })
+        } else if (this.state.width > 800) {
+            return ({ width: '107px', height: '45px' })
+        } else {
+            return ({ width: '92px', height: '39px' })
+        }
+    }
 
     getsaveprojecticon() {
         if (this.state.width > 1200) {
@@ -526,6 +535,59 @@ class Design {
             return ({ fontSize: '30px' })
         }
     }
+    async deletecsi() {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if (myuser) {
+            if (this.state.activecsiid) {
+                const csis = design.getcsibyid.call(this, this.state.activecsiid)
+                const values = { csis }
+                try {
+                const response = await DeleteCSI(values);
+                console.log(response)
+         
+                  if(response.hasOwnProperty("csis")) {
+                      const csi = design.getcsibyid.call(this,response.csis.csiid)
+                      if(csi) {
+                      const i = design.getcsikeybyid.call(this,response.csis.csiid)
+                      myuser.csicodes[i] = response.csis;
+                      const csi_1 = response.csis.csi.substring(0,2)
+                      const csi_2 = response.csis.csi.substring(2,4)
+                      const csi_3 = response.csis.csi.substring(4,6)
+                      const csi_4 = response.csis.csi.substring(7,9)
+                      this.props.reduxUser({myuser})
+                      this.setState({csi_1,csi_2,csi_3,csi_4})
+                      }
+                  }
+                  if(response.hasOwnProperty("csiid")) {
+                      const csiid = response.csiid;
+                      const j = design.getcsikeybyid.call(this,csiid)
+                      myuser.csicodes.splice(j,1);
+                      this.props.reduxUser({myuser})
+                      this.setState({csi_1:'',csi_2:'',csi_3:'',csi_4:'', activecsiid:false})
+
+                  }
+                  let message = "";
+                  if(response.hasOwnProperty('message')) {
+
+                      message +=response.message
+                    
+                }
+                  if(response.hasOwnProperty("lastupdated")) {
+                      message +=  `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
+                  }
+                  this.setState({message})
+                 
+
+                } catch(err) {
+                    alert(err)
+                }
+
+            }            
+
+        }
+
+    }
 
     async savespecs() {
         const design = new Design();
@@ -534,7 +596,9 @@ class Design {
             if (this.state.activecsiid) {
                 const csis = design.getcsibyid.call(this, this.state.activecsiid)
                 const values = { csis }
+                try {
                 const response = await SaveCSI(values);
+                console.log(response)
          
                   if(response.hasOwnProperty("csis")) {
                       const csi = design.getcsibyid.call(this,response.csis.csiid)
@@ -545,8 +609,22 @@ class Design {
                       this.setState({render:'render'})
                       }
                   }
+                  let message = "";
+                  if(response.hasOwnProperty('message')) {
+                      message +=response.message
+                    
+                }
+                  if(response.hasOwnProperty("lastupdated")) {
+                      message +=  `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
+                  }
+                  this.setState({message})
+                 
 
-            }
+                } catch(err) {
+                    alert(err)
+                }
+
+            }            
 
         }
         }
