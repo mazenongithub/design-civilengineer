@@ -43,8 +43,16 @@ class Project extends Component {
                         <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                             <div style={{ ...styles.flex1 }}>
 
-                                <div style={{ ...styles.generalContainer, ...styles.bottomMargin15 }} key={myproject.projectid}>
+                                <div style={{ ...styles.generalContainer, ...styles.bottomMargin15 }}>
                                     <Link style={{ ...headerFont, ...styles.generalFont, ...styles.generalLink }} to={`/${profile}/projects/${myproject.title}/specifications`}>/{profile}/projects/{myproject.title}/specifications</Link>
+                                </div>
+
+                                <div style={{ ...styles.generalContainer, ...styles.bottomMargin15 }} >
+                                    <Link style={{ ...headerFont, ...styles.generalFont, ...styles.generalLink }} to={`/${profile}/projects/${myproject.title}/costestimate`}>/{profile}/projects/{myproject.title}/costestimate</Link>
+                                </div>
+
+                                <div style={{ ...styles.generalContainer, ...styles.bottomMargin15 }}>
+                                    <Link style={{ ...headerFont, ...styles.generalFont, ...styles.generalLink }} to={`/${profile}/projects/${myproject.title}/bidschedule`}>/{profile}/projects/{myproject.title}/bidschedule</Link>
                                 </div>
 
                             </div>

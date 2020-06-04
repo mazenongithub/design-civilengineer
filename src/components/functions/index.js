@@ -436,3 +436,27 @@ export function makeID(length) {
 export function CreateCSI(csiid, providerid, csi, title) {
     return ({ csiid, providerid, csi, title })
 }
+
+export function CreateBidItem(csiid,providerid,quantity,unit) {
+    return({csiid,providerid,quantity,unit})
+}
+export function ProfitForMaterial(item) {
+    return (Number(item.quantity) * Number(item.unitcost)) * (Number(item.profit) / 100)
+}
+export function DirectCostForMaterials(item) {
+    return (Number(item.quantity) * Number(item.unitcost))
+}
+export function DirectCostForLabor(item) {
+    return (Number(calculatetotalhours(item.timeout, item.timein)) * Number(item.laborrate))
+}
+export function DirectCostForEquipment(item) {
+
+    return (Number(calculatetotalhours(item.timeout, item.timein)) * Number(item.equipmentrate))
+}
+export function ProfitForEquipment(item) {
+
+    return (Number(calculatetotalhours(item.timeout, item.timein)) * Number(item.equipmentrate)) * (Number(item.profit) / 100)
+}
+export function ProfitForLabor(item) {
+    return (Number(calculatetotalhours(item.timeout, item.timein)) * Number(item.laborrate)) * (Number(item.profit) / 100)
+}

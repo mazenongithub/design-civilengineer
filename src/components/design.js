@@ -6,6 +6,44 @@ import 'firebase/auth';
 
 class Design {
 
+    getbiditemkeybycsiid(projectid,csiid) {
+        const design = new Design();
+        let key = false;
+        const project = design.getprojectbyid.call(this,projectid);
+        if(project.hasOwnProperty("costestimate")) {
+            if(project.costestimate.hasOwnProperty("bidschedule")) {
+            // eslint-disable-next-line
+            project.costestimate.bidschedule.map((bidschedule,i)=> {
+                if(bidschedule.csiid === csiid) {
+                   key = i;
+                }
+            })
+
+        }
+
+        }
+        return key
+    }
+
+    getbiditembycsiid(projectid,csiid) {
+        const design = new Design();
+        let schedule =false;
+        const project = design.getprojectbyid.call(this,projectid);
+        if(project.hasOwnProperty("costestimate")) {
+            if(project.costestimate.hasOwnProperty("bidschedule")) {
+            // eslint-disable-next-line
+            project.costestimate.bidschedule.map(bidschedule=> {
+                if(bidschedule.csiid === csiid) {
+                    schedule = bidschedule;
+                }
+            })
+
+        }
+
+        }
+        return schedule;
+    }
+
     gethourlyrate(providerid) {
         const design = new Design()
         let employee = design.getemployeebyid.call(this, providerid)
@@ -547,6 +585,15 @@ class Design {
             return ({ width: '63px', height: '55px' })
         }
     }
+
+    getquantityfield() {
+        if (this.state.width > 1200) {
+            return ({ maxWidth:'145px'})
+        } else {
+            return ({ maxWidth: '96px' })
+        }
+    }
+
 
     getcsikeybyid(csiid) {
         const design = new Design();

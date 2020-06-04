@@ -18,6 +18,8 @@ import Landing from './components/landing'
 import Design from './components/design';
 import CSIS from './components/csis'
 import CostEstimate from './components/costestimate';
+import BidSchedule from './components/bidschedule'
+import LineItem from './components/lineitem';
 
 
 class App extends Component {
@@ -52,7 +54,9 @@ class App extends Component {
 const header = new Header();
 const landing = new Landing();
 const design = new Design();
-const myuser = design.getuser.call(this)
+
+const myuser = design.getuser.call(this);
+
 const showlanding = () => {
   if(myuser) {
     return(<Profile/>)
@@ -86,6 +90,8 @@ const showlogin = () => {
           <Route exact path="/:profile/projects" component={Projects} />
           <Route exact path="/:profile/projects/:title" component={Project} />
           <Route exact path="/:profile/projects/:title/costestimate" component={CostEstimate} />
+          <Route exact path="/:profile/projects/:title/bidschedule" component={BidSchedule} />
+          <Route exact path="/:profile/projects/:title/bidschedule/:csiid" component={LineItem} />
           <Route exact path="/:profile/projects/:title/specifications" component={Specifications} />
           <Route exact path="/:profile/projects/:title/specifications/:csiid" component={Specification} />
         </Switch>
