@@ -95,15 +95,34 @@ export function MyStylesheet() {
         generalPadding:{
             padding:'5px'
         },
+        activebutton:{
+            backgroundColor:'#043D1A'
+        },
+        notactivebutton:{
+            backgroundColor:'#E5D5B0'
+
+        },
+        specialButton:{
+            color:'#977F1A',
+            WebkitTextStrokeWidth: '1px',
+            WebkitTextStrokeColor: 'black'
+        },
+        addRadius:{
+            border:'1px solid',
+            borderRadius:'5px'
+        },
         generalButton: {
             border: '0px',
-            backgroundColor: '#FFFFFF'
+            backgroundColor: '#FFFFFF',
         },
         width200:{
             width:'200px'
         },
         flex2: {
             flex: 2
+        },
+        width75:{
+            width:'75%'
         },
         smallbutton:{
             width:'41px',

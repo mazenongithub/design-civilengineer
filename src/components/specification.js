@@ -998,7 +998,8 @@ function mapStateToProps(state) {
     return {
         myusermodel: state.myusermodel,
         allusers: state.allusers,
-        allcompanys: state.allcompanys
+        allcompanys: state.allcompanys,
+        project:state.project
     }
 }
 

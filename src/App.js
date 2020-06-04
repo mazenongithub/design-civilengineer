@@ -17,6 +17,7 @@ import Login from './components/login'
 import Landing from './components/landing'
 import Design from './components/design';
 import CSIS from './components/csis'
+import CostEstimate from './components/costestimate';
 
 
 class App extends Component {
@@ -84,6 +85,7 @@ const showlogin = () => {
           <Route exact path="/:profile/profile" component={Profile} />
           <Route exact path="/:profile/projects" component={Projects} />
           <Route exact path="/:profile/projects/:title" component={Project} />
+          <Route exact path="/:profile/projects/:title/costestimate" component={CostEstimate} />
           <Route exact path="/:profile/projects/:title/specifications" component={Specifications} />
           <Route exact path="/:profile/projects/:title/specifications/:csiid" component={Specification} />
         </Switch>

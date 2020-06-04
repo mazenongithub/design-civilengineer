@@ -291,12 +291,7 @@ class CSI {
             <div style={{ ...styles.generalFlex,...styles.bottomMargin15 }}>
                 <div style={{ ...styles.flex1 }}>
 
-                    <div style={{ ...styles.generalFlex }}>
-                        <div style={{ ...styles.flex1, ...styles.generalFont, ...regularFont }}>
-                            Construction Specification
-                        </div>
-                    </div>
-
+              
                     {showcodes()}
 
 
