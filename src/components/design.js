@@ -1,7 +1,10 @@
+import React from 'react';
 import { sortpart, inputUTCStringForLaborID, getEquipmentRentalObj,calculatetotalhours,calculateTotalMonths,FutureCostPresent,AmmortizeFactor} from "./functions";
-import { SaveSpecs, ClientLogin, LogoutUser, SaveCSI, DeleteCSI } from './actions/api'
+import { SaveSpecs, ClientLogin, LogoutUser, SaveCSI, DeleteCSI, SaveCostEstimate } from './actions/api'
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { MyStylesheet } from "./styles";
+import {saveCostEstimateIcon} from './svg'
 
 
 class Design {
@@ -824,6 +827,74 @@ class Design {
             specifications = myproject.specifications;
         }
         return specifications;
+    }
+    getsaveestimate() {
+        if(this.state.width>1200) {
+            return({width:'338px',height:'71px'})
+        } else if (this.state.width>800) {
+            return({width:'278px',height:'59px'})
+        } else {
+            return({width:'218px',height:'46px'})
+
+        }
+    }
+    async savecostestimate() {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if(myuser) {
+        const project = design.getprojectbytitle.call(this,this.props.match.params.title)
+        if(myuser.hasOwnProperty("company")) {
+        const companyid = myuser.company.companyid;
+        if(project) {
+            const projectid = project.projectid;
+            const i = design.getprojectbykeyid.call(this,projectid)
+            if(project.hasOwnProperty("costestimate")) {
+                const costestimate = project.costestimate;
+                const values = {projectid,companyid,costestimate}
+                try {
+                    let response = await SaveCostEstimate(values);
+                    console.log(response)
+                     if(response.hasOwnProperty("costestimate")) {
+                         myuser.company.projects[i].costestimate = response.costestimate;
+                         this.props.reduxUser({myuser})
+                         this.setState({render:'render'})
+                     }
+                } catch(err) {
+                    alert(err)
+                }
+            }
+        }
+
+    }
+
+    }
+    }
+    showsaveestimate() {
+        const design = new Design();
+        const styles = MyStylesheet();
+        const regularFont = design.getRegularFont.call(this)
+        const saveestimate = design.getsaveestimate.call(this)
+        return(
+        <div style={{...styles.generalFlex}}>
+            <div style={{...styles.flex1}}>
+
+            <div style={{...styles.generalFlex, ...styles.bottomMargin15}}>
+            <div style={{...styles.flex1}}>
+                <span style={{...styles.generalFont,...regularFont}}>{this.state.message}</span>
+            </div>
+        </div>
+
+
+        <div style={{...styles.generalFlex,...styles.bottomMargin15}}>
+            <div style={{...styles.flex1,...styles.alignCenter}}>
+                <button style={{...styles.generalButton,...saveestimate}} onClick={()=>{design.savecostestimate.call(this)}}>{saveCostEstimateIcon()}</button>
+
+            </div>
+        </div>
+
+            </div>
+        </div>
+        )
     }
     getprojectbykeyid(projectid) {
         const design = new Design();

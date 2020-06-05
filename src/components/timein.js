@@ -48,9 +48,28 @@ class TimeIn {
 
                     } else if (this.state.active === 'equipment') {
 
-                    } else if (this.state.active === 'materials') {
+                        if(this.state.activeequipmentid) {
+                            const myequipment = design.getequipmentbyid.call(this,projectid,this.state.activeequipmentid)
+                            if(myequipment) {
 
-                    }
+                                if(myequipment) {
+                                    const j = design.getequipmentkeybyid.call(this,projectid,myequipment.equipmentid)
+                                    let day = this.state.timeinday;
+                                    let year = this.state.timeinyear;
+                                    let month = this.state.timeinmonth;
+                                    let hours = this.state.timeinhours;
+                                    let time = this.state.timeinampm;
+                                    let timein = makeTimeString(year, month, day, hours, minutes, time);
+                                    timein = UTCTimeStringfromTime(timein);
+                                    myuser.company.projects[i].costestimate.equipment[j].timein = timein;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+                                }
+
+                            }
+                        }
+
+                    } 
 
                 }
             }
@@ -99,10 +118,26 @@ class TimeIn {
 
                         } else if (this.state.active === 'equipment') {
 
-                        } else if (this.state.active === 'materials') {
 
+                            if(this.state.activeequipmentid) {
+                                const myequipment = design.getequipmentbyid.call(this,projectid,this.state.activeequipmentid)
+                                if(myequipment) {
+                                
+                                    const j = design.getequipmentkeybyid.call(this,projectid,myequipment.equipmentid)
+                                    let day = this.state.timeinday;
+                                    let year = this.state.timeinyear;
+                                    let month = this.state.timeinmonth;
+                                    let minutes = this.state.timeinminutes;
+                                    let time = this.state.timeinampm;
+                                    let timein = makeTimeString(year, month, day, hours, minutes, time);
+                                    timein = UTCTimeStringfromTime(timein);
+                                    myuser.company.projects[i].costestimate.equipment[j].timein = timein;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+
+                                }
+                            }
                         }
-
                     }
 
                 }
@@ -150,9 +185,24 @@ class TimeIn {
 
                         } else if (this.state.active === 'equipment') {
 
-                        } else if (this.state.active === 'materials') {
+                            if(this.state.activeequipmentid) {
+                                const myequipment = design.getequipmentbyid.call(this,projectid,this.state.activeequipmentid)
+                                if(myequipment) {
+                                    const j = design.getequipmentkeybyid.call(this,projectid,myequipment.equipmentid)
+                                    let day = this.state.timeinday;
+                                    let minutes = this.state.timeinminutes;
+                                    let month = this.state.timeinmonth;
+                                    let hours = this.state.timeinhours;
+                                    let time = this.state.timeinampm;
+                                    let timein = makeTimeString(year, month, day, hours, minutes, time);
+                                    timein = UTCTimeStringfromTime(timein);
+                                    myuser.company.projects[i].costestimate.equipment[j].timein = timein;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+                                }
+                            }
 
-                        }
+                        } 
 
                     }
 
@@ -200,10 +250,25 @@ class TimeIn {
                             }
 
                         } else if (this.state.active === 'equipment') {
+                            if(this.state.activeequipmentid) {
+                                const myequipment = design.getequipmentbyid.call(this,projectid,this.state.activeequipmentid)
+                           
+                                if(myequipment) {
+                                    const j = design.getequipmentkeybyid.call(this,projectid,myequipment.equipmentid)
+                                    let minutes = this.state.timeinminutes;
+                                    let year = this.state.timeinyear;
+                                    let month = this.state.timeinmonth;
+                                    let hours = this.state.timeinhours;
+                                    let time = this.state.timeinampm;
+                                    let timein = makeTimeString(year, month, day, hours, minutes, time);
+                                    timein = UTCTimeStringfromTime(timein);
+                                    myuser.company.projects[i].costestimate.equipment[j].timein = timein;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+                                }
+                            }
 
-                        } else if (this.state.active === 'materials') {
-
-                        }
+                        } 
 
                     }
 
@@ -251,8 +316,23 @@ class TimeIn {
                             }
 
                         } else if (this.state.active === 'equipment') {
-
-                        } else if (this.state.active === 'materials') {
+                            if(this.state.activeequipmentid) {
+                                const myequipment = design.getequipmentbyid.call(this,projectid,this.state.activeequipmentid)
+                                if(myequipment) {
+                                    const j = design.getequipmentkeybyid.call(this,projectid,myequipment.equipmentid)
+                                    let day = this.state.timeinday;
+                                    let year = this.state.timeinyear;
+                                    let minutes = this.state.timeinminutes;
+                                    let hours = this.state.timeinhours;
+                                    let time = this.state.timeinampm;
+                                    let timein = makeTimeString(year, month, day, hours, minutes, time);
+                                    timein = UTCTimeStringfromTime(timein);
+                                    myuser.company.projects[i].costestimate.equipment[j].timein = timein;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+                                }
+                            
+                            }
 
                         }
 
@@ -310,7 +390,23 @@ class TimeIn {
 
                     } else if (this.state.active === 'equipment') {
 
-                    } else if (this.state.active === 'materials') {
+                        if(this.state.activeequipmentid) {
+                            const myequipment = design.getequipmentbyid.call(this,projectid,this.state.activeequipmentid)
+                            if(myequipment) {
+                                const j = design.getequipmentkeybyid.call(this,projectid,myequipment.equipmentid)
+                                let day = this.state.timeinday;
+                                let year = this.state.timeinyear;
+                                let month = this.state.timeinmonth;
+                                let hours = this.state.timeinhours;
+                                let minutes = this.state.timeinminutes;
+                                let time = ampm
+                                let timein= makeTimeString(year, month, day, hours, minutes, time);
+                                timein = UTCTimeStringfromTime(timein);
+                                myuser.company.projects[i].costestimate.equipment[j].timein = timein;
+                                this.props.reduxUser({ myuser })
+                                this.setState({ render: 'render' })
+                            }
+                        }
 
                     }
 

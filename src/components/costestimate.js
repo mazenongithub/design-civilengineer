@@ -92,7 +92,7 @@ class CostEstimate extends Component {
             } else if (this.state.active === 'materials') {
                 if (this.state.activematerialid) {
                     companyid = design.getcompanyidfrommaterialid.call(this, projectid, this.state.activematerialid)
-                    console.log(companyid)
+                    
                 }
 
             }
@@ -349,7 +349,7 @@ class CostEstimate extends Component {
     async loadcompanys() {
         try {
             let allcompanys = await AllCompanys();
-            console.log(allcompanys)
+   
             this.props.reduxAllCompanys(allcompanys)
 
         } catch (err) {
@@ -454,7 +454,7 @@ class CostEstimate extends Component {
     }
 
     makeequipmentactive(equipmentid) {
-        console.log(equipmentid)
+
         const design = new Design();
         const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         if (project) {
@@ -466,7 +466,7 @@ class CostEstimate extends Component {
             } else {
                 const projectid = project.projectid;
                 const myequipment = design.getequipmentbyid.call(this, projectid, equipmentid)
-                console.log(myequipment)
+     
                 if (myequipment) {
 
                     const timeinmonth = getMonthfromTimein(myequipment.timein);
@@ -500,7 +500,7 @@ class CostEstimate extends Component {
     }
 
     makelaboractive(laborid) {
-        console.log(laborid)
+
         const design = new Design();
         const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         if (project) {
@@ -512,7 +512,7 @@ class CostEstimate extends Component {
             } else {
                 const projectid = project.projectid;
                 const mylabor = design.getlaborbyid.call(this, projectid, laborid)
-                console.log(mylabor)
+        
                 if (mylabor) {
 
                     const timeinmonth = getMonthfromTimein(mylabor.timein);
@@ -796,7 +796,7 @@ class CostEstimate extends Component {
                     let timeout = makeTimeString(yearout, monthout, dayout, hoursout, minutesout, timetimeout);
                     timeout = UTCTimeStringfromTime(timeout);
                     const equipmentrate = design.calculateequipmentratebyid.call(this, myequipmentid, timein, timeout)
-                    console.log(equipmentrate)
+              
                     const profit = 0;
 
                     const newEquipment = CreateEquipment(equipmentid, myequipmentid, milestoneid, csiid, timein, timeout, equipmentrate, profit)
@@ -886,7 +886,7 @@ class CostEstimate extends Component {
             }
 
         }
-        console.log(equipmentrate)
+ 
 
         return equipmentrate;
     }
@@ -1106,7 +1106,7 @@ class CostEstimate extends Component {
                     } else {
                         myuser.company.projects[i].materials = [newMaterial]
                     }
-                    console.log(myuser.company.projects[i].materials)
+                
                     this.props.reduxUser({myuser})
                     this.setState({activematerialid:materialid})
 
@@ -1320,6 +1320,8 @@ class CostEstimate extends Component {
                     {this.showlaborids()}
                     {this.showmaterialids()}
                     {this.showequipmentids()}
+
+                    {design.showsaveestimate.call(this)}
 
 
 

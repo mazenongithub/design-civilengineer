@@ -6,7 +6,7 @@ import Design from './design'
 class MilestoneID {
     loadmilestoneids() {
         const showmilestone = (milestone) => {
-            return(<option value={milestone.milestoneid}>{milestone.milestone}</option>)
+            return(<option key={milestone.milestoneid} value={milestone.milestoneid}>{milestone.milestone}</option>)
         }
         let ids = [];
         const design = new Design();
