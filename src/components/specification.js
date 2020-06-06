@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import * as actions from './actions';
 import { MyStylesheet } from './styles'
 import Design from './design'
-import { specSection, makeID, sectionContent, contentSubcontent, LetterCounter, sortpart } from './functions'
+import { specSection, sectionContent, contentSubcontent, LetterCounter, sortpart } from './functions'
 import { upArrowIcon, downArrowIcon, removeIconSmall,saveProjectSpecs } from './svg';
-
+import MakeID from './makeid'
 
 class Specification extends Component {
     constructor(props) {
@@ -518,7 +518,8 @@ class Specification extends Component {
     handlesection(title) {
         const design = new Design();
         const myproject = design.getprojectbytitle.call(this, this.props.match.params.title)
-        const myuser = design.getuser.call(this)
+        const myuser = design.getuser.call(this);
+        const makeid = new MakeID();
         if (myuser) {
             if (myproject) {
                 const projectid = myproject.projectid;
@@ -542,9 +543,10 @@ class Specification extends Component {
 
                     } else {
                         const spec = design.getspecficationbycsi.call(this, projectid, csiid)
-                        const specid = makeID(16);
+                        const sectionid = makeid.sectionid.call(this)
+                
                         const part = this.state.part;
-                        const newSection = specSection(specid, part, title)
+                        const newSection = specSection(sectionid, part, title)
                         if (spec.hasOwnProperty("sections")) {
                             myuser.company.projects[i].specifications[j].sections.push(newSection);
                         } else {
@@ -552,7 +554,7 @@ class Specification extends Component {
                         }
 
                         this.props.reduxUser({ myuser })
-                        this.setState({ activesectionid: specid })
+                        this.setState({ activesectionid: sectionid })
 
                     }
 
@@ -623,7 +625,8 @@ class Specification extends Component {
     handlecontent(content) {
         const design = new Design();
         const myproject = design.getprojectbytitle.call(this, this.props.match.params.title)
-        const myuser = design.getuser.call(this)
+        const myuser = design.getuser.call(this);
+        const makeid = new MakeID();
         if (myuser) {
             if (myproject) {
                 const projectid = myproject.projectid;
@@ -655,7 +658,7 @@ class Specification extends Component {
 
                             else {
                                 const section = design.getsectionbyid.call(this, projectid, csiid, this.state.activesectionid)
-                                const contentid = makeID(16);
+                                const contentid = makeid.contentid.call(this)
                                 const newContent = sectionContent(contentid, content)
                                 if (section.hasOwnProperty("content")) {
                                     myuser.company.projects[i].specifications[j].sections[k].content.push(newContent);
@@ -687,7 +690,8 @@ class Specification extends Component {
     handlesubcontent(subcontent) {
         const design = new Design();
         const myproject = design.getprojectbytitle.call(this, this.props.match.params.title)
-        const myuser = design.getuser.call(this)
+        const myuser = design.getuser.call(this);
+        const makeid = new MakeID();
         if (myuser) {
             if (myproject) {
                 const projectid = myproject.projectid;
@@ -717,7 +721,7 @@ class Specification extends Component {
 
                                         } else {
                                             const content = design.getcontentbyid.call(this, projectid, csiid, this.state.activesectionid, this.state.activecontentid)
-                                            const subcontentid = makeID(16);
+                                            const subcontentid = makeid.subcontentid.call(this)
                                             const newContent = contentSubcontent(subcontentid, subcontent)
                                             if (content.hasOwnProperty("subcontent")) {
                                                 myuser.company.projects[i].specifications[j].sections[k].content[l].subcontent.push(newContent);
@@ -790,6 +794,7 @@ class Specification extends Component {
         const design = new Design();
         const myproject = design.getprojectbytitle.call(this, this.props.match.params.title)
         const myuser = design.getuser.call(this)
+        const makeid = new MakeID();
         if (myuser) {
             if (myproject) {
                 const projectid = myproject.projectid;
@@ -813,7 +818,7 @@ class Specification extends Component {
 
                     } else {
                         const spec = design.getspecficationbycsi.call(this, projectid, csiid)
-                        const specid = makeID(16);
+                        const specid = makeid.specid.call(this)
                         const title = this.state.title;
                         const newSection = specSection(specid, part, title)
                         if (spec.hasOwnProperty("sections")) {

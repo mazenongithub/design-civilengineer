@@ -406,6 +406,39 @@ export function sortcode(codeb, codea) {
         return 0;
     }
 }
+
+export function isNumeric(val) {
+ 
+    if(val) {
+      return(!isNaN(val))
+    } else {
+     return(true);
+    }
+    
+  
+}
+export function validateCSI(csi) {
+const reg_ex = /^\d{2}$/;
+return reg_ex.test(csi)
+}
+
+export function validateMinutes(min) {
+    const reg_ex = /^[0-5][0-9]$/;
+return(reg_ex.test(min));
+}
+export function  validateYear(year) {
+    const reg_ex = /^[12][0-9]{3}$/;
+return(reg_ex.test(year));
+}
+export function validateDate(date) {
+    const reg_ex = /^(0?[1-9]|[12][0-9]|3[01])$/;
+return(reg_ex.test(date));
+
+}
+export function validateMonth(mon) {
+const reg_ex = /^0[1-9]|1[0-2]$/;
+return(reg_ex.test(mon))
+}
 export function contentSubcontent(subcontentid, content) {
     return ({ subcontentid, content })
 }

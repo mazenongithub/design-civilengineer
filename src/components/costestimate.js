@@ -13,12 +13,12 @@ import {
     getHoursfromTimein,
     getMinutesfromTimein,
     getAMPMfromTimeIn,
-    makeID,
     makeTimeString,
     UTCTimeStringfromTime,
     CreateLabor,
     CreateEquipment,
-    CreateMaterial
+    CreateMaterial,
+    isNumeric
 } from './functions'
 import Design from './design'
 import CompanyID from './companyid'
@@ -28,11 +28,12 @@ import MaterialDate from './materialdate'
 import { removeIconSmall } from './svg'
 import MilestoneID from './milestoneid';
 import CSI from './csi'
+import MakeID from './makeid'
 
 class CostEstimate extends Component {
     constructor(props) {
         super(props);
-        this.state = { render: '', width: 0, height: 0, active: '', companyid: '', activelaborid: false, providerid: '', timeinmonth: '', timeinday: '', timeinyear: '', timeinhours: '', timeinminutes: '', timeinampm: '', csi_1: '', csi_2: '', csi_3: '', csi_4: '', timeoutmonth: '', timeoutday: '', timeoutminutes: '', timeouthours: '', timeoutyear: '', timeoutampm: '', milestoneid: '', csiid: '', laborrate: 0, equipmentrate: 0, mymaterialid:'', myequipmentid: '', materialdateday: '', materialdatemonth: '', materialdateyear: '', quantity: '', unit: '', unitcost: '' }
+        this.state = { render: '', width: 0, height: 0, active: '', companyid: '', activelaborid: false, activeequipmentid:false,activematerialid:false, providerid: '', timeinmonth: '', timeinday: '', timeinyear: '', timeinhours: '', timeinminutes: '', timeinampm: '', csi_1: '', csi_2: '', csi_3: '', csi_4: '', timeoutmonth: '', timeoutday: '', timeoutminutes: '', timeouthours: '', timeoutyear: '', timeoutampm: '', milestoneid: '', csiid: '', laborrate: 0, equipmentrate: 0, mymaterialid:'', myequipmentid: '', materialdateday: '', materialdatemonth: '', materialdateyear: '', quantity: '', unit: '', unitcost: '' }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     }
     componentDidMount() {
@@ -761,6 +762,7 @@ class CostEstimate extends Component {
     handlemyequipmentid(myequipmentid) {
         const design = new Design();
         const myuser = design.getuser.call(this);
+        const makeid = new MakeID();
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title);
             if (project) {
@@ -776,7 +778,7 @@ class CostEstimate extends Component {
                     }
 
                 } else {
-                    const equipmentid = makeID(16);
+                    const equipmentid = makeid.equipmentid.call(this)
                     const milestoneid = this.state.milestoneid;
                     const csiid = this.state.csiid;
                     const dayin = this.state.timeinday;
@@ -818,6 +820,7 @@ class CostEstimate extends Component {
 
     handleemployeeid(providerid) {
         const design = new Design();
+        const makeid = new MakeID();
         const myuser = design.getuser.call(this);
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title);
@@ -833,7 +836,7 @@ class CostEstimate extends Component {
                         this.setState({ render: 'render' })
                     }
                 } else {
-                    const laborid = makeID(16);
+                    const laborid = makeid.laborid.call(this)
                     const milestoneid = this.state.milestoneid;
                     const csiid = this.state.csiid;
                     const dayin = this.state.timeinday;
@@ -915,6 +918,7 @@ class CostEstimate extends Component {
     handleequipmentrate(equipmentrate) {
         const design = new Design();
         const myuser = design.getuser.call(this);
+        if(isNumeric(equipmentrate)) {
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title)
             if (project) {
@@ -932,11 +936,15 @@ class CostEstimate extends Component {
                 }
             }
         }
+    } else {
+        alert(`Equipment rate ${equipmentrate} must be numeric `)
+    }
     }
 
     handlelaborrate(laborrate) {
         const design = new Design();
         const myuser = design.getuser.call(this);
+        if(isNumeric(laborrate)) {
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title)
             if (project) {
@@ -954,6 +962,10 @@ class CostEstimate extends Component {
                 }
             }
         }
+
+    } else {
+        alert(`Labor Rate ${laborrate} must be numeric`)
+    }
     }
     getquantity() {
         const design = new Design();
@@ -1006,6 +1018,7 @@ class CostEstimate extends Component {
     handlequantity(quantity) {
         const design = new Design();
         const myuser = design.getuser.call(this)
+        if(isNumeric(quantity)) {
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title)
             if (project) {
@@ -1022,6 +1035,10 @@ class CostEstimate extends Component {
                 }
             }
         }
+
+    } else {
+        alert(`Quantity ${quantity} must be numeric`)
+    }
 
     }
     handleunit(unit) {
@@ -1048,6 +1065,7 @@ class CostEstimate extends Component {
     handleunitcost(unitcost) {
         const design = new Design();
         const myuser = design.getuser.call(this)
+        if(isNumeric(unitcost)) {
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title)
             if (project) {
@@ -1065,12 +1083,17 @@ class CostEstimate extends Component {
             }
         }
 
+    } else {
+        alert(`Unit cost ${unitcost} must be numeric`)
+    }
+
     }
 
     handlemymaterialid(mymaterialid) {
         
         const design = new Design();
         const myuser = design.getuser.call(this);
+        const makeid = new MakeID();
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title)
             if (project) {
@@ -1086,7 +1109,7 @@ class CostEstimate extends Component {
                     }
 
                 } else {
-                    const materialid = makeID(16);
+                    const materialid = makeid.materialid.call(this)
                     const milestoneid = this.state.milestoneid;
                     const mymaterial = design.getmymaterialfromid.call(this,mymaterialid)
                     const csiid = this.state.csiid;
@@ -1285,7 +1308,8 @@ class CostEstimate extends Component {
 
                     <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                         <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>Cost Estimating </span>
+                            <div style={{...styles.generalContainer}}><span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>Cost Estimating </span></div>
+                            <div style={{...styles.generalContainer}}><span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{this.props.match.params.title} </span></div>
                         </div>
                     </div>
 
@@ -1317,11 +1341,13 @@ class CostEstimate extends Component {
                     {equipmentrate()}
                     {showmaterialquantity()}
 
+                    {design.showsaveestimate.call(this)}
+
                     {this.showlaborids()}
                     {this.showmaterialids()}
                     {this.showequipmentids()}
 
-                    {design.showsaveestimate.call(this)}
+                   
 
 
 

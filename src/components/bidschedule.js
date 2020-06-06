@@ -3,7 +3,7 @@ import { MyStylesheet } from './styles'
 import Design from './design'
 import { connect } from 'react-redux';
 import * as actions from './actions';
-import { DirectCostForLabor, DirectCostForMaterials, DirectCostForEquipment, ProfitForEquipment, ProfitForMaterial, ProfitForLabor, CreateBidItem } from './functions'
+import { DirectCostForLabor, DirectCostForMaterials, DirectCostForEquipment, ProfitForEquipment, ProfitForMaterial, ProfitForLabor, CreateBidItem, isNumeric} from './functions'
 import {Link} from 'react-router-dom'
 
 class BidSchedule extends Component {
@@ -251,6 +251,7 @@ class BidSchedule extends Component {
         console.log(csiid,profit)
         const design = new Design();
         const myuser = design.getuser.call(this);
+        if(isNumeric(profit)) {
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title)
             if (project) {
@@ -300,11 +301,16 @@ class BidSchedule extends Component {
             this.props.reduxUser({ myuser })
             this.setState({ render: 'render' })
         }
+
+    } else {
+        alert(`Profit ${profit} should be numeric `)
+    }
     }
 
     handlequantity(csiid, quantity) {
         const design = new Design();
         const myuser = design.getuser.call(this);
+        if(isNumeric(quantity)) {
         if (myuser) {
             const providerid = myuser.providerid;
             const project = design.getprojectbytitle.call(this, this.props.match.params.title)
@@ -346,6 +352,9 @@ class BidSchedule extends Component {
             }
 
         }
+    } else {
+        alert(`Quantity ${quantity} should be numeric`)
+    }
     }
 
     showbiditem(biditem) {
@@ -365,7 +374,14 @@ class BidSchedule extends Component {
             const bidschedule = design.getbiditembycsiid.call(this, projectid, biditem.csiid);
             const quantity = bidschedule.quantity;
             const unit = bidschedule.unit;
-            const unitprice = Number(this.getbidprice(biditem.csiid) / quantity).toFixed(2);
+            const unitprice = () => {
+                if(biditem.csiid && quantity) {
+                    return( Number(this.getbidprice(biditem.csiid) / quantity).toFixed(2))
+                } else {
+                    return(0)
+                }
+
+            }
 
             if (this.state.width > 800) {
                 return (
@@ -395,7 +411,7 @@ class BidSchedule extends Component {
                             <span style={{ ...styles.generalFont, ...regularFont }}>${bidprice}</span>
                         </div>
                         <div style={{ ...styles.flex1, ...styles.showBorder, ...styles.alignCenter }}>
-                            <span style={{ ...styles.generalFont, ...regularFont }}>${unitprice}</span>
+                            <span style={{ ...styles.generalFont, ...regularFont }}>${unitprice()}</span>
                         </div>
                     </div>)
 
@@ -438,7 +454,7 @@ class BidSchedule extends Component {
                                     <span style={{ ...styles.generalFont, ...regularFont }}>${bidprice}</span>
                                 </div>
                                 <div style={{ ...styles.flex1, ...styles.showBorder, ...styles.alignCenter }}>
-                                    <span style={{ ...styles.generalFont, ...regularFont }}>${unitprice}</span>
+                                    <span style={{ ...styles.generalFont, ...regularFont }}>${unitprice()}</span>
                                 </div>
 
                             </div>
@@ -540,6 +556,8 @@ class BidSchedule extends Component {
 
                             </div>
 
+                
+
 
                         </div>
 
@@ -562,6 +580,8 @@ class BidSchedule extends Component {
                     {titlerow()}
 
                     {this.showbiditems()}
+
+                    {design.showsaveestimate.call(this)}
 
 
                 </div>
