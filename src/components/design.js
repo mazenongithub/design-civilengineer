@@ -983,8 +983,9 @@ class Design {
                                 let message = "";
                                 if(response.hasOwnProperty("message")) {
                                     
-                                    message=`${response.message} last updated ${inputUTCStringForLaborID(response.lastupdated)}`;
+                                    message=`${response.message}`
                                 }
+                                message+=`last updated ${inputUTCStringForLaborID(response.lastupdated)}`
 
 
                                 if(activelaborid) {
@@ -1235,7 +1236,14 @@ class Design {
                     title: 'Specification',
                     id: 'specification',
                     url: 'http://civilengineer.io/design/slides/spec.png',
-                    caption: `Draft Project Specfication by Code`
+                    caption: `Engineers Draft construction specifications for the project`
+
+                },
+                {
+                    title: 'Cost Estimating',
+                    id: 'costestimate',
+                    url: 'http://civilengineer.io/design/slides/costestimate.png',
+                    caption: `Engineering Cost Estimate using Contractor equipment, labor, and material prices`
 
                 },
 

@@ -1,12 +1,12 @@
 
-export function CreateMaterial(materialid,mymaterialid,milestoneid,csiid,timein,quantity,unit,unitcost,profit) {
-    return({materialid,mymaterialid,milestoneid,csiid, timein, quantity, unit, unitcost, profit})
+export function CreateMaterial(materialid,engineerid,mymaterialid,milestoneid,csiid,timein,quantity,unit,unitcost,profit) {
+    return({materialid,engineerid,mymaterialid,milestoneid,csiid, timein, quantity, unit, unitcost, profit})
 }
-export function CreateEquipment(equipmentid,myequipmentid,milestoneid,csiid,timein,timeout,equipmentrate,profit) {
-    return({equipmentid,myequipmentid,milestoneid,csiid, timein,timeout,equipmentrate, profit})
+export function CreateEquipment(equipmentid,engineerid,myequipmentid,milestoneid,csiid,timein,timeout,equipmentrate,profit) {
+    return({equipmentid,engineerid,myequipmentid,milestoneid,csiid, timein,timeout,equipmentrate, profit})
 }
-export function CreateLabor(laborid,providerid,milestoneid,csiid,timein,timeout,laborrate, profit) {
-    return({laborid,providerid,milestoneid,csiid,timein,timeout,laborrate,profit})
+export function CreateLabor(laborid,engineerid,providerid,milestoneid,csiid,timein,timeout,laborrate, profit) {
+    return({laborid,engineerid,providerid,milestoneid,csiid,timein,timeout,laborrate,profit})
 }
 export function makeTimeString(year,month,day,hours,minutes,time) {
     return `${year}-${month}-${day} ${hours}:${minutes} ${time}`

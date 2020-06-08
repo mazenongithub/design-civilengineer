@@ -798,10 +798,10 @@ class CostEstimate extends Component {
                     let timeout = makeTimeString(yearout, monthout, dayout, hoursout, minutesout, timetimeout);
                     timeout = UTCTimeStringfromTime(timeout);
                     const equipmentrate = design.calculateequipmentratebyid.call(this, myequipmentid, timein, timeout)
-              
+                    const engineerid = myuser.providerid;
                     const profit = 0;
 
-                    const newEquipment = CreateEquipment(equipmentid, myequipmentid, milestoneid, csiid, timein, timeout, equipmentrate, profit)
+                    const newEquipment = CreateEquipment(equipmentid, engineerid, myequipmentid, milestoneid, csiid, timein, timeout, equipmentrate, profit)
 
                     const equipments = design.getequipmentbyprojectid.call(this, projectid)
                     if (equipments) {
@@ -857,8 +857,9 @@ class CostEstimate extends Component {
                     timeout = UTCTimeStringfromTime(timeout);
                     const laborrate = design.gethourlyrate.call(this, providerid)
                     const profit = 0;
+                    const engineerid  = myuser.providerid;
 
-                    const newLabor = CreateLabor(laborid, providerid, milestoneid, csiid, timein, timeout, laborrate, profit)
+                    const newLabor = CreateLabor(laborid,engineerid, providerid, milestoneid, csiid, timein, timeout, laborrate, profit)
 
                     const labors = design.getlaborbyprojectid.call(this, projectid)
                     if (labors) {
@@ -1121,7 +1122,8 @@ class CostEstimate extends Component {
                     const unitcost = mymaterial.unitcost;
                     const unit = mymaterial.unit;
                     const profit = 0;
-                    const newMaterial = CreateMaterial(materialid,mymaterialid,milestoneid,csiid,timein,quantity,unit,unitcost,profit);
+                    const engineerid = myuser.providerid;
+                    const newMaterial = CreateMaterial(materialid,engineerid,mymaterialid,milestoneid,csiid,timein,quantity,unit,unitcost,profit);
                     const materials = design.getmaterialsbyprojectid.call(this,projectid);
                     if(materials) {
                         myuser.company.projects[i].costestimate.materials.push(newMaterial)
