@@ -3,6 +3,7 @@ import React from 'react';
 import { MyStylesheet } from './styles'
 import Design from './design';
 import MaterialCalender from './materialcalender'
+import { validateMonth, validateDate, validateYear } from './functions';
 
 
 class MaterialDate {
@@ -22,6 +23,8 @@ class MaterialDate {
                 const i = design.getprojectbykeyid.call(this, projectid);
                 if (year.length === 4) {
 
+                    if(validateYear(year)) {
+
 
                         if (this.state.activematerialid) {
                             const mymaterial = design.getmaterialbyid.call(this, projectid, this.state.activematerialid);
@@ -40,6 +43,10 @@ class MaterialDate {
                             }
 
                         }
+
+                    } else {
+                        alert(`Invalid Year format ${year}`)
+                    }
 
                   
                 }
@@ -64,7 +71,7 @@ class MaterialDate {
                 if (day.length === 2) {
 
             
-
+                        if(validateDate(day)) {
 
                         if (this.state.activematerialid) {
                             const mymaterial = design.getmaterialbyid.call(this, projectid, this.state.activematerialid);
@@ -85,7 +92,11 @@ class MaterialDate {
 
                 
 
+                } else {
+                    alert(`Invalid day format ${day}`)
                 }
+
+            }
 
             }
         }
@@ -104,6 +115,8 @@ class MaterialDate {
 
                 const i = design.getprojectbykeyid.call(this, projectid);
                 if (month.length === 2) {
+
+                    if(validateMonth(month)) {
 
                     if (this.state.active === 'materials') {
 
@@ -126,11 +139,11 @@ class MaterialDate {
 
                         }
 
-                    } else if (this.state.active === 'equipment') {
+                    } 
 
-                    } else if (this.state.active === 'materials') {
-
-                    }
+                } else {
+                    alert(`Invalid month format ${month}`)
+                }
 
                 }
 

@@ -127,6 +127,10 @@ export function MyStylesheet() {
             border: '0px',
             backgroundColor: '#FFFFFF',
         },
+        activeButton: {
+            border: '0px',
+            backgroundColor: '#D7A22A',
+        },
         width200:{
             width:'200px'
         },

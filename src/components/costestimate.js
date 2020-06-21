@@ -33,7 +33,7 @@ import MakeID from './makeid'
 class CostEstimate extends Component {
     constructor(props) {
         super(props);
-        this.state = { render: '', width: 0, height: 0, active: '', companyid: '', activelaborid: false, activeequipmentid: false, activematerialid: false, providerid: '', timeinmonth: '', timeinday: '', timeinyear: '', timeinhours: '', timeinminutes: '', timeinampm: '', csi_1: '', csi_2: '', csi_3: '', csi_4: '', timeoutmonth: '', timeoutday: '', timeoutminutes: '', timeouthours: '', timeoutyear: '', timeoutampm: '', milestoneid: '', csiid: '', laborrate: 0, equipmentrate: 0, mymaterialid: '', myequipmentid: '', materialdateday: '', materialdatemonth: '', materialdateyear: '', quantity: '', unit: '', unitcost: '', calendertimein: true, calendertimeout: true,materialcalender:true }
+        this.state = { render: '', width: 0, height: 0, active: '', companyid: '', activelaborid: false, activeequipmentid: false, activematerialid: false, providerid: '', timeinmonth: '', timeinday: '', timeinyear: '', timeinhours: '', timeinminutes: '', timeinampm: '', csi_1: '', csi_2: '', csi_3: '', csi_4: '', timeoutmonth: '', timeoutday: '', timeoutminutes: '', timeouthours: '', timeoutyear: '', timeoutampm: '', milestoneid: '', csiid: '', laborrate: 0, equipmentrate: 0, mymaterialid: '', myequipmentid: '', materialdateday: '', materialdatemonth: '', materialdateyear: '', quantity: '', unit: '', unitcost: '', calendertimein: true, calendertimeout: true, materialcalender: true }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     }
     componentDidMount() {
@@ -561,6 +561,15 @@ class CostEstimate extends Component {
             const projectid = project.projectid;
             const milestone = design.getmilestonebyid.call(this, projectid, labor.milestoneid)
 
+
+            const getbutton = () => {
+                if (this.state.activelaborid === labor.laborid) {
+                    return (styles.activeButton);
+                } else {
+                    return (styles.generalButton);
+                }
+            }
+            
             const getactivelaborbackground = (laborid) => {
                 if (this.state.activelaborid === laborid) {
                     return styles.activeBackground;
@@ -577,7 +586,7 @@ class CostEstimate extends Component {
                 From {inputUTCStringForLaborID(labor.timein)} to {inputUTCStringForLaborID(labor.timeout)}
                 ${Number(hourlyrate).toFixed(2)}/Hr x {calculatetotalhours(labor.timeout, labor.timein)} Hrs = ${(Number(calculatetotalhours(labor.timeout, labor.timein)) * hourlyrate).toFixed(2)}
                         </span>
-                        <button style={{ ...styles.generalButton, ...removeIcon }} onClick={() => { this.removelaborid(labor) }}>{removeIconSmall()} </button>
+                        <button style={{ ...getbutton(), ...removeIcon }} onClick={() => { this.removelaborid(labor) }}>{removeIconSmall()} </button>
                     </div>)
 
             }
@@ -635,7 +644,15 @@ class CostEstimate extends Component {
         const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         const csi = design.getcsibyid.call(this, mymaterial.csiid);
         const material = design.getmymaterialfromid.call(this, mymaterial.mymaterialid)
+        const getbutton = () => {
+            if (this.state.activematerialid === mymaterial.materialid) {
+                return (styles.activeButton);
+            } else {
+                return (styles.generalButton);
+            }
 
+
+        }
         const activebackground = (materialid) => {
             if (this.state.activematerialid === materialid) {
                 return (styles.activeBackground)
@@ -652,7 +669,7 @@ class CostEstimate extends Component {
                         {material.material} CSI: {csi.csi}-{csi.title} Milestone: {milestone.milestone} <br />
                         {mymaterial.quantity}  x ${mymaterial.unitcost}/{mymaterial.unit} = ${(mymaterial.quantity * mymaterial.unitcost).toFixed(2)}
                     </span>
-                    <button style={{ ...styles.generalButton, ...removeIcon }} onClick={() => { this.removematerial(mymaterial) }}>{removeIconSmall()} </button>
+                    <button style={{ ...getbutton(), ...removeIcon }} onClick={() => { this.removematerial(mymaterial) }}>{removeIconSmall()} </button>
                 </div>)
 
             }
@@ -712,6 +729,14 @@ class CostEstimate extends Component {
         const equipmentrate = `$${+Number(equipment.equipmentrate).toFixed(2)}/hr`
         const removeIcon = design.getremoveicon.call(this)
         const amount = (calculatetotalhours(equipment.timeout, equipment.timein) * Number(equipment.equipmentrate))
+        const getbutton = () => {
+            if (this.state.activeequipmentid === equipment.equipmentid) {
+                return (styles.activeButton);
+            } else {
+                return (styles.generalButton);
+            }
+        }
+        
         const activeequipment = (equipmentid) => {
             if (this.state.activeequipmentid === equipmentid) {
                 return (styles.activeBackground)
@@ -728,7 +753,7 @@ class CostEstimate extends Component {
                 CSI: {csi.csi} - {csi.title} Milestone: {milestone.milestone} <br />
                 Total Hours: {totalhours} x  {equipmentrate} = ${amount.toFixed(2)}
                 </span>
-                <button style={{ ...styles.generalButton, ...removeIcon }}
+                <button style={{ ...getbutton(), ...removeIcon }}
                     onClick={() => { this.removeequipment(equipment) }}>{removeIconSmall()} </button>
             </div>
             )
@@ -1307,23 +1332,23 @@ class CostEstimate extends Component {
             if (this.state.width > 1200) {
 
 
-                return(<div style={{ ...styles.generalFlex }}>
+                return (<div style={{ ...styles.generalFlex }}>
                     <div style={{ ...styles.flex1 }}>
-                    { showtimein() }
+                        {showtimein()}
                     </div>
                     <div style={{ ...styles.flex1 }}>
-                    { showtimeout() }
+                        {showtimeout()}
                     </div>
                 </div>)
-               
 
-              
+
+
             } else {
-                return(<div style={{ ...styles.generalFlex }}>
-                <div style={{ ...styles.flex1 }}>
-                { showtimein() }
-                { showtimeout() }
-                </div>
+                return (<div style={{ ...styles.generalFlex }}>
+                    <div style={{ ...styles.flex1 }}>
+                        {showtimein()}
+                        {showtimeout()}
+                    </div>
                 </div>)
 
             }
@@ -1334,29 +1359,29 @@ class CostEstimate extends Component {
             if (this.state.width > 800) {
 
 
-                return(<div style={{ ...styles.generalFlex }}>
+                return (<div style={{ ...styles.generalFlex }}>
                     <div style={{ ...styles.flex1 }}>
-                    {milestoneid.showmilestoneid.call(this)}
+                        {milestoneid.showmilestoneid.call(this)}
                     </div>
                     <div style={{ ...styles.flex1 }}>
-                    {csi.showCSI.call(this)}
+                        {csi.showCSI.call(this)}
                     </div>
                 </div>)
-               
 
-              
+
+
             } else {
-                return(<div style={{ ...styles.generalFlex }}>
-                <div style={{ ...styles.flex1 }}>
-                {milestoneid.showmilestoneid.call(this)}
-                {csi.showCSI.call(this)}
-                </div>
+                return (<div style={{ ...styles.generalFlex }}>
+                    <div style={{ ...styles.flex1 }}>
+                        {milestoneid.showmilestoneid.call(this)}
+                        {csi.showCSI.call(this)}
+                    </div>
                 </div>)
 
             }
-            
 
-                  
+
+
         }
         return (
 
