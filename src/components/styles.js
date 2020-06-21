@@ -23,6 +23,9 @@ export function MyStylesheet() {
         triplegrid:{
             gridTemplateColumns:'33% 33% 33%'
         },
+        positionRight:{
+            textAlign: 'right'
+        },
         alignRight:{
             float: 'right'
         },
@@ -42,6 +45,9 @@ export function MyStylesheet() {
         generalLink: {
             textDecoration: 'none',
             color: '#000000'
+        },
+        calenderContainer:{
+            maxWidth:'585px'
         },
         width80:{
             width:'80%'
@@ -67,6 +73,9 @@ export function MyStylesheet() {
             backgroundColor:'#006778',
             borderRadius:'5px',
             border:'1px solid'
+        },
+        marginTop10:{
+            marginTop:'10px'
         },
         marginTop20:{
             marginTop:'20px'

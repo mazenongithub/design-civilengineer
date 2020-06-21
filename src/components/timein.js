@@ -2,8 +2,8 @@
 import React from 'react';
 import { MyStylesheet } from './styles'
 import Design from './design'
-import { UTCTimeStringfromTime, makeTimeString, validateMonth, validateDate, validateYear, validateMinutes} from './functions';
-
+import { UTCTimeStringfromTime, makeTimeString, validateMonth, validateDate, validateYear, validateMinutes } from './functions';
+import CalenderTimeIn from './calendertimein';
 class TimeIn {
     handleminutes(minutes) {
         this.setState({ timeinminutes: minutes })
@@ -228,6 +228,7 @@ class TimeIn {
     }
 
     handleday(day) {
+        day = day.toString();
         this.setState({ timeinday: day })
         const design = new Design();
         const myuser = design.getuser.call(this)
@@ -240,6 +241,7 @@ class TimeIn {
 
                 const i = design.getprojectbykeyid.call(this, projectid);
                 if (day.length === 2) {
+
                     if (validateDate(day)) {
 
                         if (this.state.active === 'labor') {
@@ -479,9 +481,10 @@ class TimeIn {
         const headerFont = design.getHeaderFont.call(this)
         const regularFont = design.getRegularFont.call(this)
         const timein = new TimeIn();
+        const calender = new CalenderTimeIn();
         return (
             <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
-                <div style={{ ...styles.flex1 }}>
+                <div style={{ ...styles.flex1, ...styles.calenderContainer }}>
 
                     <div style={{ ...styles.generalFlex }}>
                         <div style={{ ...styles.flex1 }}>
@@ -524,6 +527,8 @@ class TimeIn {
                             {timein.showampm.call(this)}
                         </div>
                     </div>
+
+                    {calender.showCalenderTimeIn.call(this)}
 
                 </div>
             </div>)

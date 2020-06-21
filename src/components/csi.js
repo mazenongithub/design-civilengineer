@@ -288,7 +288,7 @@ class CSI {
             }
         }
         return (
-            <div style={{ ...styles.generalFlex,...styles.bottomMargin15 }}>
+            <div className="hidescroll" style={{ ...styles.generalFlex,...styles.bottomMargin15 }}>
                 <div style={{ ...styles.flex1 }}>
 
               

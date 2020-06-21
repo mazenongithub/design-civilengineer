@@ -8,6 +8,9 @@ export function saveCostEstimateIcon() {
 export function removeIconSmall() {
     return (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.09 25.74"><defs><style></style></defs><title>removeIcon</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path className="removeicon-1" d="M23.87,17.89a4.52,4.52,0,0,1,0,6.29,4.33,4.33,0,0,1-6.21,0L13.05,19.5,8.43,24.18a4.33,4.33,0,0,1-6.2,0,4.53,4.53,0,0,1,0-6.29l4.61-4.67L1.53,7.83a4.49,4.49,0,0,1,0-6.28A4.27,4.27,0,0,1,4.64.25a4.28,4.28,0,0,1,3.09,1.3l5.32,5.38,5.31-5.38a4.36,4.36,0,0,1,6.21,0,4.52,4.52,0,0,1,0,6.28l-5.32,5.39Z" /></g></g></svg>)
 }
+export function dropDateIcon() {
+    return(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 46"><defs><style></style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><rect className="dropicon-1" x="0.5" y="0.5" width="93" height="45" rx="4.43"/><polygon className="dropicon-2" points="47 39.5 15.5 12.5 78.5 12.5 47 39.5"/></g></g></svg>)
+}
 export function downArrowIcon() {
     return(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.22 41.3"><defs><style></style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><path className="smallarrow-1" d="M2.13,20.67H9.42V2.09A1.73,1.73,0,0,1,11.25.5H16A1.73,1.73,0,0,1,17.8,2.09V20.67h7.29A1.43,1.43,0,0,1,26.5,22.8L15,40.1a1.76,1.76,0,0,1-2.82,0L.72,22.8A1.43,1.43,0,0,1,2.13,20.67Z"/></g></g></svg>)
 }

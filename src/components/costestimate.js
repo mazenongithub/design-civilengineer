@@ -33,7 +33,7 @@ import MakeID from './makeid'
 class CostEstimate extends Component {
     constructor(props) {
         super(props);
-        this.state = { render: '', width: 0, height: 0, active: '', companyid: '', activelaborid: false, activeequipmentid:false,activematerialid:false, providerid: '', timeinmonth: '', timeinday: '', timeinyear: '', timeinhours: '', timeinminutes: '', timeinampm: '', csi_1: '', csi_2: '', csi_3: '', csi_4: '', timeoutmonth: '', timeoutday: '', timeoutminutes: '', timeouthours: '', timeoutyear: '', timeoutampm: '', milestoneid: '', csiid: '', laborrate: 0, equipmentrate: 0, mymaterialid:'', myequipmentid: '', materialdateday: '', materialdatemonth: '', materialdateyear: '', quantity: '', unit: '', unitcost: '' }
+        this.state = { render: '', width: 0, height: 0, active: '', companyid: '', activelaborid: false, activeequipmentid: false, activematerialid: false, providerid: '', timeinmonth: '', timeinday: '', timeinyear: '', timeinhours: '', timeinminutes: '', timeinampm: '', csi_1: '', csi_2: '', csi_3: '', csi_4: '', timeoutmonth: '', timeoutday: '', timeoutminutes: '', timeouthours: '', timeoutyear: '', timeoutampm: '', milestoneid: '', csiid: '', laborrate: 0, equipmentrate: 0, mymaterialid: '', myequipmentid: '', materialdateday: '', materialdatemonth: '', materialdateyear: '', quantity: '', unit: '', unitcost: '', calendertimein: true, calendertimeout: true }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     }
     componentDidMount() {
@@ -93,7 +93,7 @@ class CostEstimate extends Component {
             } else if (this.state.active === 'materials') {
                 if (this.state.activematerialid) {
                     companyid = design.getcompanyidfrommaterialid.call(this, projectid, this.state.activematerialid)
-                    
+
                 }
 
             }
@@ -350,7 +350,7 @@ class CostEstimate extends Component {
     async loadcompanys() {
         try {
             let allcompanys = await AllCompanys();
-   
+
             this.props.reduxAllCompanys(allcompanys)
 
         } catch (err) {
@@ -384,17 +384,17 @@ class CostEstimate extends Component {
     removelaborid(labor) {
         const design = new Design();
         const myuser = design.getuser.call(this);
-        if(myuser) {
-            const project = design.getprojectbytitle.call(this,this.props.match.params.title)
-            if(project) {
+        if (myuser) {
+            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            if (project) {
                 const projectid = project.projectid;
-                const i = design.getprojectbykeyid.call(this,projectid)
-                const mylabor =design.getlaborbyid.call(this,projectid,labor.laborid);
-                if(mylabor) {
-                    const j = design.getlaborkeybyid.call(this,projectid,mylabor.laborid);
-                    myuser.company.projects[i].costestimate.labor.splice(j,1);
-                    this.props.reduxUser({myuser})
-                    this.setState({render:'render'})
+                const i = design.getprojectbykeyid.call(this, projectid)
+                const mylabor = design.getlaborbyid.call(this, projectid, labor.laborid);
+                if (mylabor) {
+                    const j = design.getlaborkeybyid.call(this, projectid, mylabor.laborid);
+                    myuser.company.projects[i].costestimate.labor.splice(j, 1);
+                    this.props.reduxUser({ myuser })
+                    this.setState({ render: 'render' })
                 }
             }
         }
@@ -425,7 +425,7 @@ class CostEstimate extends Component {
 
             if (this.state.activematerialid === materialid) {
                 this.materialdatedefault();
-                this.setState({ activematerialid: false, csi_1:'',csi_2:'',csi_3:'', csi_4:''})
+                this.setState({ activematerialid: false, csi_1: '', csi_2: '', csi_3: '', csi_4: '' })
 
             } else {
                 const projectid = project.projectid;
@@ -463,11 +463,11 @@ class CostEstimate extends Component {
             if (this.state.activeequipmentid === equipmentid) {
                 this.timeindefault()
                 this.timeoutdefault();
-                this.setState({ activeequipmentid: false,csi_1:'',csi_2:'',csi_3:'', csi_4:'' })
+                this.setState({ activeequipmentid: false, csi_1: '', csi_2: '', csi_3: '', csi_4: '' })
             } else {
                 const projectid = project.projectid;
                 const myequipment = design.getequipmentbyid.call(this, projectid, equipmentid)
-     
+
                 if (myequipment) {
 
                     const timeinmonth = getMonthfromTimein(myequipment.timein);
@@ -513,7 +513,7 @@ class CostEstimate extends Component {
             } else {
                 const projectid = project.projectid;
                 const mylabor = design.getlaborbyid.call(this, projectid, laborid)
-        
+
                 if (mylabor) {
 
                     const timeinmonth = getMonthfromTimein(mylabor.timein);
@@ -609,17 +609,17 @@ class CostEstimate extends Component {
     removematerial(mymaterial) {
         const design = new Design();
         const myuser = design.getuser.call(this);
-        if(myuser) {
-            const project = design.getprojectbytitle.call(this,this.props.match.params.title)
-            if(project) {
+        if (myuser) {
+            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            if (project) {
                 const projectid = project.projectid;
-                const i = design.getprojectbykeyid.call(this,projectid)
-                const material = design.getmaterialbyid.call(this,projectid,mymaterial.materialid)
-                if(material) {
-                    const j = design.getmaterialkeybyid.call(this,projectid,material.materialid)
-                    myuser.company.projects[i].costestimate.materials.splice(j,1)
-                    this.props.reduxUser({myuser})
-                    this.setState({render:'render'})
+                const i = design.getprojectbykeyid.call(this, projectid)
+                const material = design.getmaterialbyid.call(this, projectid, mymaterial.materialid)
+                if (material) {
+                    const j = design.getmaterialkeybyid.call(this, projectid, material.materialid)
+                    myuser.company.projects[i].costestimate.materials.splice(j, 1)
+                    this.props.reduxUser({ myuser })
+                    this.setState({ render: 'render' })
                 }
 
             }
@@ -681,19 +681,19 @@ class CostEstimate extends Component {
     removeequipment(equipment) {
         const design = new Design();
         const myuser = design.getuser.call(this);
-        if(myuser) {
-            const project = design.getprojectbytitle.call(this,this.props.match.params.title)
-            if(project) {
+        if (myuser) {
+            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            if (project) {
                 const projectid = project.projectid;
-                const i = design.getprojectbykeyid.call(this,projectid)
-                const myequipment = design.getmaterialbyid.call(this,projectid,equipment.equipmentid);
-                if(myequipment) {
+                const i = design.getprojectbykeyid.call(this, projectid)
+                const myequipment = design.getmaterialbyid.call(this, projectid, equipment.equipmentid);
+                if (myequipment) {
                     const j = design.getequipmentkeybyid.call(this, projectid, equipment.equipmentid);
-                    myuser.company.projects[i].costestimate.equipment.splice(j,1)
-                    this.props.reduxUser({myuser})
-                    this.setState({render:'render'})
+                    myuser.company.projects[i].costestimate.equipment.splice(j, 1)
+                    this.props.reduxUser({ myuser })
+                    this.setState({ render: 'render' })
                 }
-                
+
 
             }
 
@@ -857,9 +857,9 @@ class CostEstimate extends Component {
                     timeout = UTCTimeStringfromTime(timeout);
                     const laborrate = design.gethourlyrate.call(this, providerid)
                     const profit = 0;
-                    const engineerid  = myuser.providerid;
+                    const engineerid = myuser.providerid;
 
-                    const newLabor = CreateLabor(laborid,engineerid, providerid, milestoneid, csiid, timein, timeout, laborrate, profit)
+                    const newLabor = CreateLabor(laborid, engineerid, providerid, milestoneid, csiid, timein, timeout, laborrate, profit)
 
                     const labors = design.getlaborbyprojectid.call(this, projectid)
                     if (labors) {
@@ -890,7 +890,7 @@ class CostEstimate extends Component {
             }
 
         }
- 
+
 
         return equipmentrate;
     }
@@ -919,54 +919,54 @@ class CostEstimate extends Component {
     handleequipmentrate(equipmentrate) {
         const design = new Design();
         const myuser = design.getuser.call(this);
-        if(isNumeric(equipmentrate)) {
-        if (myuser) {
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
-            if (project) {
-                const projectid = project.projectid;
-                const i = design.getprojectbykeyid.call(this, projectid)
-                if (this.state.activeequipmentid) {
-                    const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
-                    if (myequipment) {
-                        const j = design.getequipmentkeybyid.call(this, projectid, this.state.activeequipmentid)
-                        myuser.company.projects[i].costestimate.equipment[j].equipmentrate = equipmentrate;
-                        this.props.reduxUser({ myuser })
-                        this.setState({ render: 'render' })
-                    }
+        if (isNumeric(equipmentrate)) {
+            if (myuser) {
+                const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+                if (project) {
+                    const projectid = project.projectid;
+                    const i = design.getprojectbykeyid.call(this, projectid)
+                    if (this.state.activeequipmentid) {
+                        const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
+                        if (myequipment) {
+                            const j = design.getequipmentkeybyid.call(this, projectid, this.state.activeequipmentid)
+                            myuser.company.projects[i].costestimate.equipment[j].equipmentrate = equipmentrate;
+                            this.props.reduxUser({ myuser })
+                            this.setState({ render: 'render' })
+                        }
 
+                    }
                 }
             }
+        } else {
+            alert(`Equipment rate ${equipmentrate} must be numeric `)
         }
-    } else {
-        alert(`Equipment rate ${equipmentrate} must be numeric `)
-    }
     }
 
     handlelaborrate(laborrate) {
         const design = new Design();
         const myuser = design.getuser.call(this);
-        if(isNumeric(laborrate)) {
-        if (myuser) {
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
-            if (project) {
-                const projectid = project.projectid;
-                const i = design.getprojectbykeyid.call(this, projectid)
-                if (this.state.activelaborid) {
-                    const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid)
-                    if (mylabor) {
-                        const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
-                        myuser.company.projects[i].costestimate.labor[j].laborrate = laborrate;
-                        this.props.reduxUser({ myuser })
-                        this.setState({ render: 'render' })
-                    }
+        if (isNumeric(laborrate)) {
+            if (myuser) {
+                const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+                if (project) {
+                    const projectid = project.projectid;
+                    const i = design.getprojectbykeyid.call(this, projectid)
+                    if (this.state.activelaborid) {
+                        const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid)
+                        if (mylabor) {
+                            const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
+                            myuser.company.projects[i].costestimate.labor[j].laborrate = laborrate;
+                            this.props.reduxUser({ myuser })
+                            this.setState({ render: 'render' })
+                        }
 
+                    }
                 }
             }
-        }
 
-    } else {
-        alert(`Labor Rate ${laborrate} must be numeric`)
-    }
+        } else {
+            alert(`Labor Rate ${laborrate} must be numeric`)
+        }
     }
     getquantity() {
         const design = new Design();
@@ -1019,27 +1019,27 @@ class CostEstimate extends Component {
     handlequantity(quantity) {
         const design = new Design();
         const myuser = design.getuser.call(this)
-        if(isNumeric(quantity)) {
-        if (myuser) {
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
-            if (project) {
-                const projectid = project.projectid;
-                const i = design.getprojectbykeyid.call(this, projectid);
-                if (this.state.activematerialid) {
-                    const mymaterial = design.getmaterialbyid.call(this, projectid, this.state.activematerialid)
-                    if (mymaterial) {
-                        const j = design.getmaterialkeybyid.call(this, projectid, this.state.activematerialid);
-                        myuser.company.projects[i].costestimate.materials[j].quantity = quantity;
-                        this.props.reduxUser({ myuser })
-                        this.setState({ render: 'render' })
+        if (isNumeric(quantity)) {
+            if (myuser) {
+                const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+                if (project) {
+                    const projectid = project.projectid;
+                    const i = design.getprojectbykeyid.call(this, projectid);
+                    if (this.state.activematerialid) {
+                        const mymaterial = design.getmaterialbyid.call(this, projectid, this.state.activematerialid)
+                        if (mymaterial) {
+                            const j = design.getmaterialkeybyid.call(this, projectid, this.state.activematerialid);
+                            myuser.company.projects[i].costestimate.materials[j].quantity = quantity;
+                            this.props.reduxUser({ myuser })
+                            this.setState({ render: 'render' })
+                        }
                     }
                 }
             }
-        }
 
-    } else {
-        alert(`Quantity ${quantity} must be numeric`)
-    }
+        } else {
+            alert(`Quantity ${quantity} must be numeric`)
+        }
 
     }
     handleunit(unit) {
@@ -1066,32 +1066,32 @@ class CostEstimate extends Component {
     handleunitcost(unitcost) {
         const design = new Design();
         const myuser = design.getuser.call(this)
-        if(isNumeric(unitcost)) {
-        if (myuser) {
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
-            if (project) {
-                const projectid = project.projectid;
-                const i = design.getprojectbykeyid.call(this, projectid);
-                if (this.state.activematerialid) {
-                    const mymaterial = design.getmaterialbyid.call(this, projectid, this.state.activematerialid)
-                    if (mymaterial) {
-                        const j = design.getmaterialkeybyid.call(this, projectid, this.state.activematerialid);
-                        myuser.company.projects[i].costestimate.materials[j].unitcost = unitcost;
-                        this.props.reduxUser({ myuser })
-                        this.setState({ render: 'render' })
+        if (isNumeric(unitcost)) {
+            if (myuser) {
+                const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+                if (project) {
+                    const projectid = project.projectid;
+                    const i = design.getprojectbykeyid.call(this, projectid);
+                    if (this.state.activematerialid) {
+                        const mymaterial = design.getmaterialbyid.call(this, projectid, this.state.activematerialid)
+                        if (mymaterial) {
+                            const j = design.getmaterialkeybyid.call(this, projectid, this.state.activematerialid);
+                            myuser.company.projects[i].costestimate.materials[j].unitcost = unitcost;
+                            this.props.reduxUser({ myuser })
+                            this.setState({ render: 'render' })
+                        }
                     }
                 }
             }
-        }
 
-    } else {
-        alert(`Unit cost ${unitcost} must be numeric`)
-    }
+        } else {
+            alert(`Unit cost ${unitcost} must be numeric`)
+        }
 
     }
 
     handlemymaterialid(mymaterialid) {
-        
+
         const design = new Design();
         const myuser = design.getuser.call(this);
         const makeid = new MakeID();
@@ -1112,7 +1112,7 @@ class CostEstimate extends Component {
                 } else {
                     const materialid = makeid.materialid.call(this)
                     const milestoneid = this.state.milestoneid;
-                    const mymaterial = design.getmymaterialfromid.call(this,mymaterialid)
+                    const mymaterial = design.getmymaterialfromid.call(this, mymaterialid)
                     const csiid = this.state.csiid;
                     const year = this.state.materialdateyear;
                     const day = this.state.materialdateday;
@@ -1123,17 +1123,17 @@ class CostEstimate extends Component {
                     const unit = mymaterial.unit;
                     const profit = 0;
                     const engineerid = myuser.providerid;
-                    const newMaterial = CreateMaterial(materialid,engineerid,mymaterialid,milestoneid,csiid,timein,quantity,unit,unitcost,profit);
-                    const materials = design.getmaterialsbyprojectid.call(this,projectid);
-                    if(materials) {
+                    const newMaterial = CreateMaterial(materialid, engineerid, mymaterialid, milestoneid, csiid, timein, quantity, unit, unitcost, profit);
+                    const materials = design.getmaterialsbyprojectid.call(this, projectid);
+                    if (materials) {
                         myuser.company.projects[i].costestimate.materials.push(newMaterial)
 
                     } else {
                         myuser.company.projects[i].materials = [newMaterial]
                     }
-                
-                    this.props.reduxUser({myuser})
-                    this.setState({activematerialid:materialid})
+
+                    this.props.reduxUser({ myuser })
+                    this.setState({ activematerialid: materialid })
 
                 }
             }
@@ -1303,6 +1303,31 @@ class CostEstimate extends Component {
                 return (materialdate.showmaterialdate.call(this))
             }
         }
+        const showtimes = () => {
+            if (this.state.width > 1200) {
+
+
+                return(<div style={{ ...styles.generalFlex }}>
+                    <div style={{ ...styles.flex1 }}>
+                    { showtimein() }
+                    </div>
+                    <div style={{ ...styles.flex1 }}>
+                    { showtimeout() }
+                    </div>
+                </div>)
+               
+
+              
+            } else {
+                return(<div style={{ ...styles.generalFlex }}>
+                <div style={{ ...styles.flex1 }}>
+                { showtimein() }
+                { showtimeout() }
+                </div>
+                </div>)
+
+            }
+        }
         return (
 
             <div style={{ ...styles.generalFlex }}>
@@ -1310,8 +1335,8 @@ class CostEstimate extends Component {
 
                     <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                         <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                            <div style={{...styles.generalContainer}}><span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>Cost Estimating </span></div>
-                            <div style={{...styles.generalContainer}}><span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{this.props.match.params.title} </span></div>
+                            <div style={{ ...styles.generalContainer }}><span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>Cost Estimating </span></div>
+                            <div style={{ ...styles.generalContainer }}><span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{this.props.match.params.title} </span></div>
                         </div>
                     </div>
 
@@ -1335,9 +1360,8 @@ class CostEstimate extends Component {
 
                     {csi.showCSI.call(this)}
                     {showmaterialdate()}
-                    {showtimein()}
 
-                    {showtimeout()}
+                    {showtimes()}
 
                     {laborrate()}
                     {equipmentrate()}
@@ -1349,7 +1373,7 @@ class CostEstimate extends Component {
                     {this.showmaterialids()}
                     {this.showequipmentids()}
 
-                   
+
 
 
 

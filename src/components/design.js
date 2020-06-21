@@ -1162,6 +1162,29 @@ class Design {
         }
 
     }
+    getdropicon() {
+        if (this.state.width > 1200) {
+            return (
+                {
+                    width: '93x',
+                    height: '45px'
+                })
+
+        } else if (this.state.width > 800) {
+            return (
+                {
+                    width: '78px',
+                    height: '38px'
+                })
+
+        } else {
+            return (
+                {
+                    width: '62px',
+                    height: '30px'
+                })
+        }
+    }
     getprofiledimensions() {
         if (this.state.width > 1200) {
             return (
