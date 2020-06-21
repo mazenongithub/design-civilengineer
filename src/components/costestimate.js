@@ -1328,6 +1328,36 @@ class CostEstimate extends Component {
 
             }
         }
+
+        const milestonescsi = () => {
+
+            if (this.state.width > 800) {
+
+
+                return(<div style={{ ...styles.generalFlex }}>
+                    <div style={{ ...styles.flex1 }}>
+                    {milestoneid.showmilestoneid.call(this)}
+                    </div>
+                    <div style={{ ...styles.flex1 }}>
+                    {csi.showCSI.call(this)}
+                    </div>
+                </div>)
+               
+
+              
+            } else {
+                return(<div style={{ ...styles.generalFlex }}>
+                <div style={{ ...styles.flex1 }}>
+                {milestoneid.showmilestoneid.call(this)}
+                {csi.showCSI.call(this)}
+                </div>
+                </div>)
+
+            }
+            
+
+                  
+        }
         return (
 
             <div style={{ ...styles.generalFlex }}>
@@ -1356,9 +1386,7 @@ class CostEstimate extends Component {
 
 
 
-                    {milestoneid.showmilestoneid.call(this)}
-
-                    {csi.showCSI.call(this)}
+                    {milestonescsi()}
                     {showmaterialdate()}
 
                     {showtimes()}

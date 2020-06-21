@@ -205,74 +205,38 @@ class CSI {
         }
 
         const showcodes = () => {
-            if (this.state.width > 800) {
-
-                return (
-                    <div style={{ ...styles.generalFlex }}>
-                        <div style={{ ...styles.flex1 }}>
-                            <span style={{ ...styles.generalFont, ...regularFont }}>CSI</span>
-                        </div>
-                        <div style={{ ...styles.flex1 }}>
-                            <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.state.csi_1}
-                                onChange={event => { this.setState({csi_1:event.target.value}) }}
-                            />
-
-                        </div>
-                        <div style={{ ...styles.flex1 }}>
-                            <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.state.csi_2}
-                                onChange={event => { this.setState({csi_2:event.target.value}) }}
-                            />
-                        </div>
-                        <div style={{ ...styles.flex1 }}>
-                            <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                 value={this.state.csi_3}
-                                onChange={event => { this.setState({csi_3:event.target.value}) }}
-                            />
-                        </div>
-                        <div style={{ ...styles.flex1 }}>
-                            <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.state.csi_4}
-                                onChange={event => { this.setState({csi_4:event.target.value}) }}
-                            />
-                        </div>
-                    </div>
-                )
-
-
-            } else {
+         
 
                 return (
 
-                    <div style={{ ...styles.generalFlex }}>
-                        <div style={{ ...styles.flex1 }}>
+                    <div style={{ ...styles.generalFlex, ...styles.csiContainer  }}>
+                        <div style={{ ...styles.flex1, ...styles.csiContainer }}>
 
                             <div style={{ ...regularFont, ...styles.generalFont, ...styles.generalContainer }}>
                                 CSI
                             </div>
 
                             <div style={{ ...styles.generalFlex }}>
-                                <div style={{ ...styles.flex1 }}>
+                                <div style={{ ...styles.flex1,...styles.addMargin }}>
                                     <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
                                         value={this.state.csi_1}
                                         onChange={event => { this.setState({csi_1:event.target.value})}}
                                     />
 
                                 </div>
-                                <div style={{ ...styles.flex1 }}>
+                                <div style={{ ...styles.flex1,...styles.addMargin }}>
                                     <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
                                         value={this.state.csi_2}
                                         onChange={event => { this.setState({csi_2:event.target.value})}}
                                     />
                                 </div>
-                                <div style={{ ...styles.flex1 }}>
+                                <div style={{ ...styles.flex1,...styles.addMargin }}>
                                     <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
                                         value={this.state.csi_3}
                                         onChange={event => { this.setState({csi_3:event.target.value})}}
                                     />
                                 </div>
-                                <div style={{ ...styles.flex1 }}>
+                                <div style={{ ...styles.flex1,...styles.addMargin }}>
 
                                     <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
                                         value={this.state.csi_4}
@@ -285,7 +249,7 @@ class CSI {
                     </div>
                 )
 
-            }
+            
         }
         return (
             <div className="hidescroll" style={{ ...styles.generalFlex,...styles.bottomMargin15 }}>

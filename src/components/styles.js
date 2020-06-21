@@ -49,6 +49,9 @@ export function MyStylesheet() {
         calenderContainer:{
             maxWidth:'585px'
         },
+        csiContainer:{
+            maxWidth:'400px'
+        },
         width80:{
             width:'80%'
         },
