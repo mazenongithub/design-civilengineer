@@ -319,10 +319,11 @@ export function calculateTotalMonths(purchasedate, saledate) {
     return (totalMonths)
 }
 export function UTCTimeStringfromTime(timein) {
+    console.log(timein)
     //let timein = '2020-06-02 04:01 pm'
     const time = timein.substring(17,19)
     let hours = timein.substring(11,13);
-    if(time === 'pm') {
+    if(time === 'pm' && hours != 12){
      hours = Number(hours) + 12
     }
     const sym = () => {
