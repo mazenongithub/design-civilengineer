@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { MyStylesheet } from './styles'
-import Design from './design'
+import Design from './design';
+import MaterialCalender from './materialcalender'
 
 
 class MaterialDate {
@@ -48,6 +49,7 @@ class MaterialDate {
     }
 
     handleday(day) {
+        day = day.toString();
         this.setState({ materialdateday: day })
         const design = new Design();
         const myuser = design.getuser.call(this)
@@ -146,9 +148,10 @@ class MaterialDate {
         const headerFont = design.getHeaderFont.call(this)
         const regularFont = design.getRegularFont.call(this)
         const materialdate = new MaterialDate();
+        const calender = new MaterialCalender();
         return (
             <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
-                <div style={{ ...styles.flex1 }}>
+                <div style={{ ...styles.flex1, ...styles.calenderContainer }}>
 
                     <div style={{ ...styles.generalFlex }}>
                         <div style={{ ...styles.flex1 }}>
@@ -177,6 +180,8 @@ class MaterialDate {
                         
                        
                     </div>
+                    {calender.showMaterialCalender.call(this)}
+
 
                 </div>
             </div>)

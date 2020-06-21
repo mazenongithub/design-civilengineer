@@ -3,6 +3,43 @@ export function CreateMaterial(materialid,engineerid,mymaterialid,milestoneid,cs
     return({materialid,engineerid,mymaterialid,milestoneid,csiid, timein, quantity, unit, unitcost, profit})
 }
 
+export function check_31date(dateobj) {
+
+    let month = dateobj.getMonth();
+    if (month === 0 || month === 2 || month === 4 || month === 6 || month === 7 || month === 9 || month === 11) {
+        return 31;
+    }
+}
+
+
+export function check_30date(dateobj) {
+
+    let month = dateobj.getMonth();
+    if (month !== 1) {
+        return 30;
+    }
+}
+
+
+export function check_29_feb_leapyeardate(dateobj)  {
+
+    let month = dateobj.getMonth();
+
+    if (month === 1) {
+        let year = dateobj.getFullYear();
+        if (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)) {
+            return 29;
+        }
+        else {
+            return;
+        }
+    }
+    else {
+        return 29;
+    }
+
+}
+
 
 export function check_31(timein) {
     const dateobj = new Date(`${timein.replace(/-/g, '/')} UTC`)
@@ -58,6 +95,32 @@ export function getDayString(day) {
             return "Friday";
         case 6:
             return "Saturday";
+        default:
+            return;
+    }
+}
+
+export function getFirstIsOnDate(datein) {
+
+    let monthdisplay = datein.getMonth() + 1;
+    let fullyear = datein.getFullYear();
+    let thefirstofthemonth = new Date(`${fullyear}/${monthdisplay}/1`);
+    let firstday = thefirstofthemonth.getDay();
+    switch (firstday) {
+        case 0:
+            return "Sun";
+        case 1:
+            return "Mon";
+        case 2:
+            return "Tues";
+        case 3:
+            return "Weds";
+        case 4:
+            return "Thurs";
+        case 5:
+            return "Fri";
+        case 6:
+            return "Sat";
         default:
             return;
     }
