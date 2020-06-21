@@ -323,8 +323,11 @@ export function UTCTimeStringfromTime(timein) {
     //let timein = '2020-06-02 04:01 pm'
     const time = timein.substring(17,19)
     let hours = timein.substring(11,13);
-    if(time === 'pm' && hours != 12){
+    if(time === 'pm' && hours !== '12'){
      hours = Number(hours) + 12
+    }
+    if(time === 'am' && hours ==='12') {
+        hours ='00n'
     }
     const sym = () => {
       let myoffset = new Date().getTimezoneOffset()/60

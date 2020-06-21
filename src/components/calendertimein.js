@@ -77,14 +77,14 @@ class CalenderTimeIn {
         let time = this.state.timeinampm;
         let minutes = this.state.timeinminutes;
         let timein = makeTimeString(year, month, day, hours, minutes, time);
-        console.log(timein)
+
         timein = UTCTimeStringfromTime(timein);
-        console.log(timein)
+
         const firstofmonth = getFirstIsOn(timein);
         const check29 = check_29_feb_leapyear(timein);
         const check30 = check_30(timein);
         const check31 = check_31(timein);
-        console.log(firstofmonth)
+
         const cell_1 = () => {
             if (firstofmonth === "Sun") {
                 return (1)
@@ -1307,8 +1307,8 @@ class CalenderTimeIn {
     showCalenderTimeIn() {
         const timein = new CalenderTimeIn();
         const styles = MyStylesheet();
-        const design = new Design();
-        const regularFont = design.getRegularFont.call(this)
+
+
         return (
             <div style={{ ...styles.generalFlex, ...styles.marginTop10 }}>
                 <div style={{ ...styles.flex1, ...styles.calenderContainer }}>

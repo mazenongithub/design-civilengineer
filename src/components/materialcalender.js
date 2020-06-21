@@ -2,7 +2,7 @@ import React from 'react';
 import Design from './design';
 import { MyStylesheet } from './styles';
 import { removeIconSmall, dropDateIcon } from './svg';
-import {  monthstring, getFirstIsOnDate, check_29_feb_leapyeardate, check_30date, check_31date, UTCTimeStringfromTime, getDayString } from './functions'
+import {  monthstring, getFirstIsOnDate, check_29_feb_leapyeardate, check_30date, check_31date, getDayString } from './functions'
 import MaterialDate from './materialdate';
 
 class MaterialCalender {
@@ -75,7 +75,7 @@ class MaterialCalender {
         const check29 = check_29_feb_leapyeardate(newDate);
         const check30 = check_30date(newDate);
         const check31 = check_31date(newDate);
-        console.log(firstofmonth)
+   
         const cell_1 = () => {
             if (firstofmonth === "Sun") {
                 return (1)
@@ -1298,8 +1298,7 @@ class MaterialCalender {
     showMaterialCalender() {
         const timein = new MaterialCalender();
         const styles = MyStylesheet();
-        const design = new Design();
-        const regularFont = design.getRegularFont.call(this)
+
         return (
             <div style={{ ...styles.generalFlex, ...styles.marginTop10 }}>
                 <div style={{ ...styles.flex1, ...styles.calenderContainer }}>

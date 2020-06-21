@@ -82,7 +82,7 @@ class CalenderTimeOut {
         const check29 = check_29_feb_leapyear(timeout);
         const check30 = check_30(timeout);
         const check31 = check_31(timeout);
-        console.log(firstofmonth)
+
         const cell_1 = () => {
             if (firstofmonth === "Sun") {
                 return (1)
@@ -1305,8 +1305,7 @@ class CalenderTimeOut {
     showCalenderTimeOut() {
         const timeout = new CalenderTimeOut();
         const styles = MyStylesheet();
-        const design = new Design();
-        const regularFont = design.getRegularFont.call(this)
+
         return (
             <div style={{ ...styles.generalFlex, ...styles.marginTop10 }}>
                 <div style={{ ...styles.flex1, ...styles.calenderContainer }}>
