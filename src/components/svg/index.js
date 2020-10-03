@@ -15,6 +15,18 @@ export function downArrowIcon() {
     return(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.22 41.3"><defs><style></style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><path className="smallarrow-1" d="M2.13,20.67H9.42V2.09A1.73,1.73,0,0,1,11.25.5H16A1.73,1.73,0,0,1,17.8,2.09V20.67h7.29A1.43,1.43,0,0,1,26.5,22.8L15,40.1a1.76,1.76,0,0,1-2.82,0L.72,22.8A1.43,1.43,0,0,1,2.13,20.67Z"/></g></g></svg>)
 }
 
+export function minusIcon() {
+    return(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63 17"><defs></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><rect className="menuicon-1" x="0.5" y="0.5" width="62" height="16"/></g></g></svg>)
+}
+
+export function plusIcon() {
+    return(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63 63"><defs><style></style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><polygon className="menuicon-1" points="62.5 24 62.5 40 40 40 40 62.5 24 62.5 24 40 0.5 40 0.5 24 24 24 24 0.5 40 0.5 40 24 62.5 24"/></g></g></svg>)
+}
+
+export function goCheckIcon() {
+    return (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 54"><defs><style></style></defs><title>updatepasswordicon</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><rect className="checkclientidicon-1" x="0.5" y="0.5" width="63" height="53" /><polygon className="checkclientidicon-2" points="51.39 12.66 24.52 39.53 15.06 30.07 17.93 27.2 24.43 33.7 48.43 9.7 51.39 12.66" /></g></g></svg>)
+}
+
 export function upArrowIcon() {
     return(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.22 41.3"><defs><style></style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><path className="smallarrow-1" d="M25.09,20.63H17.8V39.21A1.72,1.72,0,0,1,16,40.8H11.25a1.72,1.72,0,0,1-1.83-1.59V20.63H2.13A1.43,1.43,0,0,1,.72,18.5L12.2,1.2A1.77,1.77,0,0,1,15,1.2L26.5,18.5A1.43,1.43,0,0,1,25.09,20.63Z"/></g></g></svg>)
 }

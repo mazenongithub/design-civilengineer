@@ -20,6 +20,7 @@ import CSIS from './components/csis'
 import CostEstimate from './components/costestimate';
 import BidSchedule from './components/bidschedule'
 import LineItem from './components/lineitem';
+import Register from './components/register'
 
 
 class App extends Component {
@@ -75,6 +76,13 @@ const showlogin = () => {
   }
 }
 
+const showregister = () => {
+  if(myuser) {
+    return(<Profile/>)
+  } else {
+    return(<Register/>)
+  }
+}
 
 
 
@@ -85,6 +93,7 @@ const showlogin = () => {
         <Switch>
           <Route exact path="/" component={showlanding} />
           <Route exact path="/profile/login" component={showlogin} />
+          <Route exact path="/profile/register" component={showregister} />
           <Route exact path="/:profile/csis" component={CSIS} />
           <Route exact path="/:profile/profile" component={Profile} />
           <Route exact path="/:profile/projects" component={Projects} />

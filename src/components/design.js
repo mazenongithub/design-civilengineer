@@ -1,13 +1,34 @@
 import React from 'react';
 import { sortpart, inputUTCStringForLaborID, getEquipmentRentalObj, calculatetotalhours, calculateTotalMonths, FutureCostPresent, AmmortizeFactor } from "./functions";
-import { SaveSpecs, ClientLogin, LogoutUser, SaveCSI, DeleteCSI, SaveCostEstimate } from './actions/api'
+import { SaveSpecs, LogoutUser, SaveCSI, DeleteCSI, SaveCostEstimate,AppleLogin } from './actions/api'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { MyStylesheet } from "./styles";
 import { saveCostEstimateIcon } from './svg'
 
 
+
 class Design {
+
+    getgocheckheight() {
+        if (this.state.width > 1200) {
+            return ({
+                width: '69px',
+                height: '69px'
+            })
+        } else if (this.state.width > 800) {
+            return ({
+                width: '59px',
+                height: '59px'
+            })
+        } else {
+            return ({
+                width: '49px',
+                height: '49px'
+            })
+        }
+
+    }
 
     getbiditemkeybycsiid(projectid, csiid) {
         const design = new Design();
@@ -182,7 +203,7 @@ class Design {
     calculateequipmentratebyownership(equipmentid) {
         const design = new Design();
         const myequipment = design.getmyequipmentfromid.call(this, equipmentid);
-        console.log(myequipment)
+
         const i = (Number(myequipment.ownership.loaninterest) / 100) / 12;
         const workinghours = Math.round(Number(myequipment.ownership.workinghours) / 12);
         let equipmentrate = 0;
@@ -217,7 +238,7 @@ class Design {
         const AFactor = () => {
             const T = Period();
             const i = Number(myequipment.ownership.loaninterest);
-            console.log(T, i)
+    
             if (T) {
 
                 return (AmmortizeFactor(i, T))
@@ -236,10 +257,10 @@ class Design {
         }
 
         if (i > 0) {
-            console.log(P(), totalworkinghours(), Period())
+  
             equipmentrate = (P() * AFactor()) / (workinghours);
         } else {
-            console.log(P(), totalworkinghours(), Period())
+     
             equipmentrate = P() / (totalworkinghours())
         }
 
@@ -251,7 +272,7 @@ class Design {
 
         const design = new Design();
         const myequipment = design.getmyequipmentfromid.call(this, equipmentid);
-        console.log(myequipment)
+  
         let equipmentrate = 0;
         if (myequipment.ownershipstatus === 'owned') {
             equipmentrate = design.calculateequipmentratebyownership.call(this, equipmentid)
@@ -301,13 +322,13 @@ class Design {
             if (companys) {
                 // eslint-disable-next-line
                 companys.map(company => {
-                    console.log(company)
+               
                     if (company.hasOwnProperty("company")) {
                         if (company.company.hasOwnProperty("materials")) {
                             // eslint-disable-next-line
                             company.company.materials.map(material => {
                                 if (material.materialid === mymaterialid) {
-                                    console.log(company)
+                                   
                                     companyid = company.companyid;
                                 }
                             })
@@ -332,7 +353,7 @@ class Design {
                 if (companys) {
                     // eslint-disable-next-line
                     companys.map(company => {
-                        console.log(company)
+                    
                         if (company.hasOwnProperty("company")) {
                             if (company.company.hasOwnProperty("equipment")) {
                                 // eslint-disable-next-line
@@ -364,7 +385,7 @@ class Design {
             if (companys) {
                 // eslint-disable-next-line
                 companys.map(company => {
-                    console.log(company)
+                   
                     if (company.hasOwnProperty("company")) {
                         if (company.company.hasOwnProperty("employees")) {
                             // eslint-disable-next-line
@@ -617,6 +638,7 @@ class Design {
         const codes = design.getallcsicodes.call(this)
         let csi = false;
         if (codes) {
+           
             // eslint-disable-next-line
             codes.map(code => {
                 if (code.csiid === csiid) {
@@ -1276,12 +1298,13 @@ class Design {
     }
     getallcsicodes() {
         const design = new Design();
-        const myuser = design.getuser.call(this)
-        let codes = false;
-        if (myuser) {
-            codes = myuser.csicodes;
+        let csis = false;
+        if(this.props.hasOwnProperty("csis")) {
+            if(this.props.csis.hasOwnProperty("length")) {
+            csis = this.props.csis
+            }
         }
-        return codes;
+        return csis;
     }
     getsmallslide() {
         if (this.state.width > 1200) {
@@ -1528,7 +1551,8 @@ class Design {
         }
     }
 
-    async googleSignIn() {
+    async googleSignIn(type) {
+        const design = new Design();
 
 
         try {
@@ -1559,7 +1583,7 @@ class Design {
             let phonenumber = user.phoneNumber;
             this.setState({ client, clientid, emailaddress, firstname, lastname, profileurl, phonenumber, emailaddresscheck })
 
-
+            design.clientlogin.call(this,type)
 
 
 
@@ -1572,7 +1596,29 @@ class Design {
 
     }
 
-    async appleSignIn() {
+    async clientlogin(type) {
+        let emailaddress = this.state.emailaddress;
+        let client = this.state.client;
+        let clientid = this.state.clientid;
+        let firstname = this.state.firstname;
+        let lastname = this.state.lastname;
+        let profile = this.state.profile;
+        let phonenumber = this.state.phonenumber;
+        let profileurl = this.state.profileurl;
+
+
+        let values = { emailaddress, client, clientid, firstname, lastname, profile, phonenumber, profileurl, type }
+
+        try {
+            let response = await AppleLogin(values)
+            this.props.reduxUser(response.myuser)
+        } catch (err) {
+            alert(err)
+        }
+    }
+
+    async appleSignIn(type) {
+        const design  = new Design();
         let provider = new firebase.auth.OAuthProvider('apple.com');
         provider.addScope('email');
         provider.addScope('name');
@@ -1597,7 +1643,7 @@ class Design {
             }
 
             this.setState({ client, clientid, firstname, lastname, profileurl, phonenumber, emailaddress, emailaddresscheck })
-
+            design.clientlogin.call(this,type)
 
         } catch (err) {
             alert(err)
@@ -1621,28 +1667,6 @@ class Design {
         }
 
     }
-    async clientlogin() {
-        try {
-
-            let client = this.state.client;
-            let clientid = this.state.clientid;
-            let firstname = this.state.firstname;
-            let lastname = this.state.lastname;
-            let emailaddress = this.state.emailaddress;
-            let profileurl = this.state.profileurl;
-            let phonenumber = this.state.phonumber;
-            let profile = this.state.profile
-            let values = { client, clientid, firstname, lastname, emailaddress, profileurl, phonenumber, profile }
-            const response = await ClientLogin(values);
-            console.log(response)
-            this.props.reduxUser(response)
-            this.setState({ render: 'render' })
-
-
-
-        } catch (err) {
-            alert(err)
-        }
-    }
+  
 }
 export default Design;

@@ -27,11 +27,21 @@ class Header {
             }
 
         }
+
+        const registerlink = () => {
+            if(!myuser) {
+             
+                return(<div style={{...styles.generalContainer}}>
+                <Link  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} to={`/profile/register`}>profile/register</Link>
+                </div>)  
+            }
+
+        }
         const profilelink = () => {
             if(myuser.profile) {
                 return(
                 <div style={{...styles.generalContainer}}>
-                <Link  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} to={`/${myuser.profile}/profile`}>/{myuser.profile}/profile</Link>
+                <Link  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} to={`/${myuser.profile}/profile`}>/{myuser.profile}</Link>
                 </div>)
             }
 
@@ -40,7 +50,7 @@ class Header {
         const projectlink = () => {
             if(myuser.profile) {
                 return( <div style={{...styles.generalContainer}}>
-                <Link  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} to={`/${myuser.profile}/projects`}>/{myuser.profile}/projects</Link>
+                <Link  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} to={`/${myuser.profile}/projects`}>/projects</Link>
                 </div>)
             }
 
@@ -49,7 +59,7 @@ class Header {
         const csilink = () => {
             if(myuser.profile) {
                 return( <div style={{...styles.generalContainer}}>
-                <Link  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} to={`/${myuser.profile}/csis`}>/{myuser.profile}/csis</Link>
+                <Link  className="headerFont" style={{...styles.generalLinkonly,...styles.navigationFont,...headerFont}} to={`/${myuser.profile}/csis`}>/csis</Link>
                 </div>)
             }
 
@@ -81,6 +91,7 @@ class Header {
                    {csilink()}
                    {activeproject()}
                    {loginlink()}
+                   {registerlink()}
                 </div>
                 <div style={{...styles.flex1,...styles.alignCenter}}>
                     <button className="createlink" style={{...getblackx,...styles.navigationbutton}} onClick={()=>{this.setState({navigation:false})}}>{blackx()}</button>

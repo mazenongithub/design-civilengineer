@@ -7,6 +7,7 @@ import Design from './design'
 import {makeID} from './functions'
 import {Link} from 'react-router-dom'
 import CSI from './csi'
+import { LoadCSIs } from './actions/api';
 
 class Specifications extends Component {
     constructor(props) {
@@ -18,12 +19,33 @@ class Specifications extends Component {
         window.addEventListener('resize', this.updateWindowDimensions);
         this.updateWindowDimensions();
         this.props.reduxProject({ title: this.props.match.params.title })
+        const design = new Design();
+       
+
+
     }
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
     updateWindowDimensions() {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
+    }
+
+    async loadcsis() {
+       
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if(myuser) {
+            if(myuser.hasOwnProperty("company")) {
+                const companyid = myuser.company.companyid;
+                const response = await LoadCSIs(companyid);
+                console.log(response)
+                if(response.hasOwnProperty("csicodes")) {
+                    this.props.reduxCSIs(response.csicodes);
+                    this.setState({render:'render'})
+                }
+            }
+        }
     }
 
     
@@ -103,6 +125,23 @@ class Specifications extends Component {
         const headerFont = design.getHeaderFont.call(this)
         const csi = new CSI();
 
+        const myuser = design.getuser.call(this)
+        if(myuser) {
+
+            const companyid = () => {
+                let companyid = false;
+                if(myuser.hasOwnProperty("company")) {
+                    companyid = myuser.company.companyid;
+                }
+                return companyid;
+
+            }
+
+            const csis = design.getallcsicodes.call(this);
+            if(!csis) {
+                this.loadcsis(companyid())
+            }
+
         return (
             <div style={{ ...styles.generalFlex }}>
                 <div style={{ ...styles.flex1 }}>
@@ -139,7 +178,15 @@ class Specifications extends Component {
 
                 </div>
             </div>)
+
+        }
+          else {
+        return(<div style={{...styles.generalContainer}}>
+            <span>Please Login to View Specifications</span>
+        </div>)
     }
+
+}
 
 }
 
@@ -148,7 +195,8 @@ function mapStateToProps(state) {
     return {
         myusermodel: state.myusermodel,
         allusers: state.allusers,
-        allcompanys: state.allcompanys
+        allcompanys: state.allcompanys,
+        csis:state.csis
     }
 }
 

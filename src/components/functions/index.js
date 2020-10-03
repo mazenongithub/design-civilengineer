@@ -12,6 +12,26 @@ export function check_31date(dateobj) {
 }
 
 
+export function validateProviderID(value) {
+    const reg_ex = /^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,34}(?:[A-Za-z0-9_]))?)$/
+    const test = reg_ex.test(value);
+    value = value.trim();
+    let errmsg = "";
+    if (!value) {
+        errmsg = " ProviderID is required ";
+
+    }
+    else if (value.length > 36) {
+        errmsg = " ProviderID should be less than 36 characters";
+    }
+    else if (!test) {
+        errmsg = ` Invalid Provider ID format ${value} `;
+    }
+
+    return errmsg;
+}
+
+
 export function check_30date(dateobj) {
 
     let month = dateobj.getMonth();
