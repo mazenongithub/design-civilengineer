@@ -67,22 +67,7 @@ const showlanding = () => {
   }
 }
 
-const showlogin = () => {
-  if(myuser) {
-    return(<Profile/>)
 
-  } else {
-  return(<Login/>)
-  }
-}
-
-const showregister = () => {
-  if(myuser) {
-    return(<Profile/>)
-  } else {
-    return(<Register/>)
-  }
-}
 
 
 
@@ -92,8 +77,8 @@ const showregister = () => {
         {header.showheader.call(this)}
         <Switch>
           <Route exact path="/" component={showlanding} />
-          <Route exact path="/profile/login" component={showlogin} />
-          <Route exact path="/profile/register" component={showregister} />
+          <Route exact path="/profile/login" component={Login} />
+          <Route exact path="/profile/register" component={Register} />
           <Route exact path="/:profile/csis" component={CSIS} />
           <Route exact path="/:profile/profile" component={Profile} />
           <Route exact path="/:profile/projects" component={Projects} />

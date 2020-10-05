@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import * as actions from './actions';
 import { MyStylesheet } from './styles'
 import Design from './design'
-import { folderIcon } from './svg'
+import { folderIcon, goCheckIcon } from './svg'
+import {validateProviderID,validateEmail} from './functions'
+import {CheckProviderID, CheckEmailAddress} from './actions/api'
 
 
 class Profile extends Component {
     constructor(props) {
         super(props);
-        this.state = { render: '', width: 0, height: 0 }
+        this.state = { render: '', width: 0, height: 0, message:''}
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     }
     componentDidMount() {
@@ -22,6 +24,8 @@ class Profile extends Component {
     updateWindowDimensions() {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
     }
+
+    
 
     showprofileimage() {
         const design = new Design();
@@ -37,6 +41,34 @@ class Profile extends Component {
         }
 
     }
+
+    async checkemailaddress() {
+        const design = new Design();
+        const myuser = design.getuser.call(this);
+        const errmsg = validateEmail(myuser.emailaddress);
+       
+        if (!errmsg) {
+            const response = await CheckEmailAddress(myuser.emailaddress)
+            if (response.hasOwnProperty("invalid")) {
+                myuser.invalidemail = `${response.invalid}`
+                this.props.reduxUser({myuser})
+                this.setState({ message: response.invalid })
+            } else {
+                delete myuser.invalidemail;
+                this.props.reduxUser({myuser})
+                this.setState({ render: 'render' })
+            }
+
+
+
+
+        } else {
+            myuser.invalidemail = myuser.emailaddress;
+            this.props.reduxUser({myuser})
+            this.setState({ render: 'render' })
+        }
+
+    }
     getemailaddress() {
         const design = new Design();
         const myuser = design.getuser.call(this)
@@ -47,10 +79,24 @@ class Profile extends Component {
     }
     handleemailaddress(emailaddress) {
         const design = new Design();
-        const myuser = design.getuser.call(this)
+        let myuser = design.getuser.call(this);
+        const errmsg = validateEmail(emailaddress)
+        
         if (myuser) {
+            
             myuser.emailaddress = emailaddress;
-            this.props.reduxUser({ myuser })
+            if(errmsg) {
+                myuser.invalidemail = emailaddress;
+                this.props.reduxUser({myuser});
+                this.setState({message:errmsg})
+            } else {
+                if(myuser.hasOwnProperty("invalidemail")) {
+                    delete myuser.invalidemail;
+                    this.props.reduxUser({myuser})
+                    this.setState({message:''})
+                }
+            }
+          
             this.setState({ render: 'render' })
         }
 
@@ -119,13 +165,56 @@ class Profile extends Component {
     }
     handleprofile(profile) {
         const design = new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
+        const validate = validateProviderID(profile);
+        let myuser = design.getuser.call(this);
+        if (!validate) {
+
+            if (myuser.hasOwnProperty("invalid")) {
+                delete myuser.invalid;
+            }
+            if (myuser) {
+                myuser.profile = profile;
+                this.props.reduxUser({myuser});
+                this.setState({ message: '' })
+            }
+
+        } else {
             myuser.profile = profile;
-            this.props.reduxUser({ myuser })
-            this.setState({ render: 'render' })
+            myuser.invalid = validate;
+            this.props.reduxUser({myuser});
+            this.setState({ message: validate })
+
         }
 
+    }
+
+    async checkprofile(profile) {
+        const design = new Design();
+        const myuser = design.getuser.call(this);
+
+        if (myuser) {
+            let validate = validateProviderID(profile)
+            if (profile && !validate) {
+                try {
+                    let response = await CheckProviderID(profile);
+                    console.log(response)
+                    if (response.hasOwnProperty("invalid")) {
+                        myuser.invalid = response.invalid;
+                        this.props.reduxUser({myuser});
+                        this.setState({ message: response.invalid })
+                    } else if (response.hasOwnProperty("valid")) {
+
+                        if (myuser.hasOwnProperty("invalid")) {
+                            delete myuser.invalid;
+                            this.setState({ message: '' })
+                        }
+                    }
+                } catch (err) {
+                    alert(err)
+                }
+            }
+
+        }
     }
 
     render() {
@@ -136,6 +225,24 @@ class Profile extends Component {
         const profileDimensions = design.getprofiledimensions.call(this);;
         const folderSize = design.getFolderSize.call(this);
         const regularFont = design.getRegularFont.call(this)
+        const goIcon = design.getgocheckheight.call(this)
+
+        const showButton = () => {
+
+            if (!myuser.hasOwnProperty("invalid") && myuser.profile) {
+                return (<button style={{ ...styles.generalButton, ...goIcon }}>{goCheckIcon()}</button>)
+            } else {
+                return;
+            }
+        }
+
+
+        const emailicon = () => {
+            if (!myuser.hasOwnProperty("invalidemail") && myuser.emailaddress) {
+            return (<button style={{ ...styles.generalButton, ...goIcon }}>{goCheckIcon()}</button>)
+            }
+        }
+
         if (myuser) {
             return (
                 <div style={{ ...styles.generalFlex }}>
@@ -143,17 +250,12 @@ class Profile extends Component {
 
                         <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                             <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                                <span style={{ ...headerFont }}>{myuser.profile}/profile</span>
-                            </div>
-                        </div>
-
-                        <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
-                            <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                                <div style={{ ...regularFont, ...styles.generalFont, ...styles.generalContainer }}>Profile</div>
-                                <input type="text" style={{ ...styles.generalFont, ...regularFont }}
-                                    value={this.getprofile()}
-                                    onChange={event => { this.handleprofile(event.target.value) }}
-                                />
+                            <input type="text" value={this.getprofile()}
+                                onChange={event => { this.handleprofile(event.target.value) }}
+                                style={{ ...styles.generalFont, ...headerFont, ...styles.fontBold }}
+                                onBlur={event => { this.checkprofile(event.target.value) }}
+                            />
+                            {showButton()}
                             </div>
                         </div>
 
@@ -194,16 +296,26 @@ class Profile extends Component {
                                 <div style={{ ...regularFont, ...styles.generalFont, ...styles.generalContainer }}>EmailAddress</div>
                                 <input type="text" style={{ ...styles.generalFont, ...regularFont }}
                                     value={this.getemailaddress()}
-                                    onChange={event => { this.handleemailaddress(event.target.value) }} />
+                                    onChange={event => { this.handleemailaddress(event.target.value) }}
+                                    onBlur={()=>{this.checkemailaddress()}} />
+                                    {emailicon()}
                             </div>
                             <div style={{ ...styles.flex1 }}>
-                                <div style={{ ...regularFont, ...styles.generalFont, ...styles.generalContainer }}>Phonenumber</div>
+                                <div style={{ ...regularFont, ...styles.generalFont, ...styles.generalContainer }}>Phone Number</div>
                                 <input type="text" style={{ ...styles.generalFont, ...regularFont }}
                                     value={this.getphonenumber()}
                                     onChange={event => { this.handlephonenumber(event.target.value) }}
                                 />
                             </div>
                         </div>
+
+                        <div style={{...styles.generalContainer, ...styles.alignCenter}}>
+                            <span style={{...regularFont,...styles.generalFont}}>{this.state.message}</span>
+                        </div>
+
+                        {design.showsaveprofile.call(this)}
+
+            
 
                     </div>
                 </div>

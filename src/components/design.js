@@ -1,10 +1,10 @@
 import React from 'react';
 import { sortpart, inputUTCStringForLaborID, getEquipmentRentalObj, calculatetotalhours, calculateTotalMonths, FutureCostPresent, AmmortizeFactor } from "./functions";
-import { SaveSpecs, LogoutUser, SaveCSI, DeleteCSI, SaveCostEstimate,AppleLogin } from './actions/api'
+import { SaveSpecs, LogoutUser, SaveCSI, DeleteCSI, SaveCostEstimate, AppleLogin, SaveProfile } from './actions/api'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { MyStylesheet } from "./styles";
-import { saveCostEstimateIcon } from './svg'
+import { saveCostEstimateIcon, saveProfileIcon } from './svg'
 
 
 
@@ -238,7 +238,7 @@ class Design {
         const AFactor = () => {
             const T = Period();
             const i = Number(myequipment.ownership.loaninterest);
-    
+
             if (T) {
 
                 return (AmmortizeFactor(i, T))
@@ -257,10 +257,10 @@ class Design {
         }
 
         if (i > 0) {
-  
+
             equipmentrate = (P() * AFactor()) / (workinghours);
         } else {
-     
+
             equipmentrate = P() / (totalworkinghours())
         }
 
@@ -272,7 +272,7 @@ class Design {
 
         const design = new Design();
         const myequipment = design.getmyequipmentfromid.call(this, equipmentid);
-  
+
         let equipmentrate = 0;
         if (myequipment.ownershipstatus === 'owned') {
             equipmentrate = design.calculateequipmentratebyownership.call(this, equipmentid)
@@ -322,13 +322,13 @@ class Design {
             if (companys) {
                 // eslint-disable-next-line
                 companys.map(company => {
-               
+
                     if (company.hasOwnProperty("company")) {
                         if (company.company.hasOwnProperty("materials")) {
                             // eslint-disable-next-line
                             company.company.materials.map(material => {
                                 if (material.materialid === mymaterialid) {
-                                   
+
                                     companyid = company.companyid;
                                 }
                             })
@@ -353,7 +353,7 @@ class Design {
                 if (companys) {
                     // eslint-disable-next-line
                     companys.map(company => {
-                    
+
                         if (company.hasOwnProperty("company")) {
                             if (company.company.hasOwnProperty("equipment")) {
                                 // eslint-disable-next-line
@@ -385,7 +385,7 @@ class Design {
             if (companys) {
                 // eslint-disable-next-line
                 companys.map(company => {
-                   
+
                     if (company.hasOwnProperty("company")) {
                         if (company.company.hasOwnProperty("employees")) {
                             // eslint-disable-next-line
@@ -638,7 +638,7 @@ class Design {
         const codes = design.getallcsicodes.call(this)
         let csi = false;
         if (codes) {
-           
+
             // eslint-disable-next-line
             codes.map(code => {
                 if (code.csiid === csiid) {
@@ -874,18 +874,18 @@ class Design {
                     project.costestimate.labor.map(labor => {
                         if (!labor.milestoneid) {
                             validate.validate = false;
-                            validate.message+= `Labor ID ${labor.laborid} Missing MilestoneID`;
+                            validate.message += `Labor ID ${labor.laborid} Missing MilestoneID`;
                         }
                         if (!labor.csiid) {
 
                             validate.validate = false;
-                            validate.message+= `Labor ID ${labor.laborid} Missing CSI`;
+                            validate.message += `Labor ID ${labor.laborid} Missing CSI`;
 
                         }
                         if (!labor.providerid) {
 
                             validate.validate = false;
-                            validate.message+= `Labor ID ${labor.laborid} Missing ProviderID`;
+                            validate.message += `Labor ID ${labor.laborid} Missing ProviderID`;
 
                         }
                     })
@@ -896,18 +896,18 @@ class Design {
                     project.costestimate.materials.map(material => {
                         if (!material.milestoneid) {
                             validate.validate = false;
-                            validate.message+= `Material ${material.materialid} Missing MilestoneID`;
-                
+                            validate.message += `Material ${material.materialid} Missing MilestoneID`;
+
                         }
                         if (!material.csiid) {
                             validate.validate = false;
-                            validate.message+= `Material ${material.materialid} CSI`;
-                
+                            validate.message += `Material ${material.materialid} CSI`;
+
                         }
                         if (!material.mymaterialid) {
                             validate.validate = false;
-                            validate.message+= `Material ${material.materialid} Missing MaterialID`;
-                
+                            validate.message += `Material ${material.materialid} Missing MaterialID`;
+
                         }
                     })
                 }
@@ -917,18 +917,18 @@ class Design {
                     project.costestimate.equipment.map(equipment => {
                         if (!equipment.milestoneid) {
                             validate.validate = false;
-                            validate.message+= `Equipment ${equipment.equipmentid} Missing MilestoneID`;
-                
+                            validate.message += `Equipment ${equipment.equipmentid} Missing MilestoneID`;
+
                         }
                         if (!equipment.csiid) {
                             validate.validate = false;
-                            validate.message+= `Equipment ${equipment.equipmentid} Missing CSI`;
-                
+                            validate.message += `Equipment ${equipment.equipmentid} Missing CSI`;
+
                         }
                         if (!equipment.myequipmentid) {
                             validate.validate = false;
-                            validate.message+= `Equipment ${equipment.equipmentid} Missing EquipmentID`;
-                
+                            validate.message += `Equipment ${equipment.equipmentid} Missing EquipmentID`;
+
                         }
                     })
                 }
@@ -945,101 +945,101 @@ class Design {
         const design = new Design();
         const myuser = design.getuser.call(this)
         const validate = design.validatesavecostestimate.call(this)
-        if(validate.validate) {
-        if (myuser) {
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
-            if (myuser.hasOwnProperty("company")) {
-                const companyid = myuser.company.companyid;
-                if (project) {
-                    const projectid = project.projectid;
-                    const i = design.getprojectbykeyid.call(this, projectid)
-                    if (project.hasOwnProperty("costestimate")) {
-                        const costestimate = project.costestimate;
-                        const values = { projectid, companyid, costestimate }
-                        try {
-                            let response = await SaveCostEstimate(values);
-                            console.log(response)
-                            let activelaborid = "";
-                            let activematerialid = "";
-                            let activeequipmentid = "";
-                            if(response.hasOwnProperty("replaceids")) {
-                                if(this.state.activelaborid) {
-                                    if(response.replaceids.hasOwnProperty("labor")) {
-                                        // eslint-disable-next-line
-                                        response.replaceids.labor.map(labor=> {
-                                            if(labor.oldlaborid === this.state.activelaborid) {
-                                                this.setState({activelaborid:false})
-                                                activelaborid = labor.laborid;
-                                            }
-                                        })
+        if (validate.validate) {
+            if (myuser) {
+                const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+                if (myuser.hasOwnProperty("company")) {
+                    const companyid = myuser.company.companyid;
+                    if (project) {
+                        const projectid = project.projectid;
+                        const i = design.getprojectbykeyid.call(this, projectid)
+                        if (project.hasOwnProperty("costestimate")) {
+                            const costestimate = project.costestimate;
+                            const values = { projectid, companyid, costestimate }
+                            try {
+                                let response = await SaveCostEstimate(values);
+                                console.log(response)
+                                let activelaborid = "";
+                                let activematerialid = "";
+                                let activeequipmentid = "";
+                                if (response.hasOwnProperty("replaceids")) {
+                                    if (this.state.activelaborid) {
+                                        if (response.replaceids.hasOwnProperty("labor")) {
+                                            // eslint-disable-next-line
+                                            response.replaceids.labor.map(labor => {
+                                                if (labor.oldlaborid === this.state.activelaborid) {
+                                                    this.setState({ activelaborid: false })
+                                                    activelaborid = labor.laborid;
+                                                }
+                                            })
+                                        }
+
+                                    } else if (this.state.activematerialid) {
+                                        if (response.replaceids.hasOwnProperty("materials")) {
+                                            // eslint-disable-next-line
+                                            response.replaceids.materials.map(material => {
+                                                if (material.oldmaterialid === this.state.activematerialid) {
+                                                    this.setState({ activematerialid: false })
+                                                    activematerialid = material.materialid;
+                                                }
+                                            })
+                                        }
+
+                                    } else if (this.state.activeequipmentid) {
+                                        if (response.replaceids.hasOwnProperty("equipment")) {
+                                            // eslint-disable-next-line
+                                            response.replaceids.equipment.map(equipment => {
+                                                if (equipment.oldequipmentid === this.state.activeequipmentid) {
+                                                    this.setState({ activeequipmentid: false })
+                                                    activeequipmentid = equipment.equipmentid;
+                                                }
+                                            })
+                                        }
+
                                     }
-
-                                } else if (this.state.activematerialid) {
-                                    if(response.replaceids.hasOwnProperty("materials")) {
-                                        // eslint-disable-next-line
-                                        response.replaceids.materials.map(material=> {
-                                            if(material.oldmaterialid === this.state.activematerialid) {
-                                                this.setState({activematerialid:false})
-                                                activematerialid = material.materialid;
-                                            }
-                                        })
-                                    }
-                                    
-                                } else if(this.state.activeequipmentid) {
-                                    if(response.replaceids.hasOwnProperty("equipment")) {
-                                        // eslint-disable-next-line
-                                        response.replaceids.equipment.map(equipment=> {
-                                            if(equipment.oldequipmentid === this.state.activeequipmentid) {
-                                                this.setState({activeequipmentid:false})
-                                                activeequipmentid = equipment.equipmentid;
-                                            }
-                                        })
-                                    }
-
-                                } 
-
-                            }
-                            if (response.hasOwnProperty("costestimate")) {
-                                myuser.company.projects[i].costestimate = response.costestimate;
-                                this.props.reduxUser({ myuser })
-                                let message = "";
-                                if(response.hasOwnProperty("message")) {
-                                    
-                                    message=`${response.message}`
-                                }
-                                message+=`last updated ${inputUTCStringForLaborID(response.lastupdated)}`
-
-
-                                if(activelaborid) {
-                                    this.setState({ render: 'render',message, activelaborid })
-
-                                } 
-                                if (activematerialid) {
-                                    this.setState({ render: 'render',message, activematerialid })
-
-                                } 
-                                if (activeequipmentid) {
-                                    this.setState({ render: 'render',message, activeequipmentid })
 
                                 }
-                                    
-                                this.setState({ render: 'render',message })
-                                
-                                
+                                if (response.hasOwnProperty("costestimate")) {
+                                    myuser.company.projects[i].costestimate = response.costestimate;
+                                    this.props.reduxUser({ myuser })
+                                    let message = "";
+                                    if (response.hasOwnProperty("message")) {
+
+                                        message = `${response.message}`
+                                    }
+                                    message += `last updated ${inputUTCStringForLaborID(response.lastupdated)}`
+
+
+                                    if (activelaborid) {
+                                        this.setState({ render: 'render', message, activelaborid })
+
+                                    }
+                                    if (activematerialid) {
+                                        this.setState({ render: 'render', message, activematerialid })
+
+                                    }
+                                    if (activeequipmentid) {
+                                        this.setState({ render: 'render', message, activeequipmentid })
+
+                                    }
+
+                                    this.setState({ render: 'render', message })
+
+
+                                }
+                            } catch (err) {
+                                alert(err)
                             }
-                        } catch (err) {
-                            alert(err)
                         }
                     }
+
                 }
 
             }
 
+        } else {
+            alert(validate.message)
         }
-
-    } else {
-        alert(validate.message)
-    }
     }
     showsaveestimate() {
         const design = new Design();
@@ -1237,6 +1237,96 @@ class Design {
         }
         return activeproject;
     }
+
+    async savemyprofile() {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+
+        const validatemyuser = (myuser) => {
+            let message = "";
+            if(myuser.hasOwnProperty("invalid")) {
+                message +=' Invalid Profile '
+
+            }
+
+            if(myuser.hasOwnProperty("invalidemail")) {
+                message+= `Invalid Email`
+            }
+            return message;
+
+        }
+
+        if (myuser) {
+            if(!validatemyuser(myuser)) {
+
+            const profile = {
+                providerid: myuser.providerid,
+                profile: myuser.profile,
+                firstname: myuser.firstname,
+                lastname: myuser.lastname,
+                emailaddress: myuser.emailaddress,
+                phonenumber: myuser.phonenumber
+            }
+
+            console.log(profile)
+
+            try {
+
+                let response = await SaveProfile({profile})
+                console.log(response)
+                if(response.hasOwnProperty("profile")) {
+    
+                    myuser.profile = response.profile.profile;
+                    myuser.firstname = response.profile.firstname;
+                    myuser.lastname = response.profile.lastname;
+                    myuser.emailaddress = response.profile.emailaddress;
+                    myuser.phonenumber = response.profile.phonenumber;
+    
+                    this.props.reduxUser({myuser});
+                    this.setState({render:'render'})
+    
+                }
+    
+                if(response.hasOwnProperty("message")) {
+                    let message = "";
+                    message += response.message;
+                    if(response.hasOwnProperty("lastupdated")) {
+                    message += `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
+                    }
+                    this.setState({message})
+                }
+
+            } catch(err) {
+                alert(err)
+            }
+           
+        } else {
+            this.setState({message:validatemyuser(myuser)})
+        }
+
+
+        }
+
+
+    }
+
+    showsaveprofile() {
+        const styles = MyStylesheet();
+        const design = new Design();
+        const saveprofile = () => {
+            if (this.state.width > 1200) {
+                return ({ width: '292px' })
+            } else {
+                return ({ width: '210px' })
+            }
+        }
+        return (
+            <div style={{ ...styles.generalContainer, ...styles.alignCenter }}>
+                <button style={{ ...styles.generalButton, ...saveprofile() }} onClick={() => { design.savemyprofile.call(this) }}
+                >{saveProfileIcon()}</button>
+            </div>
+        )
+    }
     getuser() {
         let myuser = false;
         if (this.props.myusermodel) {
@@ -1299,9 +1389,9 @@ class Design {
     getallcsicodes() {
         const design = new Design();
         let csis = false;
-        if(this.props.hasOwnProperty("csis")) {
-            if(this.props.csis.hasOwnProperty("length")) {
-            csis = this.props.csis
+        if (this.props.hasOwnProperty("csis")) {
+            if (this.props.csis.hasOwnProperty("length")) {
+                csis = this.props.csis
             }
         }
         return csis;
@@ -1478,41 +1568,41 @@ class Design {
                     let activesectionid = "";
                     let activecontentid = "";
                     let activesubcontentid = '';
-                    if(response.hasOwnProperty("replaceids")) {
-                      
-                        if(this.state.activesectionid) {
-                            if(response.replaceids.hasOwnProperty("sections")) {
+                    if (response.hasOwnProperty("replaceids")) {
+
+                        if (this.state.activesectionid) {
+                            if (response.replaceids.hasOwnProperty("sections")) {
                                 // eslint-disable-next-line
-                                response.replaceids.sections.map(section=> {
-                                    if(section.oldsectionid === this.state.activesectionid) {
+                                response.replaceids.sections.map(section => {
+                                    if (section.oldsectionid === this.state.activesectionid) {
                                         activesectionid = section.sectionid;
-                                        this.setState({activesectionid:false})
+                                        this.setState({ activesectionid: false })
                                     }
                                 })
                             }
 
                         }
-                        if(this.state.activecontentid) {
+                        if (this.state.activecontentid) {
 
-                            if(response.replaceids.hasOwnProperty("content")) {
+                            if (response.replaceids.hasOwnProperty("content")) {
                                 // eslint-disable-next-line
                                 response.replaceids.content.map(content => {
-                                    if(content.oldcontentid === this.state.activecontentid) {
-                                        activecontentid= content.contentid;
-                                        this.setState({activecontentid:false})
+                                    if (content.oldcontentid === this.state.activecontentid) {
+                                        activecontentid = content.contentid;
+                                        this.setState({ activecontentid: false })
                                     }
                                 })
                             }
 
                         }
-                        if(this.state.activesubcontentid) {
+                        if (this.state.activesubcontentid) {
 
-                            if(response.replaceids.hasOwnProperty("subcontent")) {
+                            if (response.replaceids.hasOwnProperty("subcontent")) {
                                 // eslint-disable-next-line
                                 response.replaceids.subcontent.map(subcontent => {
-                                    if(subcontent.oldsubcontentid === this.state.activesubcontentid) {
-                                        activesubcontentid= subcontent.subcontentid;
-                                        this.setState({activesubcontentid:false})
+                                    if (subcontent.oldsubcontentid === this.state.activesubcontentid) {
+                                        activesubcontentid = subcontent.subcontentid;
+                                        this.setState({ activesubcontentid: false })
                                     }
                                 })
                             }
@@ -1533,14 +1623,14 @@ class Design {
                         }
                         this.setState({ message: `${message} last updated ${inputUTCStringForLaborID(lastupdated)}` })
                     }
-                    if(activesectionid) {
-                        this.setState({activesectionid})
+                    if (activesectionid) {
+                        this.setState({ activesectionid })
                     }
-                    if(activecontentid) {
-                        this.setState({activecontentid})
+                    if (activecontentid) {
+                        this.setState({ activecontentid })
                     }
-                    if(activesubcontentid) {
-                        this.setState({activesubcontentid})
+                    if (activesubcontentid) {
+                        this.setState({ activesubcontentid })
                     }
 
                 } catch (err) {
@@ -1583,7 +1673,7 @@ class Design {
             let phonenumber = user.phoneNumber;
             this.setState({ client, clientid, emailaddress, firstname, lastname, profileurl, phonenumber, emailaddresscheck })
 
-            design.clientlogin.call(this,type)
+            design.clientlogin.call(this, type)
 
 
 
@@ -1618,7 +1708,7 @@ class Design {
     }
 
     async appleSignIn(type) {
-        const design  = new Design();
+        const design = new Design();
         let provider = new firebase.auth.OAuthProvider('apple.com');
         provider.addScope('email');
         provider.addScope('name');
@@ -1643,7 +1733,7 @@ class Design {
             }
 
             this.setState({ client, clientid, firstname, lastname, profileurl, phonenumber, emailaddress, emailaddresscheck })
-            design.clientlogin.call(this,type)
+            design.clientlogin.call(this, type)
 
         } catch (err) {
             alert(err)
@@ -1667,6 +1757,6 @@ class Design {
         }
 
     }
-  
+
 }
 export default Design;

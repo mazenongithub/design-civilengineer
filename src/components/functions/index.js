@@ -12,6 +12,25 @@ export function check_31date(dateobj) {
 }
 
 
+export function validateEmail(value) {
+    var reg_ex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+    var test = reg_ex.test(value)
+    let errmsg = ""
+    if (!value) {
+        errmsg += `Email Address is required `
+
+    }
+
+
+    else if (!test) {
+
+        errmsg += ` Email Address ${value} format is invalid `;
+
+    }
+    return errmsg;
+}
+
+
 export function validateProviderID(value) {
     const reg_ex = /^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,34}(?:[A-Za-z0-9_]))?)$/
     const test = reg_ex.test(value);
@@ -572,7 +591,17 @@ export function inputUTCStringForLaborID(timein) {
     if (month < 10) {
         month = `0${month}`
     }
-    return (`${month}/${date}/${year} ${hours}:${minutes} ${ampm}`)
+    const seconds = trailingZeros(datein.getSeconds())
+    return (`${month}/${date}/${year} ${hours}:${minutes}:${seconds} ${ampm}`)
+
+}
+
+export function trailingZeros(num) {
+    if (num < 10) {
+        return (`0${num}`);
+    } else {
+        return num;
+    }
 
 }
 export function LetterCounter(i) {
