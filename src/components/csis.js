@@ -337,12 +337,20 @@ class CSIS extends Component {
         console.log(csi)
     }
 
+    
     render() {
         const styles = MyStylesheet();
         const design = new Design();
         const headerFont = design.getHeaderFont.call(this)
         const regularFont = design.getRegularFont.call(this)
         const csi = new CSI();
+        const companyid = design.getcompanyid.call(this)
+
+        const csis = design.getallcsicodes.call(this);
+            if(!csis) {
+                design.loadcsis.call(this,companyid)
+            }
+
         const showcodes = () => {
             if (this.state.width > 800) {
 
@@ -478,7 +486,8 @@ function mapStateToProps(state) {
         myusermodel: state.myusermodel,
         allusers: state.allusers,
         allcompanys: state.allcompanys,
-        project: state.project
+        project: state.project,
+        csis:state.csis
     }
 }
 

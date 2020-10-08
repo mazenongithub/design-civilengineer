@@ -1,6 +1,6 @@
 import React from 'react';
 import { sortpart, inputUTCStringForLaborID, getEquipmentRentalObj, calculatetotalhours, calculateTotalMonths, FutureCostPresent, AmmortizeFactor } from "./functions";
-import { SaveSpecs, LogoutUser, SaveCSI, DeleteCSI, SaveCostEstimate, AppleLogin, SaveProfile } from './actions/api'
+import { SaveSpecs, LogoutUser, SaveCSI, DeleteCSI, SaveCostEstimate, AppleLogin, SaveProfile, LoadCSIs, LoadSpecifications } from './actions/api'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { MyStylesheet } from "./styles";
@@ -8,7 +8,49 @@ import { saveCostEstimateIcon, saveProfileIcon } from './svg'
 
 
 
+
 class Design {
+
+
+    async loadspecifications(companyid, projectid) {
+        const design = new Design();
+        const project = design.getproject.call(this)
+        const myuser = design.getuser.call(this)
+        if(myuser) {
+        if (project) {
+            const i = design.getprojectbykeyid.call(this, project.projectid)
+
+            try {
+                let response = await LoadSpecifications(companyid, projectid)
+                if (response.hasOwnProperty("specifications")) {
+                    myuser.company.projects[i].specifications = response.specifications;
+                    this.props.reduxUser({ myuser })
+                    this.setState({ render: 'render' })
+
+                }
+
+            } catch (err) {
+                alert(err)
+            }
+
+
+        }
+
+    }
+
+    }
+    getcompanyid() {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        let companyid = false;
+        if (myuser) {
+            if (myuser.hasOwnProperty("company")) {
+                companyid = myuser.company.companyid;
+            }
+        }
+        return companyid;
+
+    }
 
     getgocheckheight() {
         if (this.state.width > 1200) {
@@ -1207,6 +1249,24 @@ class Design {
                 })
         }
     }
+
+    async loadcsis() {
+
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if (myuser) {
+            if (myuser.hasOwnProperty("company")) {
+                const companyid = myuser.company.companyid;
+                const response = await LoadCSIs(companyid);
+                console.log(response)
+                if (response.hasOwnProperty("csicodes")) {
+                    this.props.reduxCSIs(response.csicodes);
+                    this.setState({ render: 'render' })
+                }
+            }
+        }
+    }
+
     getprofiledimensions() {
         if (this.state.width > 1200) {
             return (
@@ -1244,65 +1304,65 @@ class Design {
 
         const validatemyuser = (myuser) => {
             let message = "";
-            if(myuser.hasOwnProperty("invalid")) {
-                message +=' Invalid Profile '
+            if (myuser.hasOwnProperty("invalid")) {
+                message += ' Invalid Profile '
 
             }
 
-            if(myuser.hasOwnProperty("invalidemail")) {
-                message+= `Invalid Email`
+            if (myuser.hasOwnProperty("invalidemail")) {
+                message += `Invalid Email`
             }
             return message;
 
         }
 
         if (myuser) {
-            if(!validatemyuser(myuser)) {
+            if (!validatemyuser(myuser)) {
 
-            const profile = {
-                providerid: myuser.providerid,
-                profile: myuser.profile,
-                firstname: myuser.firstname,
-                lastname: myuser.lastname,
-                emailaddress: myuser.emailaddress,
-                phonenumber: myuser.phonenumber
-            }
-
-            console.log(profile)
-
-            try {
-
-                let response = await SaveProfile({profile})
-                console.log(response)
-                if(response.hasOwnProperty("profile")) {
-    
-                    myuser.profile = response.profile.profile;
-                    myuser.firstname = response.profile.firstname;
-                    myuser.lastname = response.profile.lastname;
-                    myuser.emailaddress = response.profile.emailaddress;
-                    myuser.phonenumber = response.profile.phonenumber;
-    
-                    this.props.reduxUser({myuser});
-                    this.setState({render:'render'})
-    
+                const profile = {
+                    providerid: myuser.providerid,
+                    profile: myuser.profile,
+                    firstname: myuser.firstname,
+                    lastname: myuser.lastname,
+                    emailaddress: myuser.emailaddress,
+                    phonenumber: myuser.phonenumber
                 }
-    
-                if(response.hasOwnProperty("message")) {
-                    let message = "";
-                    message += response.message;
-                    if(response.hasOwnProperty("lastupdated")) {
-                    message += `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
+
+                console.log(profile)
+
+                try {
+
+                    let response = await SaveProfile({ profile })
+                    console.log(response)
+                    if (response.hasOwnProperty("profile")) {
+
+                        myuser.profile = response.profile.profile;
+                        myuser.firstname = response.profile.firstname;
+                        myuser.lastname = response.profile.lastname;
+                        myuser.emailaddress = response.profile.emailaddress;
+                        myuser.phonenumber = response.profile.phonenumber;
+
+                        this.props.reduxUser({ myuser });
+                        this.setState({ render: 'render' })
+
                     }
-                    this.setState({message})
+
+                    if (response.hasOwnProperty("message")) {
+                        let message = "";
+                        message += response.message;
+                        if (response.hasOwnProperty("lastupdated")) {
+                            message += `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
+                        }
+                        this.setState({ message })
+                    }
+
+                } catch (err) {
+                    alert(err)
                 }
 
-            } catch(err) {
-                alert(err)
+            } else {
+                this.setState({ message: validatemyuser(myuser) })
             }
-           
-        } else {
-            this.setState({message:validatemyuser(myuser)})
-        }
 
 
         }
@@ -1387,7 +1447,7 @@ class Design {
         return slides();
     }
     getallcsicodes() {
-        const design = new Design();
+      
         let csis = false;
         if (this.props.hasOwnProperty("csis")) {
             if (this.props.csis.hasOwnProperty("length")) {
@@ -1544,6 +1604,17 @@ class Design {
             }
 
         }
+    }
+
+    getproject() {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        let project = false;
+        if (myuser) {
+            const title = this.props.match.params.title;
+            project = design.getprojectbytitle.call(this, title)
+        }
+        return project;
     }
 
     async saveprojectspecs() {

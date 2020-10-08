@@ -262,6 +262,29 @@ export async function  AllCompanys() {
     })
 }
 
+export async function LoadSpecifications(companyid,projectid) {
+
+
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/${companyid}/specifications/${projectid}`
+
+    return fetch(APIURL, { credentials: 'include' }).then(resp => {
+
+        if (!resp.ok) {
+            if (resp.status >= 400 && resp.status < 500) {
+                return resp.json().then(data => {
+                    throw data.message
+                })
+            }
+            else {
+                let err =  'No network connection or the Server is not responding';
+                throw err;
+            }
+        }
+
+        return resp.json();
+    })
+}
+
 export async function LoadCSIs(companyid) {
 
 

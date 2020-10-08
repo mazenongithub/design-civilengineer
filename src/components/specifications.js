@@ -7,7 +7,7 @@ import Design from './design'
 import {makeID} from './functions'
 import {Link} from 'react-router-dom'
 import CSI from './csi'
-import { LoadCSIs } from './actions/api';
+
 
 class Specifications extends Component {
     constructor(props) {
@@ -18,12 +18,10 @@ class Specifications extends Component {
     componentDidMount() {
         window.addEventListener('resize', this.updateWindowDimensions);
         this.updateWindowDimensions();
-        this.props.reduxProject({ title: this.props.match.params.title })
-        const design = new Design();
-       
-
+        this.props.reduxProject({ title: this.props.match.params.title })     
 
     }
+    
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
@@ -31,22 +29,7 @@ class Specifications extends Component {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
     }
 
-    async loadcsis() {
-       
-        const design = new Design();
-        const myuser = design.getuser.call(this)
-        if(myuser) {
-            if(myuser.hasOwnProperty("company")) {
-                const companyid = myuser.company.companyid;
-                const response = await LoadCSIs(companyid);
-                console.log(response)
-                if(response.hasOwnProperty("csicodes")) {
-                    this.props.reduxCSIs(response.csicodes);
-                    this.setState({render:'render'})
-                }
-            }
-        }
-    }
+  
 
     
 
@@ -137,10 +120,22 @@ class Specifications extends Component {
 
             }
 
+
+            const project = design.getproject.call(this);
+            if(project) {
+
+                if(!project.hasOwnProperty("specifications")) {
+                    design.loadspecifications.call(this, companyid(), project.projectid)
+                }
+
+          
+
             const csis = design.getallcsicodes.call(this);
             if(!csis) {
-                this.loadcsis(companyid())
+                design.loadcsis.call(this,companyid())
             }
+
+
 
         return (
             <div style={{ ...styles.generalFlex }}>
@@ -178,6 +173,8 @@ class Specifications extends Component {
 
                 </div>
             </div>)
+
+        }
 
         }
           else {
