@@ -869,15 +869,18 @@ class Design {
         }
         return key;
     }
+   
     getspecficationbycsi(projectid, csiid) {
         const design = new Design();
         const specs = design.getspecficationsbyprojectid.call(this, projectid)
+        
         let myspec = false;
         if (specs) {
             // eslint-disable-next-line
             specs.map(spec => {
                 if (spec.csiid === csiid) {
                     myspec = spec;
+                   
                 }
             })
         }
@@ -1328,7 +1331,6 @@ class Design {
                     phonenumber: myuser.phonenumber
                 }
 
-                console.log(profile)
 
                 try {
 

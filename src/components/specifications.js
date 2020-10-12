@@ -12,7 +12,7 @@ import CSI from './csi'
 class Specifications extends Component {
     constructor(props) {
         super(props);
-        this.state = { render: '', width: 0, height: 0, csi_1: '', csi_2: '', csi_3: '' }
+        this.state = { render: '', width: 0, height: 0, csi_1: '', csi_2: '', csi_3: '', csi_4:'' }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     }
     componentDidMount() {
@@ -31,16 +31,21 @@ class Specifications extends Component {
 
   
 
-    
-
     handlecsiid(csiid) {
         const design  = new Design()
         const specid = makeID(16);
         const csi = design.getcsibyid.call(this,csiid)
-        let csi_1 = csi.csi.substr(0, 2)
-        let csi_2 = csi.csi.substr(2, 2)
-        let csi_3 = csi.csi.substr(4, 2);
-        this.setState({ csi_1, csi_2, csi_3 })
+        let csi_1 = "";        let csi_2 = "";        let csi_3 = ""; let csi_4="";
+        if(csi) {
+         csi_1 = csi.csi.substr(0, 2)
+         csi_2 = csi.csi.substr(2, 2)
+         csi_3 = csi.csi.substr(4, 2);
+        }
+     
+        if (csi.csi.length > 6) {
+            csi_4 = csi.csi.substring(7, 9);
+        }
+        this.setState({ csi_1, csi_2, csi_3, csi_4 })
         const newSpec = {specid,csiid}
         const myuser = design.getuser.call(this)
         if(myuser) {

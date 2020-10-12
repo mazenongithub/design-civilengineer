@@ -48,9 +48,9 @@ class CSI {
         if (csi_3.length>1) {
             searchcsi += csi_3.substr(0, 2)
         
-            if(csi_4.length>1) {
-                searchcsi += `.${csi_4.substr(0, 2)}`
-            }
+        if(csi_4.length>1) {
+            searchcsi += `.${csi_4.substr(0, 2)}`
+        }
         
         }
 

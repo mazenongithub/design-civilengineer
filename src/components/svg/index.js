@@ -2,6 +2,10 @@ import React from 'react';
 export function removeIconSmallBlack() {
     return (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.09 25.74"><defs><style></style></defs><title>removeIcon</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path className="removeicon-1" d="M23.87,17.89a4.52,4.52,0,0,1,0,6.29,4.33,4.33,0,0,1-6.21,0L13.05,19.5,8.43,24.18a4.33,4.33,0,0,1-6.2,0,4.53,4.53,0,0,1,0-6.29l4.61-4.67L1.53,7.83a4.49,4.49,0,0,1,0-6.28A4.27,4.27,0,0,1,4.64.25a4.28,4.28,0,0,1,3.09,1.3l5.32,5.38,5.31-5.38a4.36,4.36,0,0,1,6.21,0,4.52,4.52,0,0,1,0,6.28l-5.32,5.39Z" /></g></g></svg>)
 }
+export function addIcon() {
+    return(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126 60.55"><defs><style>
+    </style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><rect className="addIcon-1" x="0.5" y="0.5" width="125" height="58" rx="6.63"/><path d="M118.87,1A6.14,6.14,0,0,1,125,7.13V51.87A6.14,6.14,0,0,1,118.87,58H7.13A6.14,6.14,0,0,1,1,51.87V7.13A6.14,6.14,0,0,1,7.13,1H118.87m0-1H7.13A7.13,7.13,0,0,0,0,7.13V51.87A7.13,7.13,0,0,0,7.13,59H118.87A7.13,7.13,0,0,0,126,51.87V7.13A7.13,7.13,0,0,0,118.87,0Z"/><text className="addIcon-2" transform="translate(18 46.5)">Add</text></g></g></svg>)
+}
 export function saveCostEstimateIcon() {
     return(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 354.21 71"><defs><style></style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer 3"><rect className="saveestimate-1" x="0.5" y="0.5" width="337" height="70" rx="6.63"/><path d="M330.87,1A6.14,6.14,0,0,1,337,7.13V63.87A6.14,6.14,0,0,1,330.87,70H7.13A6.14,6.14,0,0,1,1,63.87V7.13A6.14,6.14,0,0,1,7.13,1H330.87m0-1H7.13A7.13,7.13,0,0,0,0,7.13V63.87A7.13,7.13,0,0,0,7.13,71H330.87A7.13,7.13,0,0,0,338,63.87V7.13A7.13,7.13,0,0,0,330.87,0Z"/><text className="saveestimate-2" transform="translate(9.2 50.5)">S<tspan className="saveestimate-3" x="30.74" y="0">a</tspan><tspan className="saveestimate-4" x="57.18" y="0">v</tspan><tspan x="82.13" y="0">e Estimate  </tspan></text></g></g></svg>)
 }

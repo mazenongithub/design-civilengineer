@@ -77,6 +77,9 @@ export function MyStylesheet() {
             borderRadius:'5px',
             border:'1px solid'
         },
+        rightMargin15:{
+            marginRight:'15px'
+        },
         marginTop10:{
             marginTop:'10px'
         },
@@ -89,8 +92,15 @@ export function MyStylesheet() {
         boldFont:{
             fontWeight:'700'
         },
-        marginLeft30:{
-            marginLeft:'30px'
+
+        marginLeft90:{
+            marginLeft:'90px'
+        },
+        marginLeft120:{
+            marginLeft:'120px'
+        },
+        marginLeft150:{
+            marginLeft:'150px'
         },
         activeBackground:{
             backgroundColor:'#D7A22A'
