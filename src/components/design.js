@@ -58,7 +58,7 @@ class Design {
                 width: '69px',
                 height: '69px'
             })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({
                 width: '59px',
                 height: '59px'
@@ -600,7 +600,7 @@ class Design {
     getblackx() {
         if (this.state.width > 1200) {
             return ({ width: '49px', height: '49px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '49px', height: '49px' })
         } else {
             return ({ width: '49px', height: '49px' })
@@ -611,7 +611,7 @@ class Design {
 
         if (this.state.width > 1200) {
             return ({ width: '373px', height: '88px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '277px', height: '65px' })
         } else {
             return ({ width: '140px', height: '33px' })
@@ -623,7 +623,7 @@ class Design {
     getampmicon() {
         if (this.state.width > 1200) {
             return ({ width: '83px', height: '48px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '70px', height: '41px' })
         } else {
             return ({ width: '57px', height: '33px' })
@@ -634,7 +634,7 @@ class Design {
 
         if (this.state.width > 1200) {
             return ({ width: '365px', height: '87px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '277px', height: '66px' })
         } else {
             return ({ width: '140px', height: '33px' })
@@ -645,7 +645,7 @@ class Design {
     getMenuicon() {
         if (this.state.width > 1200) {
             return ({ width: '63px', height: '55px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '63px', height: '55px' })
         } else {
             return ({ width: '63px', height: '55px' })
@@ -898,7 +898,7 @@ class Design {
     getsaveestimate() {
         if (this.state.width > 1200) {
             return ({ width: '338px', height: '71px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '278px', height: '59px' })
         } else {
             return ({ width: '218px', height: '46px' })
@@ -1158,7 +1158,7 @@ class Design {
     getsaveicon() {
         if (this.state.width > 1200) {
             return ({ width: '122px', height: '52px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '107px', height: '45px' })
         } else {
             return ({ width: '92px', height: '39px' })
@@ -1167,15 +1167,15 @@ class Design {
 
     getsaveprojecticon() {
         if (this.state.width > 1200) {
-            return ({ width: '480px', height: '107px' })
-        } else if (this.state.width > 800) {
-            return ({ width: '340px', height: '80px' })
+            return ({ width: '340px' })
+        } else if (this.state.width > 600) {
+            return ({ width: '270px' })
         } else {
             return ({ width: '200px', height: '44px' })
         }
     }
     getremoveicon() {
-        if (this.state.width > 800) {
+        if (this.state.width > 600) {
             return ({ width: '47px', height: '47px' })
         } else {
             return ({ width: '36px', height: '36px' })
@@ -1189,7 +1189,7 @@ class Design {
                     height: '115px'
                 })
 
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return (
                 {
                     width: '360px',
@@ -1213,7 +1213,7 @@ class Design {
                     height: '88px'
                 })
 
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return (
                 {
                     width: '93px',
@@ -1237,7 +1237,7 @@ class Design {
                     height: '45px'
                 })
 
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return (
                 {
                     width: '78px',
@@ -1278,7 +1278,7 @@ class Design {
                     height: '327px'
                 })
 
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return (
                 {
                     width: '285px',
@@ -1461,7 +1461,7 @@ class Design {
     getsmallslide() {
         if (this.state.width > 1200) {
             return ({ width: '362px', height: '345px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '254px', height: '241px' })
         } else {
             return ({ width: '178px', height: '169px' })
@@ -1471,7 +1471,7 @@ class Design {
     getmainslide() {
         if (this.state.width > 1200) {
             return ({ width: '1087px', height: '1035px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ width: '762px', height: '725px' })
         } else {
             return ({ width: '356px', height: '339px' })
@@ -1480,7 +1480,7 @@ class Design {
     getLargeFont() {
         if (this.state.width > 1200) {
             return ({ fontSize: '48px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ fontSize: '40px' })
         } else {
             return ({ fontSize: '36px' })
@@ -1489,7 +1489,7 @@ class Design {
     getRegularFont() {
         if (this.state.width > 1200) {
             return ({ fontSize: '36px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ fontSize: '30px' })
         } else {
             return ({ fontSize: '24px' })
@@ -1498,7 +1498,7 @@ class Design {
     getbuttonheight() {
         if (this.state.width > 1200) {
             return ({ height: '75px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ height: '58px' })
         } else {
             return ({ height: '40px' })
@@ -1508,7 +1508,7 @@ class Design {
     getHeaderFont() {
         if (this.state.width > 1200) {
             return ({ fontSize: '40px' })
-        } else if (this.state.width > 800) {
+        } else if (this.state.width > 600) {
             return ({ fontSize: '36px' })
         } else {
             return ({ fontSize: '30px' })
@@ -1623,93 +1623,37 @@ class Design {
         const design = new Design();
         const myuser = design.getuser.call(this)
         if (myuser) {
-            const myproject = design.getprojectbytitle.call(this, this.props.match.params.title)
+            const myproject = design.getproject.call(this)
             if (myproject) {
                 const projectid = myproject.projectid;
                 const i = design.getprojectbykeyid.call(this, myproject.projectid)
-                const specs = design.getspecficationsbyprojectid.call(this, projectid)
-                if (specs.hasOwnProperty("sections")) {
-                    specs.sections.sort((b, a) => {
-                        return sortpart(b, a)
-                    })
-                }
-                const values = { projectid, specs }
+                const specifications = design.getspecficationsbyprojectid.call(this, projectid);
+                if(specifications) {
+                const specs = {}
+                specs.companyid = myuser.company.companyid;
+                specs.projectid = myproject.projectid;
+                specs.specifications = specifications;
+               
+                           
 
                 try {
-                    let response = await SaveSpecs(values);
+                 
+                    let response = await SaveSpecs({specs});
                     console.log(response)
-                    let activesectionid = "";
-                    let activecontentid = "";
-                    let activesubcontentid = '';
-                    if (response.hasOwnProperty("replaceids")) {
-
-                        if (this.state.activesectionid) {
-                            if (response.replaceids.hasOwnProperty("sections")) {
-                                // eslint-disable-next-line
-                                response.replaceids.sections.map(section => {
-                                    if (section.oldsectionid === this.state.activesectionid) {
-                                        activesectionid = section.sectionid;
-                                        this.setState({ activesectionid: false })
-                                    }
-                                })
-                            }
-
-                        }
-                        if (this.state.activecontentid) {
-
-                            if (response.replaceids.hasOwnProperty("content")) {
-                                // eslint-disable-next-line
-                                response.replaceids.content.map(content => {
-                                    if (content.oldcontentid === this.state.activecontentid) {
-                                        activecontentid = content.contentid;
-                                        this.setState({ activecontentid: false })
-                                    }
-                                })
-                            }
-
-                        }
-                        if (this.state.activesubcontentid) {
-
-                            if (response.replaceids.hasOwnProperty("subcontent")) {
-                                // eslint-disable-next-line
-                                response.replaceids.subcontent.map(subcontent => {
-                                    if (subcontent.oldsubcontentid === this.state.activesubcontentid) {
-                                        activesubcontentid = subcontent.subcontentid;
-                                        this.setState({ activesubcontentid: false })
-                                    }
-                                })
-                            }
-
-                        }
-                    }
-                    if (response.hasOwnProperty("specifications")) {
+                    if(response.hasOwnProperty("specifications")) {
                         myuser.company.projects[i].specifications = response.specifications;
-                        this.props.reduxUser({ myuser })
-                        this.setState({ render: 'render' })
-
-                    }
-                    if (response.hasOwnProperty("message") || response.hasOwnProperty("lastupdated")) {
-                        const lastupdated = response.lastupdated;
-                        let message = " ";
-                        if (response.hasOwnProperty("message")) {
-                            message += response.message
-                        }
-                        this.setState({ message: `${message} last updated ${inputUTCStringForLaborID(lastupdated)}` })
-                    }
-                    if (activesectionid) {
-                        this.setState({ activesectionid })
-                    }
-                    if (activecontentid) {
-                        this.setState({ activecontentid })
-                    }
-                    if (activesubcontentid) {
-                        this.setState({ activesubcontentid })
+                        this.props.reduxUser({myuser})
+                        let message = `Last Updated ${new Date().toLocaleTimeString()}`
+                        this.setState({message})
                     }
 
                 } catch (err) {
                     alert(err)
                 }
 
+            }
+
+            
             }
         }
     }

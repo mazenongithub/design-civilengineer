@@ -142,50 +142,12 @@ class MakeID {
         return specid;
     }
 
-    sectionid() {
-        const design = new Design();
-        let sectionid = "";
-        let validate = false
-        const myuser = design.getuser.call(this);
-        if (myuser) {
-
-            while (!validate) {
-
-                sectionid = makeID(16);
-                validate = true;
-                const project = design.getprojectbytitle.call(this, this.props.match.params.title)
-                if (project) {
-                    if (project.hasOwnProperty("specifications")) {
-                        // eslint-disable-next-line
-                        project.specifications.map(spec => {
-                            if (spec.hasOwnProperty("sections")) {
-                                // eslint-disable-next-line
-                                spec.sections.map(section => {
-
-
-                                    if (section.sectionid === sectionid) {
-                                        validate = false;
-                                    }
-                                })
-
-                            }
-                        })
-                    }
-
-
-                }
-
-
-            }
-
-        }
-        return sectionid
-    }
+  
 
     contentid() {
         const design = new Design();
         let contentid = "";
-        let validate = false
+        let validate = false;
         const myuser = design.getuser.call(this);
         if (myuser) {
 
@@ -193,22 +155,68 @@ class MakeID {
 
                 contentid = makeID(16);
                 validate = true;
-                const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+                const project = design.getproject.call(this)
                 if (project) {
-                    if (project.hasOwnProperty("specifications")) {
+                    const spec = design.getspecficationbycsi.call(this,project.projectid, this.props.match.params.csiid)
+                
+                    if (spec) {
                         // eslint-disable-next-line
-                        project.specifications.map(spec => {
-                            if (spec.hasOwnProperty("content")) {
-                                // eslint-disable-next-line
-                                spec.content.map(content => {
-                                    if (content.contentid === contentid) {
-                                        validate = false;
-                                    }
-                                })
+                        if(spec.hasOwnProperty("paragraph")) {
+                            spec.paragraph.list.map(list=> {
+                                if(list.contentid === contentid) {
+                                    validate = false;
+                                }
+                                
+                                if(list.hasOwnProperty("sublist")) {
+                                    list.sublist.list.map(sublist=> {
+                                        if(sublist.contentid === contentid) {
+                                            validate = false;
+                                        }
+                                        if(sublist.hasOwnProperty("sublist")) {
+                                            sublist.sublist.list.map(sublist_1=> {
+                                                if(sublist_1.contentid === contentid) {
+                                                    validate = false;
+                                                }
 
-                            }
+                                                if(sublist_1.hasOwnProperty("sublist")) {
+                                                    sublist_1.sublist.list.map(sublist_2=> {
+                                                        if(sublist_2.contentid === contentid) {
+                                                            validate = false;
+                                                        }
 
-                        })
+                                                        if(sublist_2.hasOwnProperty("sublist")) {
+                                                            sublist_2.sublist.list.map(sublist_3=> {
+                                                                
+                                                                if(sublist_3.contentid === contentid) {
+                                                                    validate = false;
+                                                                }
+
+                                                            })
+
+                                                        
+                                                        
+                                                        }
+
+
+                                                    
+                                                    })
+
+                                                }
+                                            
+                                            
+                                            })
+                                        }
+                                    })
+                                }
+
+
+
+
+
+                            })
+                        }
+                        
+                        
                     }
 
 
@@ -221,51 +229,7 @@ class MakeID {
         return contentid;
     }
 
-    subcontentid() {
-        const design = new Design();
-        let subcontentid = "";
-        let validate = false
-        const myuser = design.getuser.call(this);
-        if (myuser) {
-
-            while (!validate) {
-
-                subcontentid = makeID(16);
-                validate = true;
-                const project = design.getprojectbytitle.call(this, this.props.match.params.title)
-                if (project) {
-                    if (project.hasOwnProperty("specifications")) {
-                        // eslint-disable-next-line
-                        project.specifications.map(spec => {
-                            if (spec.hasOwnProperty("content")) {
-                                // eslint-disable-next-line
-                                spec.content.map(content => {
-                                    if (content.hasOwnProperty("subcontent")) {
-                                        // eslint-disable-next-line
-                                        content.subcontent.map(subcontent => {
-                                            if (subcontent.subcontentid === subcontentid) {
-                                                validate = false;
-                                            }
-                                        })
-
-                                    }
-                                })
-
-                            }
-
-                        })
-                    }
-
-
-                }
-
-
-            }
-
-        }
-        return subcontentid;
-    }
-
+    
 
 
 

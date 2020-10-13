@@ -5,13 +5,13 @@ import Design from './design';
 import { MyStylesheet } from './styles'
 import { getListNumber, makeID } from './functions'
 import { addIcon } from './svg';
-// import { upArrowIcon, downArrowIcon, removeIconSmall,saveProjectSpecs } from './svg';
-// import MakeID from './makeid'
+import { upArrowIcon, downArrowIcon, removeIconSmall, saveProjectSpecs } from './svg';
+import MakeID from './makeid'
 
 class Specification extends Component {
     constructor(props) {
         super(props);
-        this.state = { render: '', width: 0, height: 0, activesectionid: false, title: '', part: "1", activecontentid: false, content: '' }
+        this.state = { render: '', width: 0, height: 0, activesectionid: false, message: '', activecontentid: false, content: '' }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     }
     componentDidMount() {
@@ -27,13 +27,13 @@ class Specification extends Component {
     }
 
     makelistactive(contentid) {
-      
+
         if (this.state.activecontentid === contentid) {
             this.setState({ activecontentid: false })
         } else {
             this.setState({ activecontentid: contentid })
         }
-        
+
     }
 
     getlisttype(spec, contentid) {
@@ -176,121 +176,122 @@ class Specification extends Component {
     }
 
     handlelisttype(value) {
-       
+
         const design = new Design();
         const myuser = design.getuser.call(this)
+        const makeid = new MakeID();
         if (myuser) {
 
             const project = design.getproject.call(this)
             if (project) {
-                const i = design.getprojectbykeyid.call(this,project.projectid)
-                const spec = design.getspecficationbycsi.call(this,project.projectid,this.props.match.params.csiid)
-                if(spec) {
-                  
-                    const j = design.getspecficationkeybycsi.call(this,project.projectid,this.props.match.params.csiid)
-                if (this.state.activecontentid) {
-                    const list = this.getspecbyid(spec, this.state.activecontentid)
-                    if (list) {
-                        const speckeys = this.getspeckeybyid(spec,this.state.activecontentid)
+                const i = design.getprojectbykeyid.call(this, project.projectid)
+                const spec = design.getspecficationbycsi.call(this, project.projectid, this.props.match.params.csiid)
+                if (spec) {
 
-                        if (list.hasOwnProperty("sublist")) {
-                            if (speckeys.length === 1) {
-                                let k = speckeys[0]
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.listType = value
-                                this.props.reduxUser({ myuser })
-                                this.setState({ render: 'render' })
-                            } else if (speckeys.length === 2) {
+                    const j = design.getspecficationkeybycsi.call(this, project.projectid, this.props.match.params.csiid)
+                    if (this.state.activecontentid) {
+                        const list = this.getspecbyid(spec, this.state.activecontentid)
+                        if (list) {
+                            const speckeys = this.getspeckeybyid(spec, this.state.activecontentid)
 
-                                let k = speckeys[0];
-                                let l = speckeys[1];
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.listType = value
-                                this.props.reduxUser({ myuser })
-                                this.setState({ render: 'render' })
-                            } else if (speckeys.length === 3) {
+                            if (list.hasOwnProperty("sublist")) {
+                                if (speckeys.length === 1) {
+                                    let k = speckeys[0]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.listType = value
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+                                } else if (speckeys.length === 2) {
 
-                                let k = speckeys[0];
-                                let l = speckeys[1];
-                                let m = speckeys[2]
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.listType = value
-                                this.setState({ render: 'render' })
-                            } else if (speckeys.length === 4) {
+                                    let k = speckeys[0];
+                                    let l = speckeys[1];
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.listType = value
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+                                } else if (speckeys.length === 3) {
 
-                                let k = speckeys[0];
-                                let l = speckeys[1];
-                                let m = speckeys[2]
-                                let n = speckeys[3]
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.listType = value
-                                this.props.reduxUser({ myuser })
-                                this.setState({ render: 'render' })
-                            } else if (speckeys.length === 5) {
+                                    let k = speckeys[0];
+                                    let l = speckeys[1];
+                                    let m = speckeys[2]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.listType = value
+                                    this.setState({ render: 'render' })
+                                } else if (speckeys.length === 4) {
 
-                                let k = speckeys[0];
-                                let l = speckeys[1];
-                                let m = speckeys[2]
-                                let n = speckeys[3]
-                                let o = speckeys[4]
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o].sublist.listType = value
-                                this.props.reduxUser({ myuser })
-                                this.setState({ render: 'render' })
+                                    let k = speckeys[0];
+                                    let l = speckeys[1];
+                                    let m = speckeys[2]
+                                    let n = speckeys[3]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.listType = value
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+                                } else if (speckeys.length === 5) {
+
+                                    let k = speckeys[0];
+                                    let l = speckeys[1];
+                                    let m = speckeys[2]
+                                    let n = speckeys[3]
+                                    let o = speckeys[4]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o].sublist.listType = value
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ render: 'render' })
+                                }
+
+                            } else {
+                                // create new sublist
+
+                                const sublist = { listType: value, list: [{ contentid: makeid.contentid.call(this), content: '' }] }
+                                if (speckeys.length === 1) {
+                                    let k = speckeys[0]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist = sublist;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ activecontentid: sublist.list[0].contentid })
+                                } else if (speckeys.length === 2) {
+
+                                    let k = speckeys[0];
+                                    let l = speckeys[1];
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist = sublist;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ activecontentid: sublist.list[0].contentid })
+                                } else if (speckeys.length === 3) {
+
+                                    let k = speckeys[0];
+                                    let l = speckeys[1];
+                                    let m = speckeys[2]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist = sublist;
+                                    this.setState({ activecontentid: sublist.list[0].contentid })
+                                } else if (speckeys.length === 4) {
+
+                                    let k = speckeys[0];
+                                    let l = speckeys[1];
+                                    let m = speckeys[2]
+                                    let n = speckeys[3]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist = sublist;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ activecontentid: sublist.list[0].contentid })
+                                } else if (speckeys.length === 5) {
+
+                                    let k = speckeys[0];
+                                    let l = speckeys[1];
+                                    let m = speckeys[2]
+                                    let n = speckeys[3]
+                                    let o = speckeys[4]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o].sublist = sublist;
+                                    this.props.reduxUser({ myuser })
+                                    this.setState({ activecontentid: sublist.list[0].contentid })
+                                }
+
+
+
+
+
+
                             }
-
-                        } else {
-                            // create new sublist
-                            
-                            const sublist = {listType:value,list:[{contentid:makeID(16),content:''}]}
-                            if (speckeys.length === 1) {
-                                let k = speckeys[0]
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist = sublist;
-                                this.props.reduxUser({ myuser })
-                                this.setState({ activecontentid:sublist.list[0].contentid })
-                            } else if (speckeys.length === 2) {
-
-                                let k = speckeys[0];
-                                let l = speckeys[1];
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist = sublist;
-                                this.props.reduxUser({ myuser })
-                                this.setState({ activecontentid:sublist.list[0].contentid })
-                            } else if (speckeys.length === 3) {
-
-                                let k = speckeys[0];
-                                let l = speckeys[1];
-                                let m = speckeys[2]
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist = sublist;
-                                this.setState({ activecontentid:sublist.list[0].contentid })
-                            } else if (speckeys.length === 4) {
-
-                                let k = speckeys[0];
-                                let l = speckeys[1];
-                                let m = speckeys[2]
-                                let n = speckeys[3]
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist = sublist;
-                                this.props.reduxUser({ myuser })
-                                this.setState({ activecontentid:sublist.list[0].contentid })
-                            } else if (speckeys.length === 5) {
-
-                                let k = speckeys[0];
-                                let l = speckeys[1];
-                                let m = speckeys[2]
-                                let n = speckeys[3]
-                                let o = speckeys[4]
-                                myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o].sublist = sublist;
-                                this.props.reduxUser({ myuser })
-                                this.setState({ activecontentid:sublist.list[0].contentid })
-                            }
-
-
-
-
-
-
                         }
+
+
+                    } else {
+                        // content id is not active event triggered by create new from existing spec
+                        this.createnewspec(value)
                     }
-
-
-                } else {
-                    // content id is not active event triggered by create new from existing spec
-                    this.createnewspec(value)
-                }
                 } else {
 
                     this.createnewspec(value)
@@ -303,58 +304,60 @@ class Specification extends Component {
     }
 
     createnewspec(listType) {
-
+        const makeid = new MakeID();
         const newspec = (listType) => {
-            return({paragraph: {
-                listType,
-                list: [{
-                        contentid: makeID(16),
-                        content: ''}]
+            return ({
+                paragraph: {
+                    listType,
+                    list: [{
+                        contentid: makeid.contentid.call(this),
+                        content: ''
+                    }]
                 }
             })
         }
 
-     const design = new Design();
-     const myuser = design.getuser.call(this)
-     if(myuser) {
-         const project = design.getproject.call(this)
-         if(project) {
-             const i = design.getprojectbykeyid.call(this,project.projectid)
-             const newSpec = newspec(listType)
-             console.log(myuser)
-             const spec = design.getspecficationbycsi.call(this,project.projectid, this.props.match.params.csiid)
-             if(spec) {
-                 const j = design.getspecficationkeybycsi.call(this,project.projectid, this.props.match.params.csiid)
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if (myuser) {
+            const project = design.getproject.call(this)
+            if (project) {
+                const i = design.getprojectbykeyid.call(this, project.projectid)
+                const newSpec = newspec(listType)
 
-                if(!spec.hasOwnProperty("paragraph")) {
-                   
-                   
-                    myuser.company.projects[i].specifications[j].paragraph = newSpec.paragraph;
-                    this.props.reduxUser({myuser})
-                    this.setState({activecontentid:newSpec.paragraph.list[0].contentid})
-                    
+                const spec = design.getspecficationbycsi.call(this, project.projectid, this.props.match.params.csiid)
+                if (spec) {
+                    const j = design.getspecficationkeybycsi.call(this, project.projectid, this.props.match.params.csiid)
 
-                }
+                    if (!spec.hasOwnProperty("paragraph")) {
 
-             } else {
-                
-                newSpec.csiid = this.props.match.params.csiid;
-               
-                if(myuser.company.projects[i].hasOwnProperty("specifications")) {
-                   
-                    myuser.company.projects[i].specifications.push(newSpec)
+
+                        myuser.company.projects[i].specifications[j].paragraph = newSpec.paragraph;
+                        this.props.reduxUser({ myuser })
+                        this.setState({ activecontentid: newSpec.paragraph.list[0].contentid })
+
+
+                    }
+
                 } else {
-                    myuser.company.projects[i].specifications  = newSpec;
+
+                    newSpec.csiid = this.props.match.params.csiid;
+
+                    if (myuser.company.projects[i].hasOwnProperty("specifications")) {
+
+                        myuser.company.projects[i].specifications.push(newSpec)
+                    } else {
+                        myuser.company.projects[i].specifications = newSpec;
+
+                    }
+
+                    this.props.reduxUser({ myuser })
+                    this.setState({ activecontentid: newSpec.paragraph.list[0].contentid })
+
 
                 }
-
-                this.props.reduxUser({myuser})
-                this.setState({activecontentid:newSpec.paragraph.list[0].contentid})
-                
-
-             }
-         }
-     }
+            }
+        }
 
 
     }
@@ -363,7 +366,7 @@ class Specification extends Component {
         let listvalue = "";
         if (this.state.activecontentid) {
             let content = this.getspecbyid(spec, this.state.activecontentid)
-            console.log(content)
+
             if (content) {
                 if (content.hasOwnProperty("sublist")) {
                     listvalue = content.sublist.listType
@@ -398,7 +401,7 @@ class Specification extends Component {
     }
 
     handlelist(list, contentid) {
-        console.log(list, contentid)
+
         const design = new Design();
         const myuser = design.getuser.call(this)
         if (myuser) {
@@ -410,7 +413,7 @@ class Specification extends Component {
                     const j = design.getspecficationkeybycsi.call(this, project.projectid, this.props.match.params.csiid)
 
                     const speckeys = this.getspeckeybyid(spec, contentid);
-                    console.log(speckeys)
+
                     if (speckeys.length === 1) {
                         let k = speckeys[0]
 
@@ -462,7 +465,7 @@ class Specification extends Component {
     }
 
     getspeckeybyid(spec, contentid) {
-        console.log(contentid)
+
         let key = [];
         if (spec.hasOwnProperty("paragraph")) {
 
@@ -648,7 +651,7 @@ class Specification extends Component {
 
 
         }
-        console.log(myspec)
+
         return myspec;
 
 
@@ -676,9 +679,12 @@ class Specification extends Component {
         }
     }
 
+
+
     addnewlist() {
         const design = new Design();
         const myuser = design.getuser.call(this)
+        const makeid = new MakeID();
         if (myuser) {
 
             const project = design.getproject.call(this)
@@ -692,8 +698,9 @@ class Specification extends Component {
                         if (content) {
 
                             const keys = this.getspeckeybyid(spec, this.state.activecontentid)
-                            let k = false; let l = false; let m = false; let n = false; let o = false;
-                            const contentid = makeID(16)
+                            let k = false; let l = false; let m = false; let n = false;
+                            let o = false;
+                            const contentid = makeid.contentid.call(this)
                             const newContent = { contentid, content: this.state.content }
 
                             switch (keys.length) {
@@ -701,7 +708,7 @@ class Specification extends Component {
                                     k = keys[0]
                                     myuser.company.projects[i].specifications[j].paragraph.list.splice(k + 1, 0, newContent);
                                     this.props.reduxUser({ myuser })
-                                    this.setState({ activecontentid: contentid, content:'' })
+                                    this.setState({ activecontentid: contentid, content: '' })
                                     break;
                                 case 2:
                                     k = keys[0]
@@ -734,7 +741,7 @@ class Specification extends Component {
                                     n = keys[3]
                                     o = keys[4]
 
-                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list.splice(0 + 1, 0, newContent);
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list.splice(o + 1, 0, newContent);
                                     this.props.reduxUser({ myuser })
                                     this.setState({ activecontentid: contentid, content: '' })
                                     break;
@@ -751,8 +758,104 @@ class Specification extends Component {
 
                 }
             }
- 
 
+
+        }
+
+    }
+
+
+    removesection(contentid) {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if (myuser) {
+            const myproject = design.getproject.call(this);
+            if (myproject) {
+                const projectid = myproject.projectid;
+                const i = design.getprojectbykeyid.call(this, projectid)
+                const csiid = this.props.match.params.csiid;
+                const myspec = design.getspecficationbycsi.call(this, projectid, csiid);
+                if (myspec) {
+                    const j = design.getspecficationkeybycsi.call(this, projectid, csiid)
+                    if (myspec.hasOwnProperty("paragraph")) {
+
+                        const mysection = this.getspecbyid.call(this, myspec, contentid)
+                        if (mysection) {
+                            let keys = this.getspeckeybyid.call(this, myspec, contentid)
+                            let k = ""; let l = ""; let m = ""; let n = ""; let o = "";
+
+                            switch (keys.length) {
+
+                                case 1:
+                                    k = keys[0]
+                                    myuser.company.projects[i].specifications[j].paragraph.list.splice(k, 1)
+                                    if (myuser.company.projects[i].specifications[j].paragraph.list.length === 0) {
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list
+                                        delete myuser.company.projects[i].specifications[j].paragraph.listType;
+                                        delete myuser.company.projects[i].specifications[j].paragraph;
+                                    }
+                                    break;
+                                case 2:
+                                    k = keys[0]
+                                    l = keys[1]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list.splice(l, 1)
+                                    if (myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list.length === 0) {
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist;
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].listType;
+                                    }
+                                    break;
+                                case 3:
+                                    k = keys[0]
+                                    l = keys[1]
+                                    m = keys[2]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list.splice(m, 1)
+                                    if (myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list.length === 0) {
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list;
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist;
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].listType;
+                                    }
+                                    break;
+                                case 4:
+                                    k = keys[0]
+                                    l = keys[1]
+                                    m = keys[2]
+                                    n = keys[3]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list.splice(n, 1)
+                                    if (myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list.length === 0) {
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist;
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].listType;
+                                    }
+                                    break;
+                                case 5:
+                                    k = keys[0]
+                                    l = keys[1]
+                                    m = keys[2]
+                                    n = keys[3]
+                                    o = keys[4]
+                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list.splice(o, 1)
+                                    if (myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list.length === 0) {
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist;
+                                        delete myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].listType;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+
+
+
+                            this.props.reduxUser({ myuser })
+                            this.setState({ activecontentid: false })
+
+                        }
+
+                    }
+
+                }
+            }
         }
 
     }
@@ -762,9 +865,9 @@ class Specification extends Component {
     showspecifications() {
         const design = new Design();
         const myuser = design.getuser.call(this)
-        const headerFont = design.getHeaderFont.call(this)
         const regularFont = design.getRegularFont.call(this)
         const styles = MyStylesheet();
+        const getremoveicon = design.getremoveicon.call(this)
         if (myuser) {
 
             const project = design.getproject.call(this);
@@ -785,7 +888,7 @@ class Specification extends Component {
                     const showlist = (contentid) => {
                         if (this.state.activecontentid === contentid) {
                             const listtype = this.getlisttype(spec, contentid)
-                            console.log(listtype, contentid, spec)
+
                             const keys = this.getspeckeybyid(spec, contentid);
                             const mainkey = keys[keys.length - 1];
                             const width66 = () => {
@@ -799,7 +902,7 @@ class Specification extends Component {
                                 i = keys[keys.length - 2];
                             }
                             const listnum = ` ${getListNumber(listtype, mainkey + 2, i + 1)} `
-                            console.log(listnum, listtype)
+
                             const addicon = () => {
 
                                 if (this.state.width > 1200) {
@@ -808,6 +911,18 @@ class Specification extends Component {
                                     return ({ width: '105px' })
                                 } else {
                                     return ({ width: '80px' })
+                                }
+
+                            }
+
+                            const iconSpace = () => {
+
+                                if (this.state.width > 1200) {
+                                    return ({ marginRight: '80px' })
+                                } else if (this.state.width > 600) {
+                                    return ({ marginRight: '40px' })
+                                } else {
+                                    return ({ marginRight: '20px' })
                                 }
 
                             }
@@ -824,7 +939,7 @@ class Specification extends Component {
                                             </div>
                                         </div>
 
-                                        <div style={{ ...styles.generalFlex }}>
+                                        <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                                             <div style={{ ...styles.flex1 }}>
                                                 <span style={{ ...styles.generalFont, ...regularFont }}>
                                                     {listnum}
@@ -834,6 +949,17 @@ class Specification extends Component {
                                                     onChange={event => { this.setState({ content: event.target.value }) }}
                                                     style={{ ...styles.generalFont, ...regularFont, ...width66(), ...styles.generalPadding, ...styles.rightMargin15 }} />
                                                 <button style={{ ...styles.generalButton, ...addicon() }} onClick={() => { this.addnewlist() }}>{addIcon()}</button>
+                                            </div>
+                                        </div>
+
+                                        <div style={{ ...styles.generalFlex }}>
+                                            <div style={{ ...styles.flex1 }}>
+                                                <span style={{ ...regularFont, ...styles.generalFont }}> Reorder </span>
+                                                <button style={{ ...styles.smallbutton, ...styles.generalButton, ...iconSpace() }} onClick={() => { this.movesectionup(this.state.activecontentid) }}>{upArrowIcon()}</button>
+                                                <button style={{ ...styles.smallbutton, ...styles.generalButton }} onClick={() => { this.movesectiondown(this.state.activecontentid) }}>{downArrowIcon()}</button>
+                                            </div>
+                                            <div style={{ ...styles.flex1 }}>
+                                                <span style={{ ...styles.generalFont, ...regularFont }}>Remove</span><button style={{ ...styles.generalButton, ...getremoveicon }} onClick={() => { this.removesection(contentid) }}>{removeIconSmall()}</button>
                                             </div>
                                         </div>
 
@@ -870,7 +996,7 @@ class Specification extends Component {
 
 
                                         if (this.state.activecontentid === list.contentid) {
-                                            return (<div style={{ ...styles.generalContainer }}>
+                                            return (<div style={{ ...styles.generalContainer }} key={list.contentid}>
                                                 <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(list.contentid) }} onClick={() => { this.makelistactive(list.contentid) }}> {listtype_1()}</span>
                                                 <input type="text"
                                                     value={this.getactivecontentid()}
@@ -880,8 +1006,8 @@ class Specification extends Component {
                                             </div>)
 
                                         } else {
-                                            return (<div style={{ ...styles.generalContainer }}>
-                                                <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(list.contentid)}} onClick={() => { this.makelistactive(list.contentid) }}> {listtype_1()}</span>
+                                            return (<div style={{ ...styles.generalContainer }} key={list.contentid}>
+                                                <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(list.contentid) }} onClick={() => { this.makelistactive(list.contentid) }}> {listtype_1()}</span>
                                                 <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(list.contentid) }} onClick={() => { this.makelistactive(list.contentid) }}>{list.content}</span>
                                                 {showlist(list.contentid)}
                                             </div>)
@@ -907,8 +1033,8 @@ class Specification extends Component {
 
                                                 const getsublist = () => {
                                                     if (sublist.contentid === this.state.activecontentid) {
-                                                        return (<div style={{ ...styles.generalContainer, ...styles.marginLeft30 }}>
-                                                            <span style={{ ...styles.generalFont, ...regularFont,...activebackground(sublist.contentid) }} onClick={() => { this.makelistactive(sublist.contentid) }}> {listtype_2()}</span>
+                                                        return (<div style={{ ...styles.generalContainer, ...styles.marginLeft30 }} key={sublist.contentid}>
+                                                            <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist.contentid) }} onClick={() => { this.makelistactive(sublist.contentid) }}> {listtype_2()}</span>
                                                             <input type="text"
                                                                 value={this.getactivecontentid()}
                                                                 onChange={event => { this.handlelist(event.target.value, sublist.contentid) }}
@@ -916,8 +1042,8 @@ class Specification extends Component {
                                                             {showlist(sublist.contentid)}
                                                         </div>)
                                                     } else {
-                                                        return (<div style={{ ...styles.generalContainer, ...styles.marginLeft30 }}>
-                                                            <span style={{ ...styles.generalFont, ...regularFont,...activebackground(sublist.contentid) }} onClick={() => { this.makelistactive(sublist.contentid) }}> {listtype_2()}</span>
+                                                        return (<div style={{ ...styles.generalContainer, ...styles.marginLeft30 }} key={sublist.contentid}>
+                                                            <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist.contentid) }} onClick={() => { this.makelistactive(sublist.contentid) }}> {listtype_2()}</span>
                                                             <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist.contentid) }} onClick={() => { this.makelistactive(sublist.contentid) }}>{sublist.content}</span>
                                                             {showlist(sublist.contentid)}
                                                         </div>)
@@ -946,8 +1072,8 @@ class Specification extends Component {
 
                                                             const getsublist_1 = () => {
                                                                 if (sublist_1.contentid === this.state.activecontentid) {
-                                                                    return (<div style={{ ...styles.generalContainer, ...styles.marginLeft60 }}>
-                                                                        <span style={{ ...styles.generalFont, ...regularFont,...activebackground(sublist_1.contentid) }} onClick={() => { this.makelistactive(sublist_1.contentid) }}> {listtype_3()}</span>
+                                                                    return (<div style={{ ...styles.generalContainer, ...styles.marginLeft60 }} key={sublist_1.contentid}>
+                                                                        <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_1.contentid) }} onClick={() => { this.makelistactive(sublist_1.contentid) }}> {listtype_3()}</span>
                                                                         <input type="text"
                                                                             value={this.getactivecontentid()}
                                                                             onChange={event => { this.handlelist(event.target.value, sublist_1.contentid) }}
@@ -955,7 +1081,7 @@ class Specification extends Component {
                                                                         {showlist(sublist_1.contentid)}
                                                                     </div>)
                                                                 } else {
-                                                                    return (<div style={{ ...styles.generalContainer, ...styles.marginLeft60 }}>
+                                                                    return (<div style={{ ...styles.generalContainer, ...styles.marginLeft60 }} key={sublist_1.contentid}>
                                                                         <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_1.contentid) }} onClick={() => { this.makelistactive(sublist_1.contentid) }}> {listtype_3()}</span>
                                                                         <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_1.contentid) }} onClick={() => { this.makelistactive(sublist_1.contentid) }}>{sublist_1.content}</span>
                                                                         {showlist(sublist_1.contentid)}
@@ -982,8 +1108,8 @@ class Specification extends Component {
 
                                                                         const getsublist_2 = () => {
                                                                             if (sublist_2.contentid === this.state.activecontentid) {
-                                                                                return (<div style={{ ...styles.generalContainer, ...styles.marginLeft90 }}>
-                                                                                    <span style={{ ...styles.generalFont, ...regularFont,...activebackground(sublist_2.contentid) }} onClick={() => { this.makelistactive(sublist_2.contentid) }}> {listtype_4()}</span>
+                                                                                return (<div style={{ ...styles.generalContainer, ...styles.marginLeft90 }} key={sublist_2.contentid}>
+                                                                                    <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_2.contentid) }} onClick={() => { this.makelistactive(sublist_2.contentid) }}> {listtype_4()}</span>
                                                                                     <input type="text"
                                                                                         value={this.getactivecontentid()}
                                                                                         onChange={event => { this.handlelist(event.target.value, sublist_2.contentid) }}
@@ -991,8 +1117,8 @@ class Specification extends Component {
                                                                                     {showlist(sublist_2.contentid)}
                                                                                 </div>)
                                                                             } else {
-                                                                                return (<div style={{ ...styles.generalContainer, ...styles.marginLeft90 }}>
-                                                                                    <span style={{ ...styles.generalFont, ...regularFont,...activebackground(sublist_2.contentid) }} onClick={() => { this.makelistactive(sublist_2.contentid) }}> {listtype_4()}</span>
+                                                                                return (<div style={{ ...styles.generalContainer, ...styles.marginLeft90 }} key={sublist_2.contentid}>
+                                                                                    <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_2.contentid) }} onClick={() => { this.makelistactive(sublist_2.contentid) }}> {listtype_4()}</span>
                                                                                     <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_2.contentid) }} onClick={() => { this.makelistactive(sublist_2.contentid) }}>{sublist_2.content}</span>
                                                                                     {showlist(sublist_2.contentid)}
                                                                                 </div>)
@@ -1018,8 +1144,8 @@ class Specification extends Component {
 
                                                                                     const getsublist_3 = () => {
                                                                                         if (sublist_3.contentid === this.state.activecontentid) {
-                                                                                            return (<div style={{ ...styles.generalContainer, ...styles.marginLeft120 }}>
-                                                                                                <span style={{ ...styles.generalFont, ...regularFont,...activebackground(sublist_3.contentid) }} onClick={() => { this.makelistactive(sublist_3.contentid) }}> {listtype_5()}</span>
+                                                                                            return (<div style={{ ...styles.generalContainer, ...styles.marginLeft120 }} key={sublist_3.contentid}>
+                                                                                                <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_3.contentid) }} onClick={() => { this.makelistactive(sublist_3.contentid) }}> {listtype_5()}</span>
                                                                                                 <input type="text"
                                                                                                     value={this.getactivecontentid()}
                                                                                                     onChange={event => { this.handlelist(event.target.value, sublist_3.contentid) }}
@@ -1027,8 +1153,8 @@ class Specification extends Component {
                                                                                                 {showlist(sublist_3.contentid)}
                                                                                             </div>)
                                                                                         } else {
-                                                                                            return (<div style={{ ...styles.generalContainer, ...styles.marginLeft120 }}>
-                                                                                                <span style={{ ...styles.generalFont, ...regularFont,...activebackground(sublist_3.contentid) }} onClick={() => { this.makelistactive(sublist_3.contentid) }}> {listtype_5()}</span>
+                                                                                            return (<div style={{ ...styles.generalContainer, ...styles.marginLeft120 }} key={sublist_3.contentid}>
+                                                                                                <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_3.contentid) }} onClick={() => { this.makelistactive(sublist_3.contentid) }}> {listtype_5()}</span>
                                                                                                 <span style={{ ...styles.generalFont, ...regularFont, ...activebackground(sublist_3.contentid) }} onClick={() => { this.makelistactive(sublist_3.contentid) }}>{sublist_3.content}</span>
                                                                                                 {showlist(sublist_3.contentid)}
                                                                                             </div>)
@@ -1119,49 +1245,213 @@ class Specification extends Component {
         const project = design.getproject.call(this);
         const styles = MyStylesheet();
         const regularFont = design.getRegularFont.call(this)
-        if(project) {
+        if (project) {
             const projectid = project.projectid;
-            const spec = design.getspecficationbycsi.call(this,projectid,this.props.match.params.csiid)
-           console.log(spec)
-            if(spec) {
-                if(!spec.hasOwnProperty("paragraph")) {
-                return(
+            const spec = design.getspecficationbycsi.call(this, projectid, this.props.match.params.csiid)
 
-                    <div style={{...styles.generalFlex}}>
-                        <div style={{...styles.flex1}}>
-                        <div style={{...styles.generalContainer}}>
-                            <span style={{...styles.generalFont,...regularFont}}>Select A List Type To Start Spec</span>
+            if (spec) {
+                if (!spec.hasOwnProperty("paragraph")) {
+                    return (
+
+                        <div style={{ ...styles.generalFlex }}>
+                            <div style={{ ...styles.flex1 }}>
+                                <div style={{ ...styles.generalContainer }}>
+                                    <span style={{ ...styles.generalFont, ...regularFont }}>Select A List Type To Start Spec</span>
+                                </div>
+
+                                {this.showlisttypes()}
+
+                            </div>
                         </div>
 
-                        {this.showlisttypes()}
 
-                        </div>
-                    </div>
-                    
-                    
                     )
 
                 }
             } else {
 
-                return(
+                return (
 
-                    <div style={{...styles.generalFlex}}>
-                        <div style={{...styles.flex1}}>
-                        <div style={{...styles.generalContainer}}>
-                            <span style={{...styles.generalFont,...regularFont}}>Select A List Type To Start Spec</span>
-                        </div>
+                    <div style={{ ...styles.generalFlex }}>
+                        <div style={{ ...styles.flex1 }}>
+                            <div style={{ ...styles.generalContainer }}>
+                                <span style={{ ...styles.generalFont, ...regularFont }}>Select A List Type To Start Spec</span>
+                            </div>
 
-                        {this.showlisttypes()}
+                            {this.showlisttypes()}
 
                         </div>
                     </div>
-                    
-                    
-                    )
+
+
+                )
 
             }
         }
+    }
+
+    movesectionup(contentid) {
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if (myuser) {
+            const myproject = design.getproject.call(this);
+            if (myproject) {
+                const projectid = myproject.projectid;
+                const i = design.getprojectbykeyid.call(this, projectid)
+                const csiid = this.props.match.params.csiid;
+                const myspec = design.getspecficationbycsi.call(this, projectid, csiid);
+                if (myspec) {
+                    const j = design.getspecficationkeybycsi.call(this, projectid, csiid)
+
+
+                    if (myspec.hasOwnProperty("paragraph")) {
+
+                        const mysection = this.getspecbyid.call(this, myspec, contentid)
+                        if (mysection) {
+                            let keys = this.getspeckeybyid.call(this, myspec, contentid);
+                            const mainKey = keys[keys.length - 1]
+
+                            if (mainKey > 0) {
+                                let k = ""; let l = ""; let m = ""; let n = ""; let o = "";
+
+                                switch (keys.length) {
+                                    case 1:
+                                        k = keys[0]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k] = myuser.company.projects[i].specifications[j].paragraph.list[k - 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k - 1] = mysection;
+                                        break;
+                                    case 2:
+                                        k = keys[0]
+                                        l = keys[1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l] = myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l - 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l - 1] = mysection;
+                                        break;
+                                    case 3:
+                                        k = keys[0]
+                                        l = keys[1]
+                                        m = keys[2]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m] = myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m - 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m - 1] = mysection;
+                                        break;
+                                    case 4:
+                                        k = keys[0]
+                                        l = keys[1]
+                                        m = keys[2]
+                                        n = keys[3];
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n] = myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n - 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n - 1] = mysection;
+                                        break;
+                                    case 5:
+                                        k = keys[0]
+                                        l = keys[1]
+                                        m = keys[2]
+                                        n = keys[3];
+                                        o = keys[4];
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o] = myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o - 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o - 1] = mysection;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                this.props.reduxUser({ myuser })
+                                this.setState({ render: 'render' })
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+    }
+
+
+    movesectiondown(contentid) {
+        console.log(contentid)
+        const design = new Design();
+        const myuser = design.getuser.call(this)
+        if (myuser) {
+            const myproject = design.getproject.call(this);
+            if (myproject) {
+                const projectid = myproject.projectid;
+                const i = design.getprojectbykeyid.call(this, projectid)
+                const csiid = this.props.match.params.csiid;
+                const myspec = design.getspecficationbycsi.call(this, projectid, csiid);
+                if (myspec) {
+                    const j = design.getspecficationkeybycsi.call(this, projectid, csiid)
+
+
+                    if (myspec.hasOwnProperty("paragraph")) {
+
+                        const mysection = this.getspecbyid.call(this, myspec, contentid)
+                        if (mysection) {
+                            let keys = this.getspeckeybyid.call(this, myspec, contentid);
+                            const mainKey = keys[keys.length - 1]
+
+                            let k = ""; let l = ""; let m = ""; let n = ""; let o = "";
+                            switch (keys.length) {
+                                case 1:
+                                    k = keys[0]
+                                    if (mainKey < myspec.paragraph.list.length - 1) {
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k] = myuser.company.projects[i].specifications[j].paragraph.list[k + 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k + 1] = mysection;
+                                    }
+                                    break;
+                                case 2:
+                                    k = keys[0]
+                                    l = keys[1]
+                                    if (mainKey < myspec.paragraph.list[k].sublist.list.length - 1) {
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l] = myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l + 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l + 1] = mysection;
+                                    }
+                                    break;
+                                case 3:
+                                    k = keys[0]
+                                    l = keys[1]
+                                    m = keys[2];
+                                    if (mainKey < myspec.paragraph.list[k].sublist.list[l].sublist.list.length - 1) {
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m] = myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m + 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m + 1] = mysection;
+                                    }
+                                    break;
+                                case 4:
+                                    k = keys[0]
+                                    l = keys[1]
+                                    m = keys[2];
+                                    n = keys[3]
+                                    if (mainKey < myspec.paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list.length - 1) {
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n] = myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n + 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n + 1] = mysection;
+                                    }
+                                    break;
+                                case 5:
+                                    k = keys[0]
+                                    l = keys[1]
+                                    m = keys[2];
+                                    n = keys[3]
+                                    o = keys[4]
+                                    if (mainKey < myspec.paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list.length - 1) {
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o] = myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o + 1]
+                                        myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o + 1] = mysection;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            this.props.reduxUser({ myuser })
+                            this.setState({ render: 'render' })
+
+                        }
+
+                    }
+
+                }
+            }
+        }
+
     }
 
     render() {
@@ -1169,8 +1459,8 @@ class Specification extends Component {
         const myuser = design.getuser.call(this)
         const styles = MyStylesheet();
         const headerFont = design.getHeaderFont.call(this);
-        // const regularFont = design.getRegularFont.call(this)
-        // const saveprojecticon = design.getsaveprojecticon.call(this);
+        const regularFont = design.getRegularFont.call(this)
+        const saveprojecticon = design.getsaveprojecticon.call(this);
         const csi = design.getcsibyid.call(this, this.props.match.params.csiid)
         if (myuser) {
 
@@ -1198,7 +1488,7 @@ class Specification extends Component {
                 return (<div style={{ ...styles.generalFlex }}>
                     <div style={{ ...styles.flex1 }}>
 
-        
+
 
                         <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                             <div style={{ ...styles.flex1, ...styles.alignCenter }}>
@@ -1211,6 +1501,20 @@ class Specification extends Component {
                         {this.checkstartspec()}
 
                         {this.showspecifications()}
+
+
+                        <div style={{ ...styles.generalFlex }}>
+                            <div style={{ ...styles.flex1, ...styles.alignCenter, ...regularFont, ...styles.generalFont }}>
+                                {this.state.message}
+                            </div>
+                        </div>
+
+
+                        <div style={{ ...styles.generalFlex }}>
+                            <div style={{ ...styles.flex1, ...styles.alignCenter }}>
+                                <button style={{ ...styles.generalButton, ...saveprojecticon }} onClick={() => { design.saveprojectspecs.call(this) }}>{saveProjectSpecs()}</button>
+                            </div>
+                        </div>
 
 
                     </div>

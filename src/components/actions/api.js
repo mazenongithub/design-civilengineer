@@ -128,8 +128,8 @@ export async function SaveProfile(profile) {
 
 
 export async function SaveSpecs(values) {
-    console.log(values)
-    let APIURL = `https://civilengineer.io/design/api/savespecifications.php`
+    const projectid = values.specs.projectid;
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/${projectid}/saveprojectspecs`
     return fetch(APIURL, {
         method: 'post',
         credentials: 'include',
