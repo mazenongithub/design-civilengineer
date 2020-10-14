@@ -95,7 +95,7 @@ export async function SaveCostEstimate(values) {
 }
 
 export async function SaveProfile(profile) {
-    console.log(profile)
+  
     let APIURL = `https://civilengineer.io/design/api/saveprofile.php`
     return fetch(APIURL, {
         method: 'post',

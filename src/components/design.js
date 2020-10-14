@@ -1320,9 +1320,11 @@ class Design {
         }
 
         if (myuser) {
+
             if (!validatemyuser(myuser)) {
 
                 const profile = {
+
                     providerid: myuser.providerid,
                     profile: myuser.profile,
                     firstname: myuser.firstname,
@@ -1330,6 +1332,22 @@ class Design {
                     emailaddress: myuser.emailaddress,
                     phonenumber: myuser.phonenumber
                 }
+
+                if(myuser.hasOwnProperty("company")) {
+                    
+                    profile.company = {
+                    companyid:myuser.company.companyid,
+                    company : myuser.company.company,
+                    url : myuser.company.url,
+                    address : myuser.company.address,
+                    city : myuser.company.city,
+                    contactstate : myuser.company.contactstate,
+                    zipcode: myuser.company.zipcode
+                    }
+
+                }
+
+        
 
 
                 try {
@@ -1343,6 +1361,16 @@ class Design {
                         myuser.lastname = response.profile.lastname;
                         myuser.emailaddress = response.profile.emailaddress;
                         myuser.phonenumber = response.profile.phonenumber;
+
+                        if(response.profile.hasOwnProperty("company")) {
+                            myuser.company.url = response.profile.company.url;
+                            myuser.company.company = response.profile.company.company;
+                            myuser.company.address = response.profile.company.address;
+                            myuser.company.city = response.profile.company.city;
+                            myuser.company.contactstate = response.profile.company.contactstate;
+                            myuser.company.zipcode = response.profile.company.zipcode;
+
+                        }
 
                         this.props.reduxUser({ myuser });
                         this.setState({ render: 'render' })
@@ -1377,9 +1405,11 @@ class Design {
         const design = new Design();
         const saveprofile = () => {
             if (this.state.width > 1200) {
-                return ({ width: '292px' })
+                return ({ width: '288px' })
+            } else if (this.state.width > 600) {
+                return ({ width: '237px' })
             } else {
-                return ({ width: '210px' })
+                return ({ width: '171px' })
             }
         }
         return (
@@ -1618,6 +1648,8 @@ class Design {
         }
         return project;
     }
+
+
 
     async saveprojectspecs() {
         const design = new Design();
