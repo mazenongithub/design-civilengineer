@@ -20,7 +20,8 @@ import CSIS from './components/csis'
 import CostEstimate from './components/costestimate';
 import BidSchedule from './components/bidschedule'
 import LineItem from './components/lineitem';
-import Register from './components/register'
+import Register from './components/register';
+import Company from './components/company'
 
 
 class App extends Component {
@@ -79,6 +80,7 @@ const showlanding = () => {
           <Route exact path="/" component={showlanding} />
           <Route exact path="/profile/login" component={Login} />
           <Route exact path="/profile/register" component={Register} />
+          <Route exact path="/:profile/company" component={Company} />
           <Route exact path="/:profile/csis" component={CSIS} />
           <Route exact path="/:profile/profile" component={Profile} />
           <Route exact path="/:profile/projects" component={Projects} />

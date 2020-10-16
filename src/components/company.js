@@ -345,17 +345,6 @@ class Company extends Component {
                             </div>
 
                         </div>
-
-
-                        <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
-                            <div style={{ ...styles.flex1 }}>
-
-                            </div>
-
-                        </div>
-
-
-
                         
 
 

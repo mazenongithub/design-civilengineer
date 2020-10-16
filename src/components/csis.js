@@ -350,102 +350,51 @@ class CSIS extends Component {
             if(!csis) {
                 design.loadcsis.call(this,companyid)
             }
+        const myuser = design.getuser.call(this);
+        const csiwidth = () => {
 
-        const showcodes = () => {
-            if (this.state.width > 800) {
-
-                return (
-                    <div style={{ ...styles.generalFlex }}>
-                        <div style={{ ...styles.flex1 }}>
-                            <span style={{ ...styles.generalFont, ...regularFont }}>CSI</span>
-                        </div>
-                        <div style={{ ...styles.flex1 }}>
-                            <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.getcsi_1()}
-                                onChange={event => { this.handlecsi_1(event.target.value) }}
-                            />
-
-                        </div>
-                        <div style={{ ...styles.flex1 }}>
-                            <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.getcsi_2()}
-                                onChange={event => { this.handlecsi_2(event.target.value) }}
-                            />
-                        </div>
-                        <div style={{ ...styles.flex1 }}>
-                            <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.state.csi_3}
-                                onChange={event => { this.handlecsi_3(event.target.value) }}
-                            />
-                        </div>
-                        <div style={{ ...styles.flex1 }}>
-                            <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                value={this.state.csi_4}
-                                onChange={event => { this.handlecsi_4(event.target.value) }}
-                            />
-                        </div>
-                    </div>
-                )
-
-
-            } else {
-
-                return (
-
-                    <div style={{ ...styles.generalFlex }}>
-                        <div style={{ ...styles.flex1 }}>
-
-                            <div style={{ ...regularFont, ...styles.generalFont, ...styles.generalContainer }}>
-                                CSI
-                            </div>
-
-                            <div style={{ ...styles.generalFlex }}>
-                                <div style={{ ...styles.flex1 }}>
-                                    <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                        value={this.getcsi_1()}
-                                        onChange={event => { this.handlecsi_1(event.target.value) }}
-                                    />
-
-                                </div>
-                                <div style={{ ...styles.flex1 }}>
-                                    <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                        value={this.getcsi_2()}
-                                        onChange={event => { this.handlecsi_2(event.target.value) }}
-                                    />
-                                </div>
-                                <div style={{ ...styles.flex1 }}>
-                                    <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                        value={this.getcsi_3()}
-                                        onChange={event => { this.handlecsi_3(event.target.value) }}
-                                    />
-                                </div>
-                                <div style={{ ...styles.flex1 }}>
-
-                                    <input style={{ ...styles.generalField, ...regularFont, ...styles.generalFont, ...styles.csiField, ...styles.addMargin }}
-                                        value={this.getcsi_4()}
-                                        onChange={event => { this.handlecsi_4(event.target.value) }}
-                                    />
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                )
-
+            if(this.state.width>1200) {
+                return({maxWidth:'700px'})
+            } else if (this.state.width>600) {
+                return({maxWidth:'600px'})
             }
         }
+
+        if(myuser) {
+
+            if(myuser.hasOwnProperty("company")) {
+
+    
         return (
             <div style={{ ...styles.generalFlex }}>
                 <div style={{ ...styles.flex1 }}>
 
                     <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                         <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                            <span style={{ ...headerFont }}>CSIS - Create A CSI</span>
-
+                            <span style={{ ...headerFont, ...styles.generalFont }}>/{myuser.profile}</span> <br/>
+                            <span style={{ ...headerFont, ...styles.generalFont }}>/{myuser.company.url}</span> <br/>
+                            <span style={{ ...headerFont, ...styles.generalFont }}>Spec Manager</span>
                         </div>
                     </div>
 
-                    {showcodes()}
+                    <div style={{ ...styles.generalFlex, ...csiwidth()}}>
+                    <div style={{ ...styles.flex1 }}>
+                            <span style={{...styles.generalFont,...regularFont}}> Spec </span>
+                        </div>
+                        <div style={{ ...styles.flex1 }}>
+                            <input type="text" style={{...styles.generalFont,...styles.regularFont}} />
+                        </div>
+                        <div style={{ ...styles.flex1 }}>
+                            <input type="text" style={{...styles.generalFont,...styles.regularFont}} />
+                        </div>
+                        <div style={{ ...styles.flex1 }}>
+                            <input type="text" style={{...styles.generalFont,...styles.regularFont}} />
+                        </div>
+                        <div style={{ ...styles.flex1 }}>
+                            <input type="text" style={{...styles.generalFont,...styles.regularFont}} />
+                        </div>
+                    </div>
+
 
                     <div style={{ ...styles.generalContainer }}>
                         <div style={{ ...styles.flex1 }}>
@@ -462,7 +411,7 @@ class CSIS extends Component {
                         </div>
                     </div>
 
-                    {csi.showCSI.call(this)}
+ 
 
 
                     <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
@@ -477,6 +426,26 @@ class CSIS extends Component {
                 </div>
             </div>
         )
+
+            } else {
+                return( <div style={{...styles.generalFlex}}>
+                    <span style={{...styles.generalFont,...regularFont}}>
+                        Create or Join a Company to Create Specs
+                    </span>
+    
+                </div>)
+            }
+
+        } else {
+            return(
+            <div style={{...styles.generalFlex}}>
+                <span style={{...styles.generalFont,...regularFont}}>
+                    Please Login to Create Specs
+                </span>
+
+            </div>
+            )
+        }
     }
 
 }
