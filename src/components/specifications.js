@@ -148,8 +148,11 @@ class Specifications extends Component {
 
                     <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                         <div style={{ ...styles.flex1, ...headerFont, ...styles.alignCenter }}>
-                            /{this.props.match.params.title} <br />
-                            Specifications
+                        <span style={{...styles.headerFamily,...headerFont,...styles.boldFont}}>/{myuser.profile}</span> <br />
+                            <span style={{...styles.headerFamily,...headerFont,...styles.boldFont}}>/{myuser.company.url}</span> <br />
+                                <span style={{...styles.headerFamily,...headerFont,...styles.boldFont}}>/{project.title}</span> <br />
+                                <span style={{...styles.headerFamily,...headerFont,...styles.boldFont}}>Specifications</span> <br />
+
                         </div>
                     </div>
 

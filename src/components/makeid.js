@@ -3,6 +3,33 @@ import Design from './design';
 import { makeID } from './functions';
 
 class MakeID {
+    csiid(csiid) {
+        const design = new Design();
+        const csicodes = design.getallcsicodes.call(this);
+        let validate = false;
+        while(!validate) {
+
+         validate = true;
+    
+            csicodes.map(csi=> {
+                if(csi.csiid === csiid) {
+                    validate = false;
+                }
+            })
+
+            if(!validate) {
+                csiid = makeID(16)
+            }
+
+          
+                
+            }
+
+
+        
+
+        return csiid;
+    }
 
     laborid() {
         const design = new Design();

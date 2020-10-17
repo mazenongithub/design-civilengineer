@@ -117,6 +117,9 @@ export function MyStylesheet() {
         generalPadding:{
             padding:'5px'
         },
+        noBorder:{
+            border:'0px'
+        },
         activebutton:{
             backgroundColor:'#043D1A'
         },

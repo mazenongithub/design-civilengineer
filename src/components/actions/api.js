@@ -159,9 +159,9 @@ export async function SaveSpecs(values) {
 
 }
 
-export async function LogoutUser() {
+export async function LogoutUser(providerid) {
 
-    let APIURL = `https://civilengineer.io/design/api/logout.php`
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/${providerid}/logout`
     
     return fetch(APIURL, { credentials: 'include' }).then(resp => {
 
@@ -310,7 +310,7 @@ export async function LoadCSIs(companyid) {
 
 export async function AppleLogin(values) {
    
-    var APIURL = `https://civilengineer.io/design/api/applelogin.php`
+    var APIURL = `${process.env.REACT_APP_SERVER_API}/design/applelogin`
     return fetch(APIURL, {
         method: 'post',
         credentials: 'include',

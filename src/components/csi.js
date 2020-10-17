@@ -27,7 +27,7 @@ class CSI {
         let searchcsi = "";
         let results = [];
         const validatecode = (results, code) => {
-
+    
             let validate = true;
             if (results.hasOwnProperty("length")) {
                 // eslint-disable-next-line
@@ -39,54 +39,49 @@ class CSI {
             }
             return validate;
         }
-        if (csi_1.length>1) {
-            searchcsi += csi_1.substr(0, 2)
-        
-        if (csi_2.length>1) {
-            searchcsi += csi_2.substr(0, 2)
-        
-        if (csi_3.length>1) {
-            searchcsi += csi_3.substr(0, 2)
-        
-        if(csi_4.length>1) {
-            searchcsi += `.${csi_4.substr(0, 2)}`
+        if (csi_1.length === 2) {
+            searchcsi = csi_1.substr(0,2);
         }
-        
+        if (csi_2.length === 2) {
+            searchcsi += csi_2.substr(0,2);
         }
-
-
-    }
-
-    }
-
-        if (searchcsi.length >1) {
+        if (csi_3.length === 2) {
+            searchcsi += csi_3.substr(0,2);
+        }
+        if(csi_4.length === 2) {
+            searchcsi += `.${csi_4.substr(0,2)}`;    
+        }
+    
+        if (searchcsi) {
             const codes = design.getallcsicodes.call(this)
-
+    
             if (codes) {
-             
+                if (codes.hasOwnProperty("length")) {
                     // eslint-disable-next-line
                     codes.map(code => {
-
+    
                         if (code.csi.startsWith(searchcsi)) {
-
+    
                             if (validatecode(results, codes)) {
                                 results.push(code)
                             }
-
-
+    
+    
                         }
-
-
+    
+    
+    
                     })
-
-
+    
+                }
+    
             }
-
+    
             results.sort((codeb, codea) => {
-
+    
                 return sortcode(codeb, codea)
             })
-
+    
         }
         let myresults = [];
         // eslint-disable-next-line
@@ -95,11 +90,10 @@ class CSI {
                 myresults.push(result)
             }
         })
-
+    
         return myresults;
     }
     showcsiid(csi) {
-
         const styles = MyStylesheet();
         const design = new Design();
         const regularFont = design.getRegularFont.call(this);
@@ -130,20 +124,9 @@ class CSI {
             return csicheck;
         }
 
-        const updateIcon = () => {
-            
+       
 
-            if ( checkcsi()) {
-                return (
-                    <div style={{ ...styles.flex1 }}>
-                        <button style={{ ...styles.generalButton, ...getsaveicon }} onClick={() => { design.savespecs.call(this) }}>{saveIcon()} </button>
-                    </div>
-                )
-            } else {
-                return;
-            }
-
-        }
+     
 
         const removeIcon = () => {
             
@@ -151,7 +134,7 @@ class CSI {
             if ( checkcsi()) {
                 return (
                     <div style={{ ...styles.flex1 }}>
-                    <button style={{ ...styles.generalButton, ...removeIconWidth }} onClick={() =>{ design.deletecsi.call(this)}}>{removeIconSmall()} </button>
+                    <button style={{  ...removeIconWidth, ...csibackground(), ...styles.noBorder }} onClick={() =>{ this.deletecsi(csi)}}>{removeIconSmall()} </button>
                     </div>
                 )
             } else {
@@ -163,7 +146,6 @@ class CSI {
             <div style={{ ...styles.flex5 }} onClick={() => { this.handlecsiid(csi.csiid) }}>
                 {csi.csi} - {csi.title}
             </div>
-            {updateIcon()}
             {removeIcon()}
         </div>)
     }

@@ -16,27 +16,27 @@ class Design {
         const design = new Design();
         const project = design.getproject.call(this)
         const myuser = design.getuser.call(this)
-        if(myuser) {
-        if (project) {
-            const i = design.getprojectbykeyid.call(this, project.projectid)
+        if (myuser) {
+            if (project) {
+                const i = design.getprojectbykeyid.call(this, project.projectid)
 
-            try {
-                let response = await LoadSpecifications(companyid, projectid)
-                if (response.hasOwnProperty("specifications")) {
-                    myuser.company.projects[i].specifications = response.specifications;
-                    this.props.reduxUser({ myuser })
-                    this.setState({ render: 'render' })
+                try {
+                    let response = await LoadSpecifications(companyid, projectid)
+                    if (response.hasOwnProperty("specifications")) {
+                        myuser.company.projects[i].specifications = response.specifications;
+                        this.props.reduxUser({ myuser })
+                        this.setState({ render: 'render' })
 
+                    }
+
+                } catch (err) {
+                    alert(err)
                 }
 
-            } catch (err) {
-                alert(err)
+
             }
 
-
         }
-
-    }
 
     }
     getcompanyid() {
@@ -869,18 +869,18 @@ class Design {
         }
         return key;
     }
-   
+
     getspecficationbycsi(projectid, csiid) {
         const design = new Design();
         const specs = design.getspecficationsbyprojectid.call(this, projectid)
-        
+
         let myspec = false;
         if (specs) {
             // eslint-disable-next-line
             specs.map(spec => {
                 if (spec.csiid === csiid) {
                     myspec = spec;
-                   
+
                 }
             })
         }
@@ -1333,21 +1333,21 @@ class Design {
                     phonenumber: myuser.phonenumber
                 }
 
-                if(myuser.hasOwnProperty("company")) {
-                    
+                if (myuser.hasOwnProperty("company")) {
+
                     profile.company = {
-                    companyid:myuser.company.companyid,
-                    company : myuser.company.company,
-                    url : myuser.company.url,
-                    address : myuser.company.address,
-                    city : myuser.company.city,
-                    contactstate : myuser.company.contactstate,
-                    zipcode: myuser.company.zipcode
+                        companyid: myuser.company.companyid,
+                        company: myuser.company.company,
+                        url: myuser.company.url,
+                        address: myuser.company.address,
+                        city: myuser.company.city,
+                        contactstate: myuser.company.contactstate,
+                        zipcode: myuser.company.zipcode
                     }
 
                 }
 
-        
+
 
 
                 try {
@@ -1362,7 +1362,7 @@ class Design {
                         myuser.emailaddress = response.profile.emailaddress;
                         myuser.phonenumber = response.profile.phonenumber;
 
-                        if(response.profile.hasOwnProperty("company")) {
+                        if (response.profile.hasOwnProperty("company")) {
                             myuser.company.url = response.profile.company.url;
                             myuser.company.company = response.profile.company.company;
                             myuser.company.address = response.profile.company.address;
@@ -1479,7 +1479,7 @@ class Design {
         return slides();
     }
     getallcsicodes() {
-      
+
         let csis = false;
         if (this.props.hasOwnProperty("csis")) {
             if (this.props.csis.hasOwnProperty("length")) {
@@ -1544,98 +1544,80 @@ class Design {
             return ({ fontSize: '30px' })
         }
     }
-    async deletecsi() {
-        const design = new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
-            if (this.state.activecsiid) {
-                const csis = design.getcsibyid.call(this, this.state.activecsiid)
-                const values = { csis }
-                try {
-                    const response = await DeleteCSI(values);
-                    console.log(response)
+    
 
-                    if (response.hasOwnProperty("csis")) {
-                        const csi = design.getcsibyid.call(this, response.csis.csiid)
-                        if (csi) {
-                            const i = design.getcsikeybyid.call(this, response.csis.csiid)
-                            myuser.csicodes[i] = response.csis;
-                            const csi_1 = response.csis.csi.substring(0, 2)
-                            const csi_2 = response.csis.csi.substring(2, 4)
-                            const csi_3 = response.csis.csi.substring(4, 6)
-                            const csi_4 = response.csis.csi.substring(7, 9)
-                            this.props.reduxUser({ myuser })
-                            this.setState({ csi_1, csi_2, csi_3, csi_4 })
-                        }
-                    }
-                    if (response.hasOwnProperty("csiid")) {
-                        const csiid = response.csiid;
-                        const j = design.getcsikeybyid.call(this, csiid)
-                        myuser.csicodes.splice(j, 1);
-                        this.props.reduxUser({ myuser })
-                        this.setState({ csi_1: '', csi_2: '', csi_3: '', csi_4: '', activecsiid: false })
+    getaddicon() {
+   
 
-                    }
-                    let message = "";
-                    if (response.hasOwnProperty('message')) {
-
-                        message += response.message
-
-                    }
-                    if (response.hasOwnProperty("lastupdated")) {
-                        message += `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
-                    }
-                    this.setState({ message })
-
-
-                } catch (err) {
-                    alert(err)
-                }
-
+            if (this.state.width > 1200) {
+                return ({ width: '130px' })
+            } else if (this.state.width > 600) {
+                return ({ width: '105px' })
+            } else {
+                return ({ width: '80px' })
             }
 
-        }
-
+        
     }
 
-    async savespecs() {
+    async saveupdatedcsis() {
         const design = new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
-            if (this.state.activecsiid) {
-                const csis = design.getcsibyid.call(this, this.state.activecsiid)
-                const values = { csis }
-                try {
-                    const response = await SaveCSI(values);
-                    console.log(response)
 
-                    if (response.hasOwnProperty("csis")) {
-                        const csi = design.getcsibyid.call(this, response.csis.csiid)
-                        if (csi) {
-                            const i = design.getcsikeybyid.call(this, response.csis.csiid)
-                            myuser.csicodes[i] = response.csis;
-                            this.props.reduxUser({ myuser })
-                            this.setState({ render: 'render' })
-                        }
+        const csicodes = design.getallcsicodes.call(this)
+        if(csicodes) {
+        
+        const updatedcsis = design.getupdatedcsis.call(this)
+        
+        if (updatedcsis) {
+            const values = { csis: updatedcsis }
+            console.log(values)
+            try {
+                const response = await SaveCSI(values);
+                console.log(response)
+
+                if (response.hasOwnProperty("csis")) {
+                    if (response.csis.hasOwnProperty("length")) {
+                        response.csis.map(csis => {
+
+                            const csi = design.getcsibyid.call(this, csis.csiid)
+                            if (csi) {
+                                const i = design.getcsikeybyid.call(this, csis.csiid)
+                                csicodes[i] = csis
+                                
+                            }
+
+
+                        })
+
+
                     }
-                    let message = "";
-                    if (response.hasOwnProperty('message')) {
-                        message += response.message
 
-                    }
-                    if (response.hasOwnProperty("lastupdated")) {
-                        message += `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
-                    }
-                    this.setState({ message })
-
-
-                } catch (err) {
-                    alert(err)
+                    this.props.reduxCSIs(csicodes)
+                    
                 }
+                let message = "";
+                if (response.hasOwnProperty('message')) {
+                    message += response.message
 
+                }
+                if (response.hasOwnProperty("lastupdated")) {
+                    message += ` Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
+                }
+                this.setState({ message })
+
+
+            } catch (err) {
+                alert(err)
             }
 
+
         }
+
+
+    } // if csi codes
+
+
+
     }
 
     getproject() {
@@ -1660,32 +1642,32 @@ class Design {
                 const projectid = myproject.projectid;
                 const i = design.getprojectbykeyid.call(this, myproject.projectid)
                 const specifications = design.getspecficationsbyprojectid.call(this, projectid);
-                if(specifications) {
-                const specs = {}
-                specs.companyid = myuser.company.companyid;
-                specs.projectid = myproject.projectid;
-                specs.specifications = specifications;
-               
-                           
+                if (specifications) {
+                    const specs = {}
+                    specs.companyid = myuser.company.companyid;
+                    specs.projectid = myproject.projectid;
+                    specs.specifications = specifications;
 
-                try {
-                 
-                    let response = await SaveSpecs({specs});
-                    console.log(response)
-                    if(response.hasOwnProperty("specifications")) {
-                        myuser.company.projects[i].specifications = response.specifications;
-                        this.props.reduxUser({myuser})
-                        let message = `Last Updated ${new Date().toLocaleTimeString()}`
-                        this.setState({message})
+
+
+                    try {
+
+                        let response = await SaveSpecs({ specs });
+                        console.log(response)
+                        if (response.hasOwnProperty("specifications")) {
+                            myuser.company.projects[i].specifications = response.specifications;
+                            this.props.reduxUser({ myuser })
+                            let message = `Last Updated ${new Date().toLocaleTimeString()}`
+                            this.setState({ message })
+                        }
+
+                    } catch (err) {
+                        alert(err)
                     }
 
-                } catch (err) {
-                    alert(err)
                 }
 
-            }
 
-            
             }
         }
     }
@@ -1787,6 +1769,24 @@ class Design {
         } catch (err) {
             alert(err)
         }
+
+    }
+    getupdatedcsis() {
+        const design = new Design();
+        let csicodes = design.getallcsicodes.call(this);
+        if (csicodes) {
+            csicodes = csicodes.filter(csicode => {
+
+                if (csicode.hasOwnProperty("updatedby")) {
+                    return csicode;
+                }
+            })
+            if (csicodes.length === 0) {
+                csicodes = false;
+            }
+        }
+
+        return csicodes;
 
     }
     async logoutuser() {
