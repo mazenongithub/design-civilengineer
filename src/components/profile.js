@@ -309,7 +309,7 @@ class Profile extends Component {
                             </div>
                         </div>
 
-                        <div style={{...styles.generalContainer, ...styles.alignCenter}}>
+                        <div style={{...styles.generalContainer, ...styles.alignCenter, ...styles.bottomMargin15}}>
                             <span style={{...regularFont,...styles.generalFont}}>{this.state.message}</span>
                         </div>
 

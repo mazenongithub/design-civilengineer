@@ -1,6 +1,6 @@
 import React from 'react';
 import { sortpart, inputUTCStringForLaborID, getEquipmentRentalObj, calculatetotalhours, calculateTotalMonths, FutureCostPresent, AmmortizeFactor } from "./functions";
-import { SaveSpecs, LogoutUser, SaveCSI, DeleteCSI, SaveCostEstimate, AppleLogin, SaveProfile, LoadCSIs, LoadSpecifications } from './actions/api'
+import { SaveSpecs, LogoutUser, SaveCSI,  SaveCostEstimate, AppleLogin, SaveProfile, LoadCSIs, LoadSpecifications } from './actions/api'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { MyStylesheet } from "./styles";
@@ -1379,10 +1379,12 @@ class Design {
 
                     if (response.hasOwnProperty("message")) {
                         let message = "";
+
                         message += response.message;
                         if (response.hasOwnProperty("lastupdated")) {
                             message += `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
                         }
+                    
                         this.setState({ message })
                     }
 

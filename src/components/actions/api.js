@@ -1,6 +1,6 @@
 export async function DeleteCSI(values) {
-    console.log(values)
-    let APIURL = `https://civilengineer.io/design/api/deletecsi.php`
+    const csiid = values.csiid;
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/${csiid}/deletecsi`
     return fetch(APIURL, {
         method: 'post',
         credentials: 'include',
@@ -32,7 +32,7 @@ export async function DeleteCSI(values) {
 
 export async function SaveCSI(values) {
     console.log(values)
-    let APIURL = `https://civilengineer.io/design/api/savecsi.php`
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/savecsi`
     return fetch(APIURL, {
         method: 'post',
         credentials: 'include',
@@ -64,7 +64,8 @@ export async function SaveCSI(values) {
 
 export async function SaveCostEstimate(values) {
     console.log(values)
-    let APIURL = `https://civilengineer.io/design/api/savecostestimate.php`
+    const projectid = values.projectid;
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/${projectid}/savecostestimate`
     return fetch(APIURL, {
         method: 'post',
         credentials: 'include',
@@ -95,8 +96,8 @@ export async function SaveCostEstimate(values) {
 }
 
 export async function SaveProfile(profile) {
-  
-    let APIURL = `https://civilengineer.io/design/api/saveprofile.php`
+    const providerid = profile.providerid;
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/${providerid}/saveprofile`
     return fetch(APIURL, {
         method: 'post',
         credentials: 'include',
@@ -216,7 +217,7 @@ export async function ClientLogin(values) {
 
 export async function  CheckUser() {
 
-    let APIURL = `https://civilengineer.io/design/api/loadprofile.php`
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/checkuser`
     console.log(APIURL)
 
     return fetch(APIURL, { credentials: 'include' }).then(resp => {
@@ -224,8 +225,7 @@ export async function  CheckUser() {
         if (!resp.ok) {
             if (resp.status >= 400 && resp.status < 500) {
                 return resp.json().then(data => {
-                    let err = { errorMessage: data.message };
-                    throw err;
+                    throw data.message;
                 })
             }
             else {
@@ -285,10 +285,11 @@ export async function LoadSpecifications(companyid,projectid) {
     })
 }
 
+
 export async function LoadCSIs(companyid) {
 
 
-    let APIURL = `https://civilengineer.io/design/api/loadcsi.php?companyid=${companyid}`
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/${companyid}/loadcsis`
 
     return fetch(APIURL, { credentials: 'include' }).then(resp => {
 
@@ -311,6 +312,7 @@ export async function LoadCSIs(companyid) {
 export async function AppleLogin(values) {
    
     var APIURL = `${process.env.REACT_APP_SERVER_API}/design/applelogin`
+    console.log(APIURL)
     return fetch(APIURL, {
         method: 'post',
         credentials: 'include',
@@ -338,7 +340,7 @@ export async function AppleLogin(values) {
 
 export async function CheckProviderID(profile) {
 
-    var APIURL = `https://civilengineer.io/design/api/checkproviderid.php?profile=${profile}`
+    var APIURL = `${process.env.REACT_APP_SERVER_API}/design/${profile}/checkproviderid`
 
     return fetch(APIURL, { credentials: 'include' })
         .then(resp => {
@@ -357,7 +359,7 @@ export async function CheckProviderID(profile) {
 export async function CheckEmailAddress(emailaddress) {
 
 
-    var APIURL = `https://civilengineer.io/design/api/checkemailaddress.php?emailaddress=${emailaddress}`
+    var APIURL = `${process.env.REACT_APP_SERVER_API}/design/${emailaddress}/checkemailaddress`
 
     return fetch(APIURL, {
         credentials: 'include'

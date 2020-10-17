@@ -7,6 +7,7 @@ import Design from './design'
 import {makeID} from './functions'
 import {Link} from 'react-router-dom'
 import CSI from './csi'
+import { saveProjectSpecs } from './svg';
 
 
 class Specifications extends Component {
@@ -92,7 +93,8 @@ class Specifications extends Component {
     }
     showspecifications() {
         const design = new Design();
-        const myproject = design.getprojectbytitle.call(this,this.props.match.params.title)
+        const myproject = design.getproject.call(this)
+        
         let specids = [];
         if(myproject) {
         const specs = design.getspecficationsbyprojectid.call(this, myproject.projectid)
@@ -112,8 +114,9 @@ class Specifications extends Component {
         const design = new Design();
         const headerFont = design.getHeaderFont.call(this)
         const csi = new CSI();
-
+        const saveprojecticon = design.getsaveprojecticon.call(this);
         const myuser = design.getuser.call(this)
+        const regularFont = design.getRegularFont.call(this)
         if(myuser) {
 
             const companyid = () => {
@@ -173,6 +176,20 @@ class Specifications extends Component {
                             {this.showspecifications()}
                         </div>
                     </div>
+
+
+                    <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                            <div style={{ ...styles.flex1, ...styles.alignCenter, ...regularFont, ...styles.generalFont }}>
+                                {this.state.message}
+                            </div>
+                        </div>
+
+
+                    <div style={{ ...styles.generalFlex }}>
+                            <div style={{ ...styles.flex1, ...styles.alignCenter }}>
+                                <button style={{ ...styles.generalButton, ...saveprojecticon }} onClick={() => { design.saveprojectspecs.call(this) }}>{saveProjectSpecs()}</button>
+                            </div>
+                        </div>
 
 
 

@@ -45,9 +45,16 @@ class App extends Component {
   
 
   async checkuser() {
-    let response = await CheckUser();
-    console.log(response)
-    this.props.reduxUser(response)
+    
+    try {
+      let response = await CheckUser();
+      console.log(response)
+      this.props.reduxUser(response)
+
+    } catch(err) {
+      alert(err)
+    }
+   
   }
  
 
