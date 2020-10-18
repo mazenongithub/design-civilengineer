@@ -1492,9 +1492,11 @@ class Specification extends Component {
 
                         <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                             <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                                <span style={{ ...styles.generalFont, ...headerFont, ...styles.boldFont }}> /{this.props.match.params.title}</span> <br />
-                                <span style={{ ...styles.generalFont, ...headerFont, ...styles.boldFont }}> /specifications</span> <br />
-                                <span style={{ ...styles.generalFont, ...headerFont, ...styles.boldFont }}> {csi.csi} {csi.title}</span>
+                            <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}> /{myuser.profile}</span> <br />
+                            <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}> /{myuser.company.url}</span> <br />
+                                <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}> /{project.title}</span> <br />
+                                <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}> /specifications</span> <br />
+                                <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}> {csi.csi} {csi.title}</span>
                             </div>
                         </div>
 

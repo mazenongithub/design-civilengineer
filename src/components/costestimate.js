@@ -1383,6 +1383,12 @@ class CostEstimate extends Component {
 
 
         }
+        const myuser = design.getuser.call(this)
+        if(myuser) {
+            if(myuser.hasOwnProperty("company")) {
+
+                const project = design.getproject.call(this)
+                if(project) {
         return (
 
             <div style={{ ...styles.generalFlex }}>
@@ -1390,8 +1396,11 @@ class CostEstimate extends Component {
 
                     <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                         <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                            <div style={{ ...styles.generalContainer }}><span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>Cost Estimating </span></div>
-                            <div style={{ ...styles.generalContainer }}><span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{this.props.match.params.title} </span></div>
+                           
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{myuser.profile} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{myuser.company.url} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{project.title} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/costestimate </span>
                         </div>
                     </div>
 
@@ -1433,6 +1442,34 @@ class CostEstimate extends Component {
 
                 </div>
             </div>)
+
+        } else {
+            return (<div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                <div style={{ ...styles.flex1 }}>
+                    <span style={{ ...styles.generalFont, ...regularFont }}>Project Could not be found</span>
+                </div>
+
+            </div>)
+        }
+
+        } else {
+            return (<div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                <div style={{ ...styles.flex1 }}>
+                    <span style={{ ...styles.generalFont, ...regularFont }}>Create or Join a Company to View Cost Estimate</span>
+                </div>
+
+            </div>)
+
+        }
+
+        } else {
+            return (<div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                <div style={{ ...styles.flex1 }}>
+                    <span style={{ ...styles.generalFont, ...regularFont }}>Please Login to View Cost Estimate</span>
+                </div>
+
+            </div>)
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { sortpart, inputUTCStringForLaborID, getEquipmentRentalObj, calculatetotalhours, calculateTotalMonths, FutureCostPresent, AmmortizeFactor } from "./functions";
-import { SaveSpecs, LogoutUser, SaveCSI,  SaveCostEstimate, AppleLogin, SaveProfile, LoadCSIs, LoadSpecifications } from './actions/api'
+import { SaveSpecs, LogoutUser, SaveCSI,  SaveCostEstimate, AppleLogin, SaveProfile, LoadCSIs, LoadSpecifications, CheckCompanyID } from './actions/api'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { MyStylesheet } from "./styles";
@@ -10,6 +10,28 @@ import { saveCostEstimateIcon, saveProfileIcon } from './svg'
 
 
 class Design {
+
+    async checkcompanyurl(myuser, url) {
+        try{
+            let response = await CheckCompanyID(url);
+            console.log(response)
+            if(response.hasOwnProperty("invalid")) {
+                myuser.company.invalid = response.invalid;
+                this.props.reduxUser({myuser})
+                this.setState({message:response.invalid})
+            } else {
+                if(myuser.company.hasOwnProperty("invalid")) {
+                    delete myuser.company.invalid;
+                    this.props.reduxUser({myuser})
+                    this.setState({message:''})
+                }
+            }
+           
+
+        } catch(err) {
+            alert(err)
+        }
+    }
 
 
     async loadspecifications(companyid, projectid) {

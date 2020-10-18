@@ -508,7 +508,7 @@ class CSIS extends Component {
                                 <div style={{ ...styles.flex1, ...styles.alignCenter }}>
                                     <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}>/{myuser.profile}</span> <br />
                                     <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}>/{myuser.company.url}</span> <br />
-                                    <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}>Specificatons</span>
+                                    <span style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont }}>/specificatons</span>
                                 </div>
                             </div>
 

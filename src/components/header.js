@@ -28,6 +28,16 @@ class Header {
 
         }
 
+        const homelink = () => {
+            if (!myuser) {
+
+                return (<div style={{ ...styles.generalContainer }}>
+                    <Link className="headerFont" style={{ ...styles.generalLinkonly, ...styles.navigationFont, ...headerFont }} to={`/`}>/</Link>
+                </div>)
+            }
+
+        }
+
         const registerlink = () => {
             if (!myuser) {
 
@@ -70,9 +80,10 @@ class Header {
                 return (<div style={{ ...styles.generalContainer }}>
                     <Link className="headerFont" style={{ ...styles.generalLinkonly, ...styles.navigationFont, ...headerFont }} to={`/${myuser.profile}/company`}>/{myuser.company.url}</Link>
                 </div>)
-            } else {
+            } else if(myuser) {
+                
                 return (<div style={{ ...styles.generalContainer }}>
-                    <Link className="headerFont" style={{ ...styles.generalLinkonly, ...styles.navigationFont, ...headerFont }} to={`/${myuser.profile}/company`}>/comany</Link>
+                    <Link className="headerFont" style={{ ...styles.generalLinkonly, ...styles.navigationFont, ...headerFont }} to={`/${myuser.profile}/company`}>/company</Link>
                 </div>)
 
             }
@@ -94,6 +105,7 @@ class Header {
                             {companylink()}
                             {projectlink()}
                             {csilink()}
+                            {homelink()}
                             {loginlink()}
                             {registerlink()}
                         

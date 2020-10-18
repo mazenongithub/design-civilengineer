@@ -4,6 +4,7 @@ import * as actions from './actions';
 import { MyStylesheet } from './styles'
 import Design from './design'
 import { addIcon, goCheckIcon } from './svg';
+import { validateProviderID } from './functions';
 
 class Company extends Component {
     constructor(props) {
@@ -41,17 +42,30 @@ class Company extends Component {
     handlecompanyurl(url) {
 
         const design = new Design();
-        const myuser = design.getuser.call(this)
+        const myuser = design.getuser.call(this);
+
+        const invalid = validateProviderID(url)
+        
 
         if (myuser) {
             if (myuser.hasOwnProperty("company")) {
                 myuser.company.url = url;
+                
+
                 this.props.reduxUser({ myuser })
                 this.setState({ render: 'render' })
 
 
+                if(invalid) {
+          
+                myuser.company.invalid = invalid;
+                this.props.reduxUser({ myuser })
+                this.setState({ message:invalid })
+                
             }
         }
+
+    }
 
     }
 
@@ -244,6 +258,14 @@ class Company extends Component {
                 }
             }
 
+            const valid = () => {
+                if(myuser.hasOwnProperty("company")) {
+                    if(!myuser.company.hasOwnProperty("invalid")) {
+                      return(<button style={{ ...styles.generalButton, ...gocheckicon }}>{goCheckIcon()}</button>)
+                    }
+                }
+            }
+
             const companypage = () => {
 
                 if (myuser.hasOwnProperty("company")) {
@@ -259,8 +281,10 @@ class Company extends Component {
                                     <span style={{ ...regularFont, ...styles.generalFont, ...styles.rightMargin15 }}>Company URL</span>
                                     <input type="text" style={{ ...regularFont, ...styles.generalFont }}
                                         value={this.getcompanyurl()}
-                                        onChange={event => { this.handlecompanyurl(event.target.value) }} />
-                                    <button style={{ ...styles.generalButton, ...gocheckicon }}>{goCheckIcon()}</button>
+                                        onChange={event => { this.handlecompanyurl(event.target.value) }} 
+                                        onBlur={()=>{design.checkcompanyurl.call(this,myuser,myuser.company.url)}}
+                                        />
+                                        {valid()}
 
                                 </div>
 

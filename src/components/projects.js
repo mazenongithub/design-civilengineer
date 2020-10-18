@@ -147,7 +147,9 @@ class Projects extends Component {
         const myuser = design.getuser.call(this);
         const styles = MyStylesheet();
         const headerFont = design.getHeaderFont.call(this)
+        const regularFont = design.getRegularFont.call(this)
         if (myuser) {
+            if(myuser.hasOwnProperty("company")) {
             return (
                 <div style={{ ...styles.generalFlex }}>
                     <div style={{ ...styles.flex1 }}>
@@ -155,6 +157,7 @@ class Projects extends Component {
                         <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                             <div style={{ ...styles.flex1, ...styles.alignCenter }}>
                                 <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/{myuser.profile}</span> <br />
+                                <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/{myuser.company.url}</span> <br/>
                                 <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/projects</span>
                             </div>
                         </div>
@@ -174,8 +177,18 @@ class Projects extends Component {
 
 
             )
+
+            } else {
+                return (<div style={{...styles.generalContainer}}>
+                    <span style={{...styles.generalFont, ...regularFont}}>Create A company to view projects </span>
+                    </div>)
+
+            }
+
         } else {
-            return (<div>Login to view Projects</div>)
+            return (<div style={{...styles.generalContainer}}>
+            <span style={{...styles.generalFont, ...regularFont}}>Login to view Projects</span>
+            </div>)
         }
 
     }
