@@ -1469,27 +1469,38 @@ class Design {
     getslides() {
         const slides = () => {
             return ([
+                       
                 {
-                    title: 'Design',
-                    id: 'design',
-                    url: 'http://civilengineer.io/design/slides/project.png',
-                    caption: `Design By Civil Engineering`
+                    title: 'Project Specification',
+                    id: 'viewspecification',
+                    url: 'http://civilengineer.io/design/slides/specunhighlighted.png',
+                    caption: `Specifications component was created for making and viewing specifications`
 
                 },
                 {
-                    title: 'Specifications',
-                    id: 'specifications',
-                    url: 'http://civilengineer.io/design/slides/specs.png',
-                    caption: `Create Specfication by Project, Search Specification by code and select to add project`
+                    title: 'Update Project Specification',
+                    id: 'updatespecification',
+                    url: 'http://civilengineer.io/design/slides/spechighlighted.png',
+                    caption: `Easily Update Specification using this component`
 
                 },
+
                 {
-                    title: 'Specification',
-                    id: 'specification',
-                    url: 'http://civilengineer.io/design/slides/spec.png',
-                    caption: `Engineers Draft construction specifications for the project`
+                    title: 'Company Specifications',
+                    id: 'createspecification',
+                    url: 'http://civilengineer.io/design/slides/createspecview.png',
+                    caption: `Create Universal Company Specifications for your company`
 
                 },
+
+                {
+                    title: 'Update Company Specification',
+                    id: 'updatingspecifications',
+                    url: 'http://civilengineer.io/design/slides/updatespecview.png',
+                    caption: `Updating Company Specs and Pressing Save`
+
+                },
+              
                 {
                     title: 'Cost Estimating',
                     id: 'costestimate',
@@ -1514,21 +1525,21 @@ class Design {
     }
     getsmallslide() {
         if (this.state.width > 1200) {
-            return ({ width: '362px', height: '345px' })
+            return ({ width: '362px', height: 'auto' })
         } else if (this.state.width > 600) {
-            return ({ width: '254px', height: '241px' })
+            return ({ width: '254px', height: 'auto'  })
         } else {
-            return ({ width: '178px', height: '169px' })
+            return ({ width: '178px', height: 'auto'  })
         }
 
     }
     getmainslide() {
         if (this.state.width > 1200) {
-            return ({ width: '1087px', height: '1035px' })
+            return ({ width: '1087px', height: 'auto' })
         } else if (this.state.width > 600) {
-            return ({ width: '762px', height: '725px' })
+            return ({ width: '762px', height: 'auto'  })
         } else {
-            return ({ width: '356px', height: '339px' })
+            return ({ width: '356px', height: 'auto'  })
         }
     }
     getLargeFont() {

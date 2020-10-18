@@ -1,8 +1,25 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { MyStylesheet } from './styles'
 import Design from './design'
 
-class Landing  {
+class Landing extends Component  {
+
+    constructor(props) {
+        super(props);
+        this.state = { render: '', width: 0, height: 0, navigation:false, activeslideid:false }
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+      }
+      componentDidMount() {
+        window.addEventListener('resize', this.updateWindowDimensions);
+        this.updateWindowDimensions();
+      }
+      componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+      }
+      updateWindowDimensions() {
+        this.setState({ width: window.innerWidth, height: window.innerHeight });
+      }
+
     showslide(slide) {
         const design = new Design();
         const styles = MyStylesheet();
@@ -54,7 +71,7 @@ class Landing  {
         
     }
 
-    showlanding() {
+    render() {
         const design = new Design();
         const styles = MyStylesheet();
         const mainslide = design.getmainslide.call(this)

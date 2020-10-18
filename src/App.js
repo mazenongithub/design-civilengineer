@@ -61,7 +61,6 @@ class App extends Component {
   render() {
 
 const header = new Header();
-const landing = new Landing();
 const design = new Design();
 
 const myuser = design.getuser.call(this);
@@ -71,7 +70,7 @@ const showlanding = () => {
     return(<Profile/>)
 
   } else {
-  return(landing.showlanding.call(this))
+  return(<Landing/>)
   }
 }
 
@@ -84,7 +83,7 @@ const showlanding = () => {
       <div>
         {header.showheader.call(this)}
         <Switch>
-          <Route exact path="/" component={showlanding} />
+          <Route exact path="/" component={Landing} />
           <Route exact path="/profile/login" component={Login} />
           <Route exact path="/profile/register" component={Register} />
           <Route exact path="/:profile/company" component={Company} />
