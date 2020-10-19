@@ -207,9 +207,9 @@ export async function  CheckUser() {
     })
 }
 
-export async function  AllCompanys() {
+export async function  AllCompanys(providerid) {
 
-    let APIURL = `https://civilengineer.io/design/api/allcompanys.php?providerid=mazen`
+    let APIURL = `${process.env.REACT_APP_SERVER_API}/design/${providerid}/allcompanys`
     console.log(APIURL)
 
     return fetch(APIURL, { credentials: 'include' }).then(resp => {
@@ -217,8 +217,8 @@ export async function  AllCompanys() {
         if (!resp.ok) {
             if (resp.status >= 400 && resp.status < 500) {
                 return resp.json().then(data => {
-                    let err = { errorMessage: data.message };
-                    throw err;
+                    
+                    throw data.message;
                 })
             }
             else {

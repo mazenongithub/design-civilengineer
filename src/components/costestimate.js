@@ -39,7 +39,6 @@ class CostEstimate extends Component {
     componentDidMount() {
         window.addEventListener('resize', this.updateWindowDimensions);
         this.updateWindowDimensions();
-        this.loadcompanys()
         this.props.reduxProject({ title: this.props.match.params.title })
         this.timeindefault()
         this.timeoutdefault();
@@ -348,14 +347,20 @@ class CostEstimate extends Component {
 
     }
     async loadcompanys() {
+        const design = new Design();
+        const myuser =design.getuser.call(this)
+        if(myuser) {
+            
         try {
-            let allcompanys = await AllCompanys();
 
+            let allcompanys = await AllCompanys(myuser.providerid);
             this.props.reduxAllCompanys(allcompanys)
 
         } catch (err) {
             alert(err)
         }
+
+    }
     }
 
 
@@ -1382,6 +1387,10 @@ class CostEstimate extends Component {
 
 
 
+        }
+        const companys = design.getallcompanys.call(this)
+        if(!companys) {
+            this.loadcompanys();
         }
         const myuser = design.getuser.call(this)
         if(myuser) {
