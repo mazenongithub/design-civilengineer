@@ -6,9 +6,6 @@ import 'firebase/auth';
 import { MyStylesheet } from "./styles";
 import { saveCostEstimateIcon, saveProfileIcon } from './svg'
 
-
-
-
 class Design {
 
     async checkcompanyurl(myuser, url) {
@@ -578,17 +575,17 @@ class Design {
             // eslint-disable-next-line
             companys.map(company => {
 
-                if (company.hasOwnProperty("company")) {
-                    if (company.company.hasOwnProperty("employees")) {
+             
+                    if (company.hasOwnProperty("employees")) {
                         // eslint-disable-next-line
-                        company.company.employees.map(employee => {
+                       company.employees.map(employee => {
                             if (employee.providerid === providerid) {
                                 myemployee = employee;
                             }
                         })
 
                     }
-                }
+                
             })
         }
         return myemployee;
@@ -1135,6 +1132,7 @@ class Design {
             </div>
         )
     }
+
     getprojectbykeyid(projectid) {
         const design = new Design();
         const myprojects = design.getprojects.call(this)
@@ -1450,6 +1448,7 @@ class Design {
                 myuser = this.props.myusermodel.myuser;
             }
         }
+        console.log(myuser)
         return myuser;
     }
     getslidebyid(id) {

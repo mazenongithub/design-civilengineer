@@ -491,6 +491,20 @@ class BidSchedule extends Component {
         const styles = MyStylesheet();
         const headerFont = design.getHeaderFont.call(this)
         const regularFont = design.getRegularFont.call(this)
+        const myuser = design.getuser.call(this)
+
+        
+        if(myuser) {
+
+            if(myuser.hasOwnProperty("company")) {
+
+                const csis = design.getallcsicodes.call(this);
+                if(!csis) {
+                    design.loadcsis.call(this,myuser.company.companyid)
+                }
+
+                const project = design.getproject.call(this)
+                if(project) {
 
         const titlerow = () => {
             if (this.state.width > 800) {
@@ -564,8 +578,12 @@ class BidSchedule extends Component {
                     </div>
                 )
 
+
+
             }
         }
+
+        
 
         return (
             <div style={{ ...styles.generalFont }}>
@@ -573,7 +591,10 @@ class BidSchedule extends Component {
 
                     <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
                         <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>Bid Schedule </span>
+                        <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{myuser.profile} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{myuser.company.url} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{project.title} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/bidschedule </span>
                         </div>
                     </div>
 
@@ -586,6 +607,25 @@ class BidSchedule extends Component {
 
                 </div>
             </div>)
+
+        } else {
+            return(<div style={{...styles.generalContainer}}>
+                <span style={{...styles.generalFont,...regularFont}}>Project Not Found</span>
+            </div>)  
+        }
+
+        } else {
+            return(<div style={{...styles.generalContainer}}>
+                <span style={{...styles.generalFont,...regularFont}}>Please Create A company to View Bid Schedule</span>
+            </div>) 
+        }
+
+
+        } else {
+            return(<div style={{...styles.generalContainer}}>
+                <span style={{...styles.generalFont,...regularFont}}>Please Login to View Bid Schedule</span>
+            </div>)
+        }
     }
 
 }
@@ -594,7 +634,8 @@ function mapStateToProps(state) {
         myusermodel: state.myusermodel,
         allusers: state.allusers,
         allcompanys: state.allcompanys,
-        project: state.project
+        project: state.project,
+        csis:state.csis
     }
 }
 

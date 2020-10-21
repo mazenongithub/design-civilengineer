@@ -9,14 +9,14 @@ class CompanyID {
    
         return (<option
             key={company.companyid}
-            value={company.companyid}>{company.company.company}</option>)
+            value={company.companyid}>{company.company}</option>)
     }
     loadcompanyids() {
         const design = new Design();
         const companyid = new CompanyID();
         let options = [];
         const allcompanys = design.getallcompanys.call(this);
-
+    
         if (allcompanys) {
             // eslint-disable-next-line
             allcompanys.map(company => {
@@ -44,14 +44,14 @@ class CompanyID {
         const regularFont = design.getRegularFont.call(this)
         const mycompanyid = new CompanyID();
         let employees = [];
-        if(company.hasOwnProperty("company")) {
-        if (company.company.hasOwnProperty("employees")) {
+       
+        if (company.hasOwnProperty("employees")) {
             // eslint-disable-next-line
-            company.company.employees.map(employee => {
+            company.employees.map(employee => {
                 employees.push(mycompanyid.showemployee.call(this, employee))
 
             })
-        }
+        
     }
 
     if (this.state.active === 'labor' && this.state.companyid) {
@@ -60,7 +60,7 @@ class CompanyID {
                 <div style={{...styles.generalContainer}}>
                     <span style={{...styles.generalFont,...regularFont}}>Employee ID </span>
                 </div>
-                <select style={{ ...styles.generalFont, ...regularFont, ...styles.generalField }} value={this.getemployeeid()} onChange={event=>{this.handleemployeeid.call(this,event.target.value)}}>
+                <select style={{ ...styles.generalFont, ...regularFont, ...styles.generalField }} value={this.getemployeeid()} onChange={event=>{this.handleemployeeid(event.target.value)}}>
                     <option value="">Select An Employee </option>
                     {employees}
                 </select>
@@ -81,14 +81,14 @@ class CompanyID {
         const regularFont = design.getRegularFont.call(this)
         const mycompanyid = new CompanyID();
         let materials= [];
-        if(company.hasOwnProperty("company")) {
-        if (company.company.hasOwnProperty("materials")) {
+  
+        if (company.hasOwnProperty("materials")) {
             // eslint-disable-next-line
-            company.company.materials.map(material => {
+            company.materials.map(material => {
                 materials.push(mycompanyid.showmaterial.call(this, material))
 
             })
-        }
+        
     }
 
     if (this.state.active === 'materials' && this.state.companyid) {
@@ -122,14 +122,14 @@ class CompanyID {
         const regularFont = design.getRegularFont.call(this)
         const mycompanyid = new CompanyID();
         let equipments= [];
-        if(company.hasOwnProperty("company")) {
-        if (company.company.hasOwnProperty("equipment")) {
+  
+        if (company.hasOwnProperty("equipment")) {
             // eslint-disable-next-line
-            company.company.equipment.map(equipment => {
+            company.equipment.map(equipment => {
                 equipments.push(mycompanyid.showequipment.call(this, equipment))
     
             })
-        }
+        
     }
     
     if (this.state.active === 'equipment' && this.state.companyid) {

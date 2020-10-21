@@ -357,60 +357,60 @@ export function calculateTotalMonths(purchasedate, saledate) {
     const totalMonths = (yearsinterval) * 12 + monthInterval;
     return (totalMonths)
 }
+
 export function UTCTimeStringfromTime(timein) {
-    console.log(timein)
     //let timein = '2020-06-02 04:01 pm'
-    const time = timein.substring(17,19)
-    let hours = timein.substring(11,13);
-    if(time === 'pm' && hours !== '12'){
-     hours = Number(hours) + 12
-    }
-    if(time === 'am' && hours ==='12') {
-        hours ='00n'
+    const time = timein.substring(17, 19)
+    let hours = timein.substring(11, 13);
+    if (time === 'pm' && hours !== '12') {
+        hours = Number(hours) + 12
+    } else if (time === 'am' && hours === '12') {
+        hours = '00'
     }
     const sym = () => {
-      let myoffset = new Date().getTimezoneOffset()/60
-      let sym = "+";
-      if(myoffset > 0) {
-        sym = "-"
-      }
-      return sym;
-      
+        let myoffset = new Date().getTimezoneOffset() / 60
+        let sym = "+";
+        if (myoffset > 0) {
+            sym = "-"
+        }
+        return sym;
+
     }
     const extraoffset = () => {
-     let myoffset = (new Date().getTimezoneOffset()/60)*2
-    
-      if(myoffset <10) {
-        myoffset =`0${myoffset}`
-      }
-      return myoffset;
+        let myoffset = (new Date().getTimezoneOffset() / 60) * 2
+
+        if (myoffset < 10) {
+            myoffset = `0${myoffset}`
+        }
+        return myoffset;
     }
-    let minutes = timein.substring(14,16)
-    let year = timein.substring(0,4)
-    let month = timein.substring(5,7);
-    let day = timein.substring(8,10)
-    
+    let minutes = timein.substring(14, 16)
+    let year = timein.substring(0, 4)
+    let month = timein.substring(5, 7);
+    let day = timein.substring(8, 10)
+
     timein = `${year}/${month}/${day} ${hours}:${minutes}:00${sym()}${extraoffset()}:00`
     const newDate = new Date(timein)
     hours = newDate.getHours();
-    if(hours < 10) {
-      hours = `0${hours}`
+    if (hours < 10) {
+        hours = `0${hours}`
     }
     minutes = newDate.getMinutes();
-    if(minutes<10) {
-      minutes = `0${minutes}`
+    if (minutes < 10) {
+        minutes = `0${minutes}`
     }
     year = newDate.getFullYear();
     day = newDate.getDate();
-    if(day < 10) {
-      day=`0${day}`
+    if (day < 10) {
+        day = `0${day}`
     }
-    month = newDate.getMonth()+1;
-    if(month<10) {
-     month = `0${month}`
+    month = newDate.getMonth() + 1;
+    if (month < 10) {
+        month = `0${month}`
     }
-   return( `${year}-${month}-${day} ${hours}:${minutes}:00`);
+    return (`${year}-${month}-${day} ${hours}:${minutes}:00`);
 }
+
 
 export function getAMPMfromTimeIn(timein) {
     //let timein ='2020-05-13 20:00:00'
@@ -561,15 +561,12 @@ export function formatDateStringDisplay(timein) {
 }
 export function inputUTCStringForLaborID(timein) {
 
-    let datein = new Date(`${timein.replace(/-/g, '/')}-00:00`)
+    let datein = new Date(`${timein.replace(/-/g, '/')} UTC`)
     let hours = datein.getHours();
     let ampm
     if (hours > 12) {
         hours = hours - 12;
         ampm = "PM"
-    }
-    else if (hours < 12) {
-        ampm = "AM"
     }
     else if (hours === 0) {
         hours = 12;
@@ -577,6 +574,9 @@ export function inputUTCStringForLaborID(timein) {
     }
     else if (hours === 12) {
         ampm = "PM"
+    }
+    else if (hours < 12) {
+        ampm = "AM"
     }
     let minutes = datein.getMinutes();
     if (minutes < 10) {
@@ -595,7 +595,6 @@ export function inputUTCStringForLaborID(timein) {
     return (`${month}/${date}/${year} ${hours}:${minutes}:${seconds} ${ampm}`)
 
 }
-
 export function trailingZeros(num) {
     if (num < 10) {
         return (`0${num}`);

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from './actions';
 import { MyStylesheet } from './styles'
 import { AllCompanys } from './actions/api'
+import { Link } from 'react-router-dom'
 import {
     inputUTCStringForLaborID,
     calculatetotalhours,
@@ -354,6 +355,7 @@ class CostEstimate extends Component {
         try {
 
             let allcompanys = await AllCompanys(myuser.providerid);
+            console.log(allcompanys)
             this.props.reduxAllCompanys(allcompanys)
 
         } catch (err) {
@@ -1392,9 +1394,20 @@ class CostEstimate extends Component {
         if(!companys) {
             this.loadcompanys();
         }
+
+       
+       
+      
+
         const myuser = design.getuser.call(this)
         if(myuser) {
             if(myuser.hasOwnProperty("company")) {
+                const csis = design.getallcsicodes.call(this);
+
+                if(!csis) {
+                    design.loadcsis.call(this,myuser.company.companyid)
+                }
+
 
                 const project = design.getproject.call(this)
                 if(project) {
@@ -1445,6 +1458,13 @@ class CostEstimate extends Component {
                     {this.showequipmentids()}
 
 
+                    <div style={{...styles.generalContainer, ...styles.alignCenter}}>
+                       
+                        <Link style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont, ...styles.generalLink }} to={`/${myuser.profile}/projects/${project.title}/bidschedule`}>/bidschedule</Link>
+                     
+                    </div>
+
+
 
 
 
@@ -1488,7 +1508,8 @@ function mapStateToProps(state) {
         myusermodel: state.myusermodel,
         allusers: state.allusers,
         allcompanys: state.allcompanys,
-        project: state.project
+        project: state.project,
+        csis:state.csis
     }
 }
 

@@ -7,11 +7,11 @@ import CalenderTimeIn from './calendertimein';
 class TimeIn {
     handleminutes(minutes) {
         this.setState({ timeinminutes: minutes })
-        const design = new Design();
+        const design= new Design();
         const myuser = design.getuser.call(this)
         if (myuser) {
 
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            const project = design.getproject.call(this)
             if (project) {
 
                 const projectid = project.projectid
@@ -26,10 +26,11 @@ class TimeIn {
 
 
                             if (this.state.activelaborid) {
+                              
                                 const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid);
                                 if (mylabor) {
 
-                                    const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
+                                    const j = design.getlaborkeybyid.call(this,  projectid,  this.state.activelaborid)
                                     let day = this.state.timeinday;
                                     let year = this.state.timeinyear;
                                     let month = this.state.timeinmonth;
@@ -38,7 +39,7 @@ class TimeIn {
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
                                     myuser.company.projects[i].costestimate.labor[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
 
 
@@ -51,11 +52,11 @@ class TimeIn {
                         } else if (this.state.active === 'equipment') {
 
                             if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
+                                const myequipment = design.getequipmentbyid.call(this,  projectid, this.state.activeequipmentid)
                                 if (myequipment) {
 
                                     if (myequipment) {
-                                        const j = design.getequipmentkeybyid.call(this, projectid, myequipment.equipmentid)
+                                        const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
                                         let day = this.state.timeinday;
                                         let year = this.state.timeinyear;
                                         let month = this.state.timeinmonth;
@@ -64,7 +65,7 @@ class TimeIn {
                                         let timein = makeTimeString(year, month, day, hours, minutes, time);
                                         timein = UTCTimeStringfromTime(timein);
                                         myuser.company.projects[i].costestimate.equipment[j].timein = timein;
-                                        this.props.reduxUser({ myuser })
+                                        this.props.reduxUser({myuser})
                                         this.setState({ render: 'render' })
                                     }
 
@@ -84,11 +85,11 @@ class TimeIn {
 
     handlehours(hours) {
         this.setState({ timeinhours: hours })
-        const design = new Design();
+        const design= new Design();
         const myuser = design.getuser.call(this)
         if (myuser) {
 
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            const project = design.getproject.call(this)
             if (project) {
 
                 const projectid = project.projectid
@@ -113,8 +114,9 @@ class TimeIn {
                                     let time = this.state.timeinampm;
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
+                                 
                                     myuser.company.projects[i].costestimate.labor[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
 
 
@@ -126,10 +128,10 @@ class TimeIn {
 
 
                             if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
+                                const myequipment = design.getequipmentbyid.call(this,  projectid, this.state.activeequipmentid)
                                 if (myequipment) {
 
-                                    const j = design.getequipmentkeybyid.call(this, projectid, myequipment.equipmentid)
+                                    const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
                                     let day = this.state.timeinday;
                                     let year = this.state.timeinyear;
                                     let month = this.state.timeinmonth;
@@ -138,7 +140,7 @@ class TimeIn {
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
                                     myuser.company.projects[i].costestimate.equipment[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
 
                                 }
@@ -158,11 +160,11 @@ class TimeIn {
 
     handleyear(year) {
         this.setState({ timeinyear: year })
-        const design = new Design();
+        const design= new Design();
         const myuser = design.getuser.call(this)
         if (myuser) {
 
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            const project = design.getproject.call(this)
             if (project) {
 
                 const projectid = project.projectid
@@ -189,7 +191,7 @@ class TimeIn {
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
                                     myuser.company.projects[i].costestimate.labor[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
 
 
@@ -200,9 +202,9 @@ class TimeIn {
                         } else if (this.state.active === 'equipment') {
 
                             if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
+                                const myequipment = design.getequipmentbyid.call(this, this.state.activeequipmentid)
                                 if (myequipment) {
-                                    const j = design.getequipmentkeybyid.call(this, projectid, myequipment.equipmentid)
+                                    const j = design.getequipmentkeybyid.call(this, myequipment.equipmentid)
                                     let day = this.state.timeinday;
                                     let minutes = this.state.timeinminutes;
                                     let month = this.state.timeinmonth;
@@ -211,7 +213,7 @@ class TimeIn {
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
                                     myuser.company.projects[i].costestimate.equipment[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
                                 }
                             }
@@ -230,11 +232,11 @@ class TimeIn {
     handleday(day) {
         day = day.toString();
         this.setState({ timeinday: day })
-        const design = new Design();
+        const design= new Design();
         const myuser = design.getuser.call(this)
         if (myuser) {
 
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            const project = design.getproject.call(this)
             if (project) {
 
                 const projectid = project.projectid
@@ -249,7 +251,7 @@ class TimeIn {
 
 
                             if (this.state.activelaborid) {
-                                const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid);
+                                const mylabor = design.getlaborbyid.call(this,  projectid, this.state.activelaborid);
                                 if (mylabor) {
 
                                     const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
@@ -261,7 +263,7 @@ class TimeIn {
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
                                     myuser.company.projects[i].costestimate.labor[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
 
 
@@ -271,10 +273,10 @@ class TimeIn {
 
                         } else if (this.state.active === 'equipment') {
                             if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
+                                const myequipment = design.getequipmentbyid.call(this, this.state.activeequipmentid)
 
                                 if (myequipment) {
-                                    const j = design.getequipmentkeybyid.call(this, projectid, myequipment.equipmentid)
+                                    const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
                                     let minutes = this.state.timeinminutes;
                                     let year = this.state.timeinyear;
                                     let month = this.state.timeinmonth;
@@ -283,7 +285,7 @@ class TimeIn {
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
                                     myuser.company.projects[i].costestimate.equipment[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
                                 }
                             }
@@ -301,11 +303,11 @@ class TimeIn {
 
     handlemonth(month) {
         this.setState({ timeinmonth: month })
-        const design = new Design();
+        const design= new Design();
         const myuser = design.getuser.call(this)
         if (myuser) {
 
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            const project = design.getproject.call(this)
             if (project) {
 
                 const projectid = project.projectid
@@ -323,7 +325,7 @@ class TimeIn {
                                 const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid);
                                 if (mylabor) {
 
-                                    const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
+                                    const j = design.getlaborkeybyid.call(this,  projectid,  this.state.activelaborid)
                                     let day = this.state.timeinday;
                                     let year = this.state.timeinyear;
                                     let hours = this.state.timeinhours;
@@ -332,7 +334,7 @@ class TimeIn {
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
                                     myuser.company.projects[i].costestimate.labor[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
 
 
@@ -342,9 +344,9 @@ class TimeIn {
 
                         } else if (this.state.active === 'equipment') {
                             if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
+                                const myequipment = design.getequipmentbyid.call(this, this.state.activeequipmentid)
                                 if (myequipment) {
-                                    const j = design.getequipmentkeybyid.call(this, projectid, myequipment.equipmentid)
+                                    const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
                                     let day = this.state.timeinday;
                                     let year = this.state.timeinyear;
                                     let minutes = this.state.timeinminutes;
@@ -353,7 +355,7 @@ class TimeIn {
                                     let timein = makeTimeString(year, month, day, hours, minutes, time);
                                     timein = UTCTimeStringfromTime(timein);
                                     myuser.company.projects[i].costestimate.equipment[j].timein = timein;
-                                    this.props.reduxUser({ myuser })
+                                    this.props.reduxUser({myuser})
                                     this.setState({ render: 'render' })
                                 }
 
@@ -378,11 +380,11 @@ class TimeIn {
             this.setState({ timeinampm: 'am' })
         }
 
-        const design = new Design();
+        const design= new Design();
         const myuser = design.getuser.call(this)
         if (myuser) {
 
-            const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+            const project = design.getproject.call(this)
             if (project) {
 
                 const projectid = project.projectid
@@ -409,7 +411,7 @@ class TimeIn {
                             timein = UTCTimeStringfromTime(timein);
                             console.log(timein)
                             myuser.company.projects[i].costestimate.labor[j].timein = timein;
-                            this.props.reduxUser({ myuser })
+                            this.props.reduxUser({myuser})
                             this.setState({ render: 'render' })
 
 
@@ -420,9 +422,9 @@ class TimeIn {
                 } else if (this.state.active === 'equipment') {
 
                     if (this.state.activeequipmentid) {
-                        const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
+                        const myequipment = design.getequipmentbyid.call(this,  projectid, this.state.activeequipmentid)
                         if (myequipment) {
-                            const j = design.getequipmentkeybyid.call(this, projectid, myequipment.equipmentid)
+                            const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
                             let day = this.state.timeinday;
                             let year = this.state.timeinyear;
                             let month = this.state.timeinmonth;
@@ -432,7 +434,7 @@ class TimeIn {
                             let timein = makeTimeString(year, month, day, hours, minutes, time);
                             timein = UTCTimeStringfromTime(timein);
                             myuser.company.projects[i].costestimate.equipment[j].timein = timein;
-                            this.props.reduxUser({ myuser })
+                            this.props.reduxUser({myuser})
                             this.setState({ render: 'render' })
                         }
                     }
@@ -445,7 +447,7 @@ class TimeIn {
     }
 
     showampm() {
-        const design = new Design();
+        const design= new Design();
         const styles = MyStylesheet();
         const headerFont = design.getHeaderFont.call(this)
         const timein = new TimeIn();
@@ -477,7 +479,7 @@ class TimeIn {
 
     showtimein() {
         const styles = MyStylesheet();
-        const design = new Design();
+        const design= new Design();
         const headerFont = design.getHeaderFont.call(this)
         const regularFont = design.getRegularFont.call(this)
         const timein = new TimeIn();

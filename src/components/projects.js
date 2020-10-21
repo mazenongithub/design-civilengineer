@@ -84,18 +84,27 @@ class Projects extends Component {
                 if (project) {
                     if (project.projectid === myproject.projectid) {
 
-                        return (<div style={{ ...styles.generalFlex }}>
-                            <div style={{ ...styles.flex1, ...styles.alignCenter }}>
+                        return (
 
-                                <Link
-                                    style={{ ...headerFont, ...styles.generalFont, ...styles.generalLink }}
-                                    to={`/${profile}/projects/${myproject.title}/specifications`}>/specifications</Link>
-                            </div>
-                            <div style={{ ...styles.flex1 }}>
-                                <Link style={{ ...headerFont, ...styles.generalFont, ...styles.generalLink }} to={`/${profile}/projects/${myproject.title}/costestimate`}>/costestimate</Link>
+                         
 
-                            </div>
-                        </div>)
+                                    <div style={{ ...styles.generalFlex }}>
+                                        <div style={{ ...styles.flex1, ...styles.alignCenter }}>
+
+                                            <Link
+                                                style={{ ...headerFont, ...styles.generalFont, ...styles.generalLink }}
+                                                to={`/${profile}/projects/${myproject.title}/specifications`}>/specifications</Link>
+                                        </div>
+                                        <div style={{ ...styles.flex1 }}>
+                                            <Link style={{ ...headerFont, ...styles.generalFont, ...styles.generalLink }} to={`/${profile}/projects/${myproject.title}/costestimate`}>/costestimate</Link>
+
+                                        </div>
+                                    </div>
+                                    
+
+        
+
+                        )
 
                     }
 
@@ -149,45 +158,45 @@ class Projects extends Component {
         const headerFont = design.getHeaderFont.call(this)
         const regularFont = design.getRegularFont.call(this)
         if (myuser) {
-            if(myuser.hasOwnProperty("company")) {
-            return (
-                <div style={{ ...styles.generalFlex }}>
-                    <div style={{ ...styles.flex1 }}>
+            if (myuser.hasOwnProperty("company")) {
+                return (
+                    <div style={{ ...styles.generalFlex }}>
+                        <div style={{ ...styles.flex1 }}>
 
-                        <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
-                            <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                                <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/{myuser.profile}</span> <br />
-                                <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/{myuser.company.url}</span> <br/>
-                                <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/projects</span>
+                            <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                                <div style={{ ...styles.flex1, ...styles.alignCenter }}>
+                                    <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/{myuser.profile}</span> <br />
+                                    <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/{myuser.company.url}</span> <br />
+                                    <span style={{ ...headerFont, ...styles.headerFamily, ...styles.boldFont }}>/projects</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
-                            <div style={{ ...styles.flex1 }}>
-                                {this.showprojects()}
+                            <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                                <div style={{ ...styles.flex1 }}>
+                                    {this.showprojects()}
+                                </div>
                             </div>
+
+
+
                         </div>
-
-
-
                     </div>
-                </div>
 
 
 
 
-            )
+                )
 
             } else {
-                return (<div style={{...styles.generalContainer}}>
-                    <span style={{...styles.generalFont, ...regularFont}}>Create A company to view projects </span>
-                    </div>)
+                return (<div style={{ ...styles.generalContainer }}>
+                    <span style={{ ...styles.generalFont, ...regularFont }}>Create A company to view projects </span>
+                </div>)
 
             }
 
         } else {
-            return (<div style={{...styles.generalContainer}}>
-            <span style={{...styles.generalFont, ...regularFont}}>Login to view Projects</span>
+            return (<div style={{ ...styles.generalContainer }}>
+                <span style={{ ...styles.generalFont, ...regularFont }}>Login to view Projects</span>
             </div>)
         }
 
