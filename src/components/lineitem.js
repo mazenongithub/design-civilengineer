@@ -3,7 +3,7 @@ import { MyStylesheet } from './styles'
 import Design from './design'
 import { connect } from 'react-redux';
 import * as actions from './actions';
-import {inputUTCStringForLaborID, calculatetotalhours,formatDateStringDisplay,DirectCostForMaterials, DirectCostForEquipment, DirectCostForLabor} from './functions'
+import { inputUTCStringForLaborID, calculatetotalhours, formatDateStringDisplay, DirectCostForMaterials, DirectCostForEquipment, DirectCostForLabor } from './functions'
 
 class LineItem extends Component {
     constructor(props) {
@@ -39,15 +39,15 @@ class LineItem extends Component {
 
         </div>)
     }
-    getlaboritems(){
+    getlaboritems() {
         const design = new Design();
-        const project = design.getprojectbytitle.call(this,this.props.match.params.title)
+        const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         let items = [];
-        if(project) {
-            if(project.hasOwnProperty("costestimate")) {
-                if(project.costestimate.hasOwnProperty("labor")) {
+        if (project) {
+            if (project.hasOwnProperty("costestimate")) {
+                if (project.costestimate.hasOwnProperty("labor")) {
                     // eslint-disable-next-line
-                    project.costestimate.labor.map(labor=> {
+                    project.costestimate.labor.map(labor => {
                         items.push(this.showlaborid(labor))
 
                     })
@@ -69,13 +69,13 @@ class LineItem extends Component {
     getmaterialitems() {
 
         const design = new Design();
-        const project = design.getprojectbytitle.call(this,this.props.match.params.title)
+        const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         let items = [];
-        if(project) {
-            if(project.hasOwnProperty("costestimate")) {
-                if(project.costestimate.hasOwnProperty("materials")) {
+        if (project) {
+            if (project.hasOwnProperty("costestimate")) {
+                if (project.costestimate.hasOwnProperty("materials")) {
                     // eslint-disable-next-line
-                    project.costestimate.materials.map(material=> {
+                    project.costestimate.materials.map(material => {
                         items.push(this.showmaterialid(material))
                     })
                 }
@@ -101,13 +101,13 @@ class LineItem extends Component {
     getequipmentitems() {
 
         const design = new Design();
-        const project = design.getprojectbytitle.call(this,this.props.match.params.title)
+        const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         let items = [];
-        if(project) {
-            if(project.hasOwnProperty("costestimate")) {
-                if(project.costestimate.hasOwnProperty("equipment")) {
+        if (project) {
+            if (project.hasOwnProperty("costestimate")) {
+                if (project.costestimate.hasOwnProperty("equipment")) {
                     // eslint-disable-next-line
-                    project.costestimate.equipment.map(equipment=> {
+                    project.costestimate.equipment.map(equipment => {
                         items.push(this.showequipmentid(equipment))
                     })
                 }
@@ -123,14 +123,14 @@ class LineItem extends Component {
     getlabortotal() {
 
         const design = new Design();
-        const project = design.getprojectbytitle.call(this,this.props.match.params.title)
+        const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         let cost = 0;
-        if(project) {
-            if(project.hasOwnProperty("costestimate")) {
-                if(project.costestimate.hasOwnProperty("labor")) {
+        if (project) {
+            if (project.hasOwnProperty("costestimate")) {
+                if (project.costestimate.hasOwnProperty("labor")) {
                     // eslint-disable-next-line
-                    project.costestimate.labor.map(labor=> {
-                        cost+=DirectCostForLabor(labor)
+                    project.costestimate.labor.map(labor => {
+                        cost += DirectCostForLabor(labor)
 
                     })
                 }
@@ -143,14 +143,14 @@ class LineItem extends Component {
     getmaterialtotal() {
 
         const design = new Design();
-        const project = design.getprojectbytitle.call(this,this.props.match.params.title)
+        const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         let cost = 0;
-        if(project) {
-            if(project.hasOwnProperty("costestimate")) {
-                if(project.costestimate.hasOwnProperty("materials")) {
+        if (project) {
+            if (project.hasOwnProperty("costestimate")) {
+                if (project.costestimate.hasOwnProperty("materials")) {
                     // eslint-disable-next-line
-                    project.costestimate.materials.map(material=> {
-                        cost+=DirectCostForMaterials(material)
+                    project.costestimate.materials.map(material => {
+                        cost += DirectCostForMaterials(material)
 
 
                     })
@@ -159,19 +159,19 @@ class LineItem extends Component {
 
         }
         return cost;
-    
+
     }
-    
+
     getequipmenttotal() {
         const design = new Design();
-        const project = design.getprojectbytitle.call(this,this.props.match.params.title)
+        const project = design.getprojectbytitle.call(this, this.props.match.params.title)
         let cost = 0;
-        if(project) {
-            if(project.hasOwnProperty("costestimate")) {
-                if(project.costestimate.hasOwnProperty("equipment")) {
+        if (project) {
+            if (project.hasOwnProperty("costestimate")) {
+                if (project.costestimate.hasOwnProperty("equipment")) {
                     // eslint-disable-next-line
-                    project.costestimate.equipment.map(equipment=> {
-                        cost+=DirectCostForEquipment(equipment)
+                    project.costestimate.equipment.map(equipment => {
+                        cost += DirectCostForEquipment(equipment)
 
 
 
@@ -181,7 +181,7 @@ class LineItem extends Component {
             }
         }
         return cost;
-    
+
     }
     getitemtotal() {
         let labortotal = this.getlabortotal();
@@ -198,158 +198,207 @@ class LineItem extends Component {
         const totalmaterials = `$${Number(this.getmaterialtotal()).toFixed(2)}`
         const totalequipment = `$${Number(this.getequipmenttotal()).toFixed(2)}`
         const totalamount = `$${Number(this.getitemtotal()).toFixed(2)}`
-     
-            if (this.state.width > 800) {
-                return (<div style={{ ...styles.generalFlex }}>
-                    <div style={{ ...styles.flex1, ...styles.generalFont, ...regularFont }}>
-    
-                        <div style={{ ...styles.generalFlex }}>
-                            <div style={{ ...styles.flex1 }}>
-    
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
-                                    Labor
-                                </div>
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
-                                    {this.getlaboritems()}
-                                </div>
-    
-    
-                            </div>
-                            <div style={{ ...styles.flex1 }}>
-    
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
-                                    Materials
-                                </div>
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
-                                    {this.getmaterialitems()}
-                                </div>
-    
-                            </div>
-                        </div>
-                        <div style={{ ...styles.generalFlex }}>
-                            <div style={{ ...styles.flex1 }}>
-    
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
-                                    Equipment
-                                </div>
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
-                                    {this.getequipmentitems()}
-                                </div>
-    
-    
-                            </div>
-                            <div style={{ ...styles.flex1, ...styles.showBorder }}>
-    
-                                <div style={{ ...styles.generalContainer }}>
-                                    Total Labor {totallabor}
-                                </div>
-                                <div style={{ ...styles.generalContainer }}>
-                                    Total Materials {totalmaterials}
-                                </div>
-                                <div style={{ ...styles.generalContainer }}>
-                                    Total Equipment {totalequipment}
-                                </div>
-                                <div style={{ ...styles.generalContainer }}>
-                                    Total {totalamount}
-                                </div>
-    
-    
-    
-    
-                            </div>
-                        </div>
-    
-    
-                    </div>
-                </div>)
-    
-            } else {
-                return (
+
+        if (this.state.width > 800) {
+            return (<div style={{ ...styles.generalFlex }}>
+                <div style={{ ...styles.flex1, ...styles.generalFont, ...regularFont }}>
+
                     <div style={{ ...styles.generalFlex }}>
-                        <div style={{ ...styles.flex1, ...styles.generalFont, ...regularFont }}>
-    
-                            <div style={{ ...styles.generalContainer }}>
-    
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
-                                    Labor
+                        <div style={{ ...styles.flex1 }}>
+
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
+                                Labor
                                 </div>
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
-                                    {this.getlaboritems()}
-                                </div>
-    
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
+                                {this.getlaboritems()}
                             </div>
-    
-                            <div style={{ ...styles.generalContainer }}>
-    
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
-                                    Materials
+
+
+                        </div>
+                        <div style={{ ...styles.flex1 }}>
+
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
+                                Materials
                                 </div>
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
-                                    {this.getmaterialitems()}
-                                </div>
-    
-    
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
+                                {this.getmaterialitems()}
                             </div>
-                            <div style={{ ...styles.generalContainer }}>
-    
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
-                                    Equipment
-                                </div>
-                                <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
-                                    {this.getequipmentitems()}
-                                </div>
-    
-                            </div>
-                            <div style={{ ...styles.generalContainer }}>
-                                <div style={{ ...styles.generalContainer }}>
-                                    Total Labor {totallabor}
-                                </div>
-                                <div style={{ ...styles.generalContainer }}>
-                                    Total Materials {totalmaterials}
-                                </div>
-                                <div style={{ ...styles.generalContainer }}>
-                                    Total Equipment {totalequipment}
-                                </div>
-                                <div style={{ ...styles.generalContainer }}>
-                                    Total {totalamount}
-                                </div>
-                            </div>
-    
-    
+
                         </div>
                     </div>
-                )
-    
-            
+                    <div style={{ ...styles.generalFlex }}>
+                        <div style={{ ...styles.flex1 }}>
+
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
+                                Equipment
+                                </div>
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
+                                {this.getequipmentitems()}
+                            </div>
+
+
+                        </div>
+                        <div style={{ ...styles.flex1, ...styles.showBorder }}>
+
+                            <div style={{ ...styles.generalContainer }}>
+                                Total Labor {totallabor}
+                            </div>
+                            <div style={{ ...styles.generalContainer }}>
+                                Total Materials {totalmaterials}
+                            </div>
+                            <div style={{ ...styles.generalContainer }}>
+                                Total Equipment {totalequipment}
+                            </div>
+                            <div style={{ ...styles.generalContainer }}>
+                                Total {totalamount}
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>)
+
+        } else {
+            return (
+                <div style={{ ...styles.generalFlex }}>
+                    <div style={{ ...styles.flex1, ...styles.generalFont, ...regularFont }}>
+
+                        <div style={{ ...styles.generalContainer }}>
+
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
+                                Labor
+                                </div>
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
+                                {this.getlaboritems()}
+                            </div>
+
+                        </div>
+
+                        <div style={{ ...styles.generalContainer }}>
+
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
+                                Materials
+                                </div>
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
+                                {this.getmaterialitems()}
+                            </div>
+
+
+                        </div>
+                        <div style={{ ...styles.generalContainer }}>
+
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder, ...styles.alignCenter }}>
+                                Equipment
+                                </div>
+                            <div style={{ ...styles.generalContainer, ...styles.showBorder }}>
+                                {this.getequipmentitems()}
+                            </div>
+
+                        </div>
+                        <div style={{ ...styles.generalContainer }}>
+                            <div style={{ ...styles.generalContainer }}>
+                                Total Labor {totallabor}
+                            </div>
+                            <div style={{ ...styles.generalContainer }}>
+                                Total Materials {totalmaterials}
+                            </div>
+                            <div style={{ ...styles.generalContainer }}>
+                                Total Equipment {totalequipment}
+                            </div>
+                            <div style={{ ...styles.generalContainer }}>
+                                Total {totalamount}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            )
+
+
         }
-     
-    
+
+
     }
 
-    
+
     render() {
         const design = new Design();
         const headerFont = design.getHeaderFont.call(this)
-        const styles  = MyStylesheet();
-        const csi = design.getcsibyid.call(this,this.props.match.params.csiid)
+        const styles = MyStylesheet();
+        const csi = design.getcsibyid.call(this, this.props.match.params.csiid)
+        const myuser = design.getuser.call(this)
 
-        return(
-        <div style={{...styles.generalFont}}>
-            <div style={{...styles.flex1}}>
+        const regularFont = design.getRegularFont.call(this)
+        const csis = design.getallcsicodes.call(this);
 
-            <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
-                        <div style={{ ...styles.flex1, ...styles.alignCenter }}>
-                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>{csi.csi}-{csi.title} </span>
+       
+
+        if (myuser) {
+
+            if(myuser.hasOwnProperty("company")) {
+
+                if (!csis) {
+                    design.loadcsis.call(this, myuser.company.companyid)
+                }
+        
+            const project = design.getproject.call(this)
+            if (project) {
+
+                
+                return (
+                    <div style={{ ...styles.generalFont }}>
+                        <div style={{ ...styles.flex1 }}>
+
+                            <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                                <div style={{ ...styles.flex1, ...styles.alignCenter }}>
+                                <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{myuser.profile} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{myuser.company.url} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/{project.title} </span><br/>
+                            <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>/bidschedule </span><br/>
+                                    <span style={{ ...headerFont, ...styles.boldFont, ...styles.headerFamily }}>{csi.csi}-{csi.title} </span>
+                                </div>
+                            </div>
+
+                            {this.showlinedetail()}
+
+
                         </div>
                     </div>
+                )
 
-                    {this.showlinedetail()}
+            } else {
+                return (<div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                    <div style={{ ...styles.flex1 }}>
+                        <span style={{ ...styles.generalFont, ...regularFont }}>Project Could not be found</span>
+                    </div>
+    
+                </div>)
+            }
 
+        } else {
+            return (<div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+                <div style={{ ...styles.flex1 }}>
+                    <span style={{ ...styles.generalFont, ...regularFont }}>Please Create A Company to View Line Item</span>
+                </div>
 
+            </div>)
+
+            }
+    } else {
+        return (<div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
+            <div style={{ ...styles.flex1 }}>
+                <span style={{ ...styles.generalFont, ...regularFont }}>Please Login to View Cost Estimate</span>
             </div>
-        </div>
-        )
+
+        </div>)
     }
+    } 
 
 }
 
@@ -358,7 +407,8 @@ function mapStateToProps(state) {
         myusermodel: state.myusermodel,
         allusers: state.allusers,
         allcompanys: state.allcompanys,
-        project: state.project
+        project: state.project,
+        csis: state.csis
     }
 }
 

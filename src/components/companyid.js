@@ -139,7 +139,7 @@ class CompanyID {
                     <span style={{...styles.generalFont,...regularFont}}>Equipment </span>
                 </div>
                 <select style={{ ...styles.generalFont, ...regularFont, ...styles.generalField }}
-                onChange={event=>{this.handlemyequipmentid.call(this,event.target.value)}}
+                onChange={event=>{this.handlemyequipmentid(this.state.companyid,event.target.value)}}
                  value={this.getequipmentid()}>
                     <option value="">Select A Equipment </option>
                     {equipments}

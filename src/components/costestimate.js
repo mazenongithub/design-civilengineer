@@ -87,8 +87,12 @@ class CostEstimate extends Component {
 
             } else if (this.state.active === 'equipment') {
                 if (this.state.activeequipmentid) {
-                    companyid = design.getcompanyidfromequipmentid.call(this, projectid, this.state.activeequipmentid);
+                    const myequipment = design.getequipmentbyid.call(this,project.projectid,this.state.activeequipmentid)
+                    if(myequipment) {
+                    companyid = design.getcompanyidfromequipmentid.call(this, myequipment.myequipmentid);
+                    }
                 }
+
 
             } else if (this.state.active === 'materials') {
                 if (this.state.activematerialid) {
@@ -432,7 +436,7 @@ class CostEstimate extends Component {
 
             if (this.state.activematerialid === materialid) {
                 this.materialdatedefault();
-                this.setState({ activematerialid: false, csi_1: '', csi_2: '', csi_3: '', csi_4: '' })
+                this.setState({ activematerialid: false, csi_1: '', csi_2: '', csi_3: '', csi_4: '',companyid:false  })
 
             } else {
                 const projectid = project.projectid;
@@ -462,9 +466,10 @@ class CostEstimate extends Component {
     }
 
     makeequipmentactive(equipmentid) {
+      
 
         const design = new Design();
-        const project = design.getprojectbytitle.call(this, this.props.match.params.title)
+        const project = design.getproject.call(this)
         if (project) {
 
             if (this.state.activeequipmentid === equipmentid) {
@@ -474,7 +479,7 @@ class CostEstimate extends Component {
             } else {
                 const projectid = project.projectid;
                 const myequipment = design.getequipmentbyid.call(this, projectid, equipmentid)
-
+                
                 if (myequipment) {
 
                     const timeinmonth = getMonthfromTimein(myequipment.timein);
@@ -490,7 +495,8 @@ class CostEstimate extends Component {
                     const timeouthours = getHoursfromTimein(myequipment.timeout)
                     const timeoutminutes = getMinutesfromTimein(myequipment.timeout)
                     const timeoutampm = getAMPMfromTimeIn(myequipment.timeout);
-                    const companyid = design.getcompanyidfromequipmentid.call(this, projectid, equipmentid)
+                    const companyid = design.getcompanyidfromequipmentid.call(this, myequipment.myequipmentid)
+                    console.log(companyid);
                     const csi = design.getcsibyid.call(this, myequipment.csiid);
                     const csi_1 = csi.csi.substring(0, 2)
                     const csi_2 = csi.csi.substring(2, 4);
@@ -516,7 +522,7 @@ class CostEstimate extends Component {
             if (this.state.activelaborid === laborid) {
                 this.timeindefault()
                 this.timeoutdefault();
-                this.setState({ activelaborid: false, csi_1: '', csi_2: '', csi_3: '', csi_4: '' })
+                this.setState({ activelaborid: false, csi_1: '', csi_2: '', csi_3: '', csi_4: '',companyid:false })
             } else {
                 const projectid = project.projectid;
                 const mylabor = design.getlaborbyid.call(this, projectid, laborid)
@@ -710,7 +716,7 @@ class CostEstimate extends Component {
             if (project) {
                 const projectid = project.projectid;
                 const i = design.getprojectbykeyid.call(this, projectid)
-                const myequipment = design.getmaterialbyid.call(this, projectid, equipment.equipmentid);
+                const myequipment = design.getequipmentkeybyid.call(this, projectid, equipment.equipmentid);
                 if (myequipment) {
                     const j = design.getequipmentkeybyid.call(this, projectid, equipment.equipmentid);
                     myuser.company.projects[i].costestimate.equipment.splice(j, 1)
@@ -791,10 +797,12 @@ class CostEstimate extends Component {
         return equipmentids;
 
     }
-    handlemyequipmentid(myequipmentid) {
+
+    handlemyequipmentid(companyid, myequipmentid) {
         const design = new Design();
         const myuser = design.getuser.call(this);
         const makeid = new MakeID();
+                
         if (myuser) {
             const project = design.getprojectbytitle.call(this, this.props.match.params.title);
             if (project) {
@@ -804,6 +812,11 @@ class CostEstimate extends Component {
                     const myequipment = design.getequipmentbyid.call(this, projectid, this.state.activeequipmentid)
                     if (myequipment) {
                         const j = design.getequipmentkeybyid.call(this, projectid, this.state.activeequipmentid)
+                        const equipmentrate = +Number(design.getequipmentratebyid.call(this,companyid,myequipmentid)).toFixed(4)
+                       if(equipmentrate) {
+                        myuser.company.projects[i].costestimate.equipment[j].equipmentrate = equipmentrate;
+
+                       }
                         myuser.company.projects[i].costestimate.equipment[j].myequipmentid = myequipmentid;
                         this.props.reduxUser({ myuser })
                         this.setState({ render: 'render' })
@@ -829,7 +842,7 @@ class CostEstimate extends Component {
                     const timetimeout = this.state.timeoutampm;
                     let timeout = makeTimeString(yearout, monthout, dayout, hoursout, minutesout, timetimeout);
                     timeout = UTCTimeStringfromTime(timeout);
-                    const equipmentrate = design.calculateequipmentratebyid.call(this, myequipmentid, timein, timeout)
+                    const equipmentrate = +Number(design.getequipmentratebyid.call(this,companyid,myequipmentid)).toFixed(4)
                     const engineerid = myuser.providerid;
                     const profit = 0;
 
@@ -863,6 +876,10 @@ class CostEstimate extends Component {
                     const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid)
                     if (mylabor) {
                         const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
+                        const laborrate = +Number(design.gethourlyrate.call(this, providerid)).toFixed(4)
+                        if(laborrate) {
+                        myuser.company.projects[i].costestimate.labor[j].laborrate = laborrate;
+                        }
                         myuser.company.projects[i].costestimate.labor[j].providerid = providerid;
                         this.props.reduxUser({ myuser })
                         this.setState({ render: 'render' })
@@ -887,7 +904,7 @@ class CostEstimate extends Component {
                     const timetimeout = this.state.timeoutampm;
                     let timeout = makeTimeString(yearout, monthout, dayout, hoursout, minutesout, timetimeout);
                     timeout = UTCTimeStringfromTime(timeout);
-                    const laborrate = design.gethourlyrate.call(this, providerid)
+                    const laborrate = +Number(design.gethourlyrate.call(this, providerid)).toFixed(4)
                     const profit = 0;
                     const engineerid = myuser.providerid;
 
@@ -1137,7 +1154,13 @@ class CostEstimate extends Component {
                     if (mymaterial) {
                         const j = design.getmaterialkeybyid.call(this, projectid, this.state.activematerialid)
                         myuser.company.projects[i].costestimate.materials[j].mymaterialid = mymaterialid;
-                        this.reduxUser({ myuser })
+                        const mymaterial = design.getmymaterialfromid.call(this, mymaterialid)
+                        if(mymaterial) {
+                            myuser.company.projects[i].costestimate.materials[j].unit = mymaterial.unit;
+                            myuser.company.projects[i].costestimate.materials[j].unitcost = mymaterial.unitcost;
+
+                        }
+                        this.props.reduxUser({ myuser })
                         this.setState({ render: 'render' })
                     }
 

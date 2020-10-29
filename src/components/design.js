@@ -1,6 +1,6 @@
 import React from 'react';
 import { sortpart, inputUTCStringForLaborID, getEquipmentRentalObj, calculatetotalhours, calculateTotalMonths, FutureCostPresent, AmmortizeFactor } from "./functions";
-import { SaveSpecs, LogoutUser, SaveCSI,  SaveCostEstimate, AppleLogin, SaveProfile, LoadCSIs, LoadSpecifications, CheckCompanyID } from './actions/api'
+import { SaveSpecs, LogoutUser, SaveCSI, SaveCostEstimate, AppleLogin, SaveProfile, LoadCSIs, LoadSpecifications, CheckCompanyID } from './actions/api'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { MyStylesheet } from "./styles";
@@ -9,23 +9,23 @@ import { saveCostEstimateIcon, saveProfileIcon } from './svg'
 class Design {
 
     async checkcompanyurl(myuser, url) {
-        try{
+        try {
             let response = await CheckCompanyID(url);
             console.log(response)
-            if(response.hasOwnProperty("invalid")) {
+            if (response.hasOwnProperty("invalid")) {
                 myuser.company.invalid = response.invalid;
-                this.props.reduxUser({myuser})
-                this.setState({message:response.invalid})
+                this.props.reduxUser({ myuser })
+                this.setState({ message: response.invalid })
             } else {
-                if(myuser.company.hasOwnProperty("invalid")) {
+                if (myuser.company.hasOwnProperty("invalid")) {
                     delete myuser.company.invalid;
-                    this.props.reduxUser({myuser})
-                    this.setState({message:''})
+                    this.props.reduxUser({ myuser })
+                    this.setState({ message: '' })
                 }
             }
-           
 
-        } catch(err) {
+
+        } catch (err) {
             alert(err)
         }
     }
@@ -131,21 +131,18 @@ class Design {
 
     gethourlyrate(providerid) {
         const design = new Design()
-        let employee = design.getemployeebyid.call(this, providerid)
-        let workinghours = Number(employee.workinghours);
+        const companys = design.getallcompanys.call(this)
         let hourlyrate = 0;
-        let totalbenefits = 0;
-
-        if (employee.hasOwnProperty("benefits")) {
-            // eslint-disable-next-line
-            employee.benefits.map(benefit => {
-                totalbenefits += Number(benefit.amount);
-
+        if(companys) {
+            companys.map(company=> {
+                if(company.hasOwnProperty("employees")) {
+                    company.employees.map(employee=> {
+                        if(employee.providerid === providerid) {
+                            hourlyrate = employee.laborrate;
+                        }
+                    })
+                }
             })
-        }
-
-        if (workinghours && totalbenefits) {
-            hourlyrate = Number(totalbenefits / workinghours)
         }
         return hourlyrate;
 
@@ -185,17 +182,15 @@ class Design {
             companys.map(company => {
 
 
-                if (company.hasOwnProperty("company")) {
-                    if (company.company.hasOwnProperty("materials")) {
+                if (company.hasOwnProperty("materials")) {
                         // eslint-disable-next-line
-                        company.company.materials.map(material => {
+                        company.materials.map(material => {
                             if (material.materialid === materialid) {
                                 mymaterial = material;
                             }
 
                         })
                     }
-                }
 
             })
 
@@ -239,23 +234,40 @@ class Design {
         return key;
     }
 
-
-    getequipmentrentalratebyid(equipmentid, timein, timeout) {
+    getequipmentratebyid(companyid, equipmentid, timein, timeout) {
         const design = new Design();
-        const myequipment = design.getmyequipmentfromid.call(this, equipmentid);
-        const hourlyrate = Number(myequipment.rentalrates.hour);
-        const dailyrate = Number(myequipment.rentalrates.day);
-        const weeklyrate = Number(myequipment.rentalrates.week);
-        const monthlyrate = Number(myequipment.rentalrates.month);
-        const rentalObj = getEquipmentRentalObj(timein, timeout);
+        let equipmentrate = 0;
+        const equipment = design.getcompanyequipmentbyid.call(this, companyid, equipmentid)
+        if (equipment.hasOwnProperty("equipmentrate")) {
+            equipmentrate = equipment.equipmentrate;
+        } else if (equipment.hasOwnProperty("rentalrates")) {
+            equipmentrate = design.calculateequipmentratebyid.call(this, companyid, equipmentid, timein, timeout)
+        }
+        return equipmentrate;
+    }
 
-        const hours = rentalObj.hours;
-        const days = rentalObj.days;
-        const weeks = rentalObj.weeks;
-        const months = rentalObj.months;
-        let rentalcost = (hourlyrate * hours) + (days * dailyrate) + (weeks * weeklyrate) + (months * monthlyrate);
-        let totalhours = calculatetotalhours(timeout, timein);
-        let rentalrate = rentalcost / totalhours;
+    getequipmentrentalratebyid(companyid, equipmentid, timein, timeout) {
+        const design = new Design();
+        const myequipment = design.getcompanyequipmentbyid.call(this, companyid, equipmentid);
+        let rentalrate = 0;
+        if (myequipment) {
+            if (myequipment.hasOwnProperty("rentalrates")) {
+                const hourlyrate = Number(myequipment.rentalrates.hour);
+                const dailyrate = Number(myequipment.rentalrates.day);
+
+                const weeklyrate = Number(myequipment.rentalrates.week);
+                const monthlyrate = Number(myequipment.rentalrates.month);
+                const rentalObj = getEquipmentRentalObj(timein, timeout);
+
+                const hours = rentalObj.hours;
+                const days = rentalObj.days;
+                const weeks = rentalObj.weeks;
+                const months = rentalObj.months;
+                let rentalcost = (hourlyrate * hours) + (days * dailyrate) + (weeks * weeklyrate) + (months * monthlyrate);
+                let totalhours = calculatetotalhours(timeout, timein);
+                rentalrate = rentalcost / totalhours;
+            }
+        }
         return rentalrate;
 
     }
@@ -329,17 +341,15 @@ class Design {
     }
 
 
-    calculateequipmentratebyid(equipmentid, timein, timeout) {
+
+
+
+    calculateequipmentratebyid(companyid, equipmentid, timein, timeout) {
 
         const design = new Design();
-        const myequipment = design.getmyequipmentfromid.call(this, equipmentid);
 
-        let equipmentrate = 0;
-        if (myequipment.ownershipstatus === 'owned') {
-            equipmentrate = design.calculateequipmentratebyownership.call(this, equipmentid)
-        } else if (myequipment.ownershipstatus === 'rented') {
-            equipmentrate = design.getequipmentrentalratebyid.call(this, equipmentid, timein, timeout)
-        }
+        let equipmentrate = design.getequipmentrentalratebyid.call(this, companyid, equipmentid, timein, timeout)
+
         return equipmentrate;
 
     }
@@ -384,10 +394,9 @@ class Design {
                 // eslint-disable-next-line
                 companys.map(company => {
 
-                    if (company.hasOwnProperty("company")) {
-                        if (company.company.hasOwnProperty("materials")) {
+                    if (company.hasOwnProperty("materials")) {
                             // eslint-disable-next-line
-                            company.company.materials.map(material => {
+                            company.materials.map(material => {
                                 if (material.materialid === mymaterialid) {
 
                                     companyid = company.companyid;
@@ -395,43 +404,70 @@ class Design {
                             })
                         }
 
-                    }
                 })
             }
         }
         return companyid;
     }
-    getcompanyidfromequipmentid(projectid, equipmentid) {
+
+    getcompanybyid(companyid) {
         const design = new Design();
-        const project = design.getprojectbyid.call(this, projectid);
-        let companyid = this.state.companyid;
-        if (project) {
-            const myequipment = design.getequipmentbyid.call(this, projectid, equipmentid);
-            if (myequipment) {
-                const myequipmentid = myequipment.myequipmentid;
+        const allcompanys = design.getallcompanys.call(this);
+        let mycompany = false;
+        if (allcompanys) {
+            allcompanys.map(company => {
+                if (company.companyid === companyid) {
+                    mycompany = company;
 
-                const companys = design.getallcompanys.call(this);
-                if (companys) {
+                }
+            })
+        }
+
+        return mycompany;
+    }
+
+    getcompanyequipmentbyid(companyid, equipmentid) {
+        const design = new Design();
+        const company = design.getcompanybyid.call(this, companyid)
+        let myequipment = false;
+        if (company) {
+            if (company.hasOwnProperty("equipment")) {
+                company.equipment.map(equipment => {
+                    if (equipment.equipmentid === equipmentid) {
+                        myequipment = equipment;
+
+                    }
+                })
+            }
+
+        }
+        return myequipment;
+    }
+    getcompanyidfromequipmentid(equipmentid) {
+        const design = new Design();
+        const companys = design.getallcompanys.call(this);
+        let companyid = false;
+   
+        if (companys) {
+            // eslint-disable-next-line
+            companys.map(company => {
+              
+                if (company.hasOwnProperty("equipment")) {
                     // eslint-disable-next-line
-                    companys.map(company => {
-
-                        if (company.hasOwnProperty("company")) {
-                            if (company.company.hasOwnProperty("equipment")) {
-                                // eslint-disable-next-line
-                                company.company.equipment.map(equipment => {
-                                    if (equipment.equipmentid === myequipmentid) {
-
-                                        companyid = company.companyid;
-                                    }
-                                })
-                            }
-
+                    company.equipment.map(equipment => {
+                 
+                        if (equipment.equipmentid === equipmentid) {
+                    
+                            companyid = company.companyid;
                         }
                     })
                 }
 
-            }
+
+            })
+
         }
+
         return companyid;
     }
     getcompanyidfromlaborid(projectid, laborid) {
@@ -447,10 +483,9 @@ class Design {
                 // eslint-disable-next-line
                 companys.map(company => {
 
-                    if (company.hasOwnProperty("company")) {
-                        if (company.company.hasOwnProperty("employees")) {
+                    if (company.hasOwnProperty("employees")) {
                             // eslint-disable-next-line
-                            company.company.employees.map(employee => {
+                            company.employees.map(employee => {
                                 if (employee.providerid === providerid) {
 
                                     companyid = company.companyid;
@@ -458,8 +493,7 @@ class Design {
                             })
                         }
 
-                    }
-                })
+                 })
             }
         }
         return companyid;
@@ -575,36 +609,23 @@ class Design {
             // eslint-disable-next-line
             companys.map(company => {
 
-             
-                    if (company.hasOwnProperty("employees")) {
-                        // eslint-disable-next-line
-                       company.employees.map(employee => {
-                            if (employee.providerid === providerid) {
-                                myemployee = employee;
-                            }
-                        })
 
-                    }
-                
+                if (company.hasOwnProperty("employees")) {
+                    // eslint-disable-next-line
+                    company.employees.map(employee => {
+                        if (employee.providerid === providerid) {
+                            myemployee = employee;
+                        }
+                    })
+
+                }
+
             })
         }
         return myemployee;
     }
 
-    getcompanybyid(companyid) {
-        const design = new Design();
-        const allcompanys = design.getallcompanys.call(this);
-        let mycompany = false;
-        if (allcompanys) {
-            // eslint-disable-next-line
-            allcompanys.map(company => {
-                if (company.companyid === companyid) {
-                    mycompany = company;
-                }
-            })
-        }
-        return mycompany;
-    }
+
 
     getallcompanys() {
         let companys = false;
@@ -1404,7 +1425,7 @@ class Design {
                         if (response.hasOwnProperty("lastupdated")) {
                             message += `Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
                         }
-                    
+
                         this.setState({ message })
                     }
 
@@ -1448,7 +1469,6 @@ class Design {
                 myuser = this.props.myusermodel.myuser;
             }
         }
-        console.log(myuser)
         return myuser;
     }
     getslidebyid(id) {
@@ -1468,7 +1488,7 @@ class Design {
     getslides() {
         const slides = () => {
             return ([
-                       
+
                 {
                     title: 'Project Specification',
                     id: 'viewspecification',
@@ -1480,26 +1500,20 @@ class Design {
                     title: 'Update Project Specification',
                     id: 'updatespecification',
                     url: 'http://civilengineer.io/design/slides/spechighlighted.png',
-                    caption: `Easily Update Specification using this component`
+                    caption: `Create and Update your project specifications. This sets the standards for the construction and mentions payment.`
 
                 },
 
-                {
-                    title: 'Company Specifications',
-                    id: 'createspecification',
-                    url: 'http://civilengineer.io/design/slides/createspecview.png',
-                    caption: `Create Universal Company Specifications for your company`
-
-                },
+        
 
                 {
                     title: 'Update Company Specification',
                     id: 'updatingspecifications',
                     url: 'http://civilengineer.io/design/slides/updatespecview.png',
-                    caption: `Updating Company Specs and Pressing Save`
+                    caption: `Update your companys specification database, add new codes to existing set`
 
                 },
-              
+
                 {
                     title: 'Cost Estimating',
                     id: 'costestimate',
@@ -1507,6 +1521,19 @@ class Design {
                     caption: `Engineering Cost Estimate using Contractor equipment, labor, and material prices`
 
                 },
+                {
+                    title: 'Bid Schedule',
+                    id: 'bidschedule',
+                    url: 'http://civilengineer.io/design/slides/bidschedule.png',
+                    caption: `Engineers bid schedule produces itemized construction schedule done for cost estimating purposes`
+                },
+                {
+                    title: 'Line Item',
+                    id: 'lineitem',
+                    url: 'http://civilengineer.io/design/slides/lineitem.png',
+                    caption: `View Labor, Equipment, Materials for each line item in your cost estimate`
+                },
+
 
             ])
         }
@@ -1526,9 +1553,9 @@ class Design {
         if (this.state.width > 1200) {
             return ({ width: '362px', height: 'auto' })
         } else if (this.state.width > 600) {
-            return ({ width: '254px', height: 'auto'  })
+            return ({ width: '254px', height: 'auto' })
         } else {
-            return ({ width: '178px', height: 'auto'  })
+            return ({ width: '178px', height: 'auto' })
         }
 
     }
@@ -1536,9 +1563,9 @@ class Design {
         if (this.state.width > 1200) {
             return ({ width: '1087px', height: 'auto' })
         } else if (this.state.width > 600) {
-            return ({ width: '762px', height: 'auto'  })
+            return ({ width: '762px', height: 'auto' })
         } else {
-            return ({ width: '356px', height: 'auto'  })
+            return ({ width: '356px', height: 'auto' })
         }
     }
     getLargeFont() {
@@ -1578,77 +1605,77 @@ class Design {
             return ({ fontSize: '30px' })
         }
     }
-    
+
 
     getaddicon() {
-   
 
-            if (this.state.width > 1200) {
-                return ({ width: '130px' })
-            } else if (this.state.width > 600) {
-                return ({ width: '105px' })
-            } else {
-                return ({ width: '80px' })
-            }
 
-        
+        if (this.state.width > 1200) {
+            return ({ width: '130px' })
+        } else if (this.state.width > 600) {
+            return ({ width: '105px' })
+        } else {
+            return ({ width: '80px' })
+        }
+
+
     }
 
     async saveupdatedcsis() {
         const design = new Design();
 
         const csicodes = design.getallcsicodes.call(this)
-        if(csicodes) {
-        
-        const updatedcsis = design.getupdatedcsis.call(this)
-        
-        if (updatedcsis) {
-            const values = { csis: updatedcsis }
-            console.log(values)
-            try {
-                const response = await SaveCSI(values);
-                console.log(response)
+        if (csicodes) {
 
-                if (response.hasOwnProperty("csis")) {
-                    if (response.csis.hasOwnProperty("length")) {
-                        response.csis.map(csis => {
+            const updatedcsis = design.getupdatedcsis.call(this)
 
-                            const csi = design.getcsibyid.call(this, csis.csiid)
-                            if (csi) {
-                                const i = design.getcsikeybyid.call(this, csis.csiid)
-                                csicodes[i] = csis
-                                
-                            }
+            if (updatedcsis) {
+                const values = { csis: updatedcsis }
+                console.log(values)
+                try {
+                    const response = await SaveCSI(values);
+                    console.log(response)
+
+                    if (response.hasOwnProperty("csis")) {
+                        if (response.csis.hasOwnProperty("length")) {
+                            response.csis.map(csis => {
+
+                                const csi = design.getcsibyid.call(this, csis.csiid)
+                                if (csi) {
+                                    const i = design.getcsikeybyid.call(this, csis.csiid)
+                                    csicodes[i] = csis
+
+                                }
 
 
-                        })
+                            })
 
+
+                        }
+
+                        this.props.reduxCSIs(csicodes)
 
                     }
+                    let message = "";
+                    if (response.hasOwnProperty('message')) {
+                        message += response.message
 
-                    this.props.reduxCSIs(csicodes)
-                    
+                    }
+                    if (response.hasOwnProperty("lastupdated")) {
+                        message += ` Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
+                    }
+                    this.setState({ message })
+
+
+                } catch (err) {
+                    alert(err)
                 }
-                let message = "";
-                if (response.hasOwnProperty('message')) {
-                    message += response.message
-
-                }
-                if (response.hasOwnProperty("lastupdated")) {
-                    message += ` Last Updated ${inputUTCStringForLaborID(response.lastupdated)}`
-                }
-                this.setState({ message })
 
 
-            } catch (err) {
-                alert(err)
             }
 
 
-        }
-
-
-    } // if csi codes
+        } // if csi codes
 
 
 

@@ -1,541 +1,234 @@
+calculateequipmentratebyid(equipmentid, timein, timeout) {
 
-import React from 'react';
-import { MyStylesheet } from './styles'
-import Design from './design'
-import { UTCTimeStringfromTime, makeTimeString, validateMonth, validateDate, validateYear, validateMinutes } from './functions';
-import CalenderTimeOut from './calendertimeout';
-class TimeOut {
-    handleminutes(minutes) {
-        this.setState({ timeoutminutes: minutes })
-        const design= new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
-
-            const project = design.getproject.call(this)
-            if (project) {
-
-                const projectid = project.projectid
-
-                const i = design.getprojectbykeyid.call(this, projectid);
-                if (minutes.length === 2) {
-
-                    if (validateMinutes(minutes)) {
-
-
-                        if (this.state.active === 'labor') {
-
-
-                            if (this.state.activelaborid) {
-                              
-                                const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid);
-                                if (mylabor) {
-
-                                    const j = design.getlaborkeybyid.call(this,  projectid,  this.state.activelaborid)
-                                    let day = this.state.timeoutday;
-                                    let year = this.state.timeoutyear;
-                                    let month = this.state.timeoutmonth;
-                                    let hours = this.state.timeouthours;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                    myuser.company.projects[i].costestimate.labor[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-
-
-                                }
-
-                            }
-
-
-
-                        } else if (this.state.active === 'equipment') {
-
-                            if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this,  projectid, this.state.activeequipmentid)
-                                if (myequipment) {
-
-                                    if (myequipment) {
-                                        const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
-                                        let day = this.state.timeoutday;
-                                        let year = this.state.timeoutyear;
-                                        let month = this.state.timeoutmonth;
-                                        let hours = this.state.timeouthours;
-                                        let time = this.state.timeoutampm;
-                                        let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                        timeout = UTCTimeStringfromTime(timeout);
-                                        myuser.company.projects[i].costestimate.equipment[j].timeout = timeout;
-                                        this.props.reduxUser({myuser})
-                                        this.setState({ render: 'render' })
-                                    }
-
-                                }
-                            }
-
-                        }
-
-                    } else {
-                        alert(`Invalid minute format ${minutes}`)
-                    }
-                }
-            }
-        }
-
+    const dynamicstyles = new DynamicStyles();
+    const myequipment = dynamicstyles.getequipmentfromid.call(this, equipmentid);
+    let equipmentrate = 0;
+    if (myequipment.ownershipstatus === 'owned') {
+        equipmentrate = dynamicstyles.calculateequipmentratebyownership.call(this, equipmentid)
+    } else if (myequipment.ownershipstatus === 'rented') {
+        equipmentrate = dynamicstyles.getequipmentrentalratebyid.call(this, equipmentid, timein, timeout)
     }
-
-    handlehours(hours) {
-        this.setState({ timeouthours: hours })
-        const design= new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
-
-            const project = design.getproject.call(this)
-            if (project) {
-
-                const projectid = project.projectid
-
-                const i = design.getprojectbykeyid.call(this, projectid);
-                if (hours.length === 2) {
-                    if (validateMonth(hours)) {
-
-                        if (this.state.active === 'labor') {
-
-
-
-                            if (this.state.activelaborid) {
-                                const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid);
-                                if (mylabor) {
-
-                                    const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
-                                    let day = this.state.timeoutday;
-                                    let year = this.state.timeoutyear;
-                                    let month = this.state.timeoutmonth;
-                                    let minutes = this.state.timeoutminutes;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                 
-                                    myuser.company.projects[i].costestimate.labor[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-
-
-                                }
-
-                            }
-
-                        } else if (this.state.active === 'equipment') {
-
-
-                            if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this,  projectid, this.state.activeequipmentid)
-                                if (myequipment) {
-
-                                    const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
-                                    let day = this.state.timeoutday;
-                                    let year = this.state.timeoutyear;
-                                    let month = this.state.timeoutmonth;
-                                    let minutes = this.state.timeoutminutes;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                    myuser.company.projects[i].costestimate.equipment[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-
-                                }
-                            }
-                        }
-
-                    } else {
-                        alert(`Invalid hours ${hours}`)
-
-                    }
-
-                }
-
-            }
-        }
-    }
-
-    handleyear(year) {
-        this.setState({ timeoutyear: year })
-        const design= new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
-
-            const project = design.getproject.call(this)
-            if (project) {
-
-                const projectid = project.projectid
-
-                const i = design.getprojectbykeyid.call(this, projectid);
-                if (year.length === 4) {
-
-                    if (validateYear(year)) {
-
-                        if (this.state.active === 'labor') {
-
-
-
-                            if (this.state.activelaborid) {
-                                const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid);
-                                if (mylabor) {
-
-                                    const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
-                                    let day = this.state.timeoutday;
-                                    let month = this.state.timeoutmonth;
-                                    let hours = this.state.timeouthours;
-                                    let minutes = this.state.timeoutminutes;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                    myuser.company.projects[i].costestimate.labor[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-
-
-                                }
-
-                            }
-
-                        } else if (this.state.active === 'equipment') {
-
-                            if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this, this.state.activeequipmentid)
-                                if (myequipment) {
-                                    const j = design.getequipmentkeybyid.call(this, myequipment.equipmentid)
-                                    let day = this.state.timeoutday;
-                                    let minutes = this.state.timeoutminutes;
-                                    let month = this.state.timeoutmonth;
-                                    let hours = this.state.timeouthours;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                    myuser.company.projects[i].costestimate.equipment[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-                                }
-                            }
-
-                        }
-
-                    } else {
-                        alert(`Invalid Year Format ${year}`)
-                    }
-                }
-
-            }
-        }
-    }
-
-    handleday(day) {
-        day = day.toString();
-        this.setState({ timeoutday: day })
-        const design= new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
-
-            const project = design.getproject.call(this)
-            if (project) {
-
-                const projectid = project.projectid
-
-                const i = design.getprojectbykeyid.call(this, projectid);
-                if (day.length === 2) {
-
-                    if (validateDate(day)) {
-
-                        if (this.state.active === 'labor') {
-
-
-
-                            if (this.state.activelaborid) {
-                                const mylabor = design.getlaborbyid.call(this,  projectid, this.state.activelaborid);
-                                if (mylabor) {
-
-                                    const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
-                                    let year = this.state.timeoutyear;
-                                    let month = this.state.timeoutmonth;
-                                    let hours = this.state.timeouthours;
-                                    let minutes = this.state.timeoutminutes;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                    myuser.company.projects[i].costestimate.labor[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-
-
-                                }
-
-                            }
-
-                        } else if (this.state.active === 'equipment') {
-                            if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this, this.state.activeequipmentid)
-
-                                if (myequipment) {
-                                    const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
-                                    let minutes = this.state.timeoutminutes;
-                                    let year = this.state.timeoutyear;
-                                    let month = this.state.timeoutmonth;
-                                    let hours = this.state.timeouthours;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                    myuser.company.projects[i].costestimate.equipment[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-                                }
-                            }
-
-                        }
-
-                    } else {
-                        alert(`Invalid Date Format ${day}`)
-                    }
-                }
-
-            }
-        }
-    }
-
-    handlemonth(month) {
-        this.setState({ timeoutmonth: month })
-        const design= new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
-
-            const project = design.getproject.call(this)
-            if (project) {
-
-                const projectid = project.projectid
-
-                const i = design.getprojectbykeyid.call(this, projectid);
-                if (month.length === 2) {
-
-                    if (validateMonth(month)) {
-
-                        if (this.state.active === 'labor') {
-
-
-
-                            if (this.state.activelaborid) {
-                                const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid);
-                                if (mylabor) {
-
-                                    const j = design.getlaborkeybyid.call(this,  projectid,  this.state.activelaborid)
-                                    let day = this.state.timeoutday;
-                                    let year = this.state.timeoutyear;
-                                    let hours = this.state.timeouthours;
-                                    let minutes = this.state.timeoutminutes;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                    myuser.company.projects[i].costestimate.labor[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-
-
-                                }
-
-                            }
-
-                        } else if (this.state.active === 'equipment') {
-                            if (this.state.activeequipmentid) {
-                                const myequipment = design.getequipmentbyid.call(this, this.state.activeequipmentid)
-                                if (myequipment) {
-                                    const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
-                                    let day = this.state.timeoutday;
-                                    let year = this.state.timeoutyear;
-                                    let minutes = this.state.timeoutminutes;
-                                    let hours = this.state.timeouthours;
-                                    let time = this.state.timeoutampm;
-                                    let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                                    timeout = UTCTimeStringfromTime(timeout);
-                                    myuser.company.projects[i].costestimate.equipment[j].timeout = timeout;
-                                    this.props.reduxUser({myuser})
-                                    this.setState({ render: 'render' })
-                                }
-
-                            }
-
-                        }
-
-                    } else {
-                        alert(`invalid month format ${month}`)
-                    }
-
-                }
-
-            }
-        }
-    }
-
-    toggleampm(ampm) {
-        if (this.state.timeoutampm === 'am' && ampm === 'pm') {
-            this.setState({ timeoutampm: 'pm' })
-        } else if (this.state.timeoutampm === 'pm' && ampm === 'am') {
-            this.setState({ timeoutampm: 'am' })
-        }
-
-        const design= new Design();
-        const myuser = design.getuser.call(this)
-        if (myuser) {
-
-            const project = design.getproject.call(this)
-            if (project) {
-
-                const projectid = project.projectid
-
-                const i = design.getprojectbykeyid.call(this, projectid);
-
-                if (this.state.active === 'labor') {
-
-
-
-                    if (this.state.activelaborid) {
-                        const mylabor = design.getlaborbyid.call(this, projectid, this.state.activelaborid);
-                        if (mylabor) {
-
-                            const j = design.getlaborkeybyid.call(this, projectid, this.state.activelaborid)
-                            let day = this.state.timeoutday;
-                            let year = this.state.timeoutyear;
-                            let month = this.state.timeoutmonth;
-                            let hours = this.state.timeouthours;
-                            let time = ampm;
-                            let minutes = this.state.timeoutminutes;
-                            let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                            console.log(timeout)
-                            timeout = UTCTimeStringfromTime(timeout);
-                            console.log(timeout)
-                            myuser.company.projects[i].costestimate.labor[j].timeout = timeout;
-                            this.props.reduxUser({myuser})
-                            this.setState({ render: 'render' })
-
-
-                        }
-
-                    }
-
-                } else if (this.state.active === 'equipment') {
-
-                    if (this.state.activeequipmentid) {
-                        const myequipment = design.getequipmentbyid.call(this,  projectid, this.state.activeequipmentid)
-                        if (myequipment) {
-                            const j = design.getequipmentkeybyid.call(this,  projectid, myequipment.equipmentid)
-                            let day = this.state.timeoutday;
-                            let year = this.state.timeoutyear;
-                            let month = this.state.timeoutmonth;
-                            let hours = this.state.timeouthours;
-                            let minutes = this.state.timeoutminutes;
-                            let time = ampm
-                            let timeout = makeTimeString(year, month, day, hours, minutes, time);
-                            timeout = UTCTimeStringfromTime(timeout);
-                            myuser.company.projects[i].costestimate.equipment[j].timeout = timeout;
-                            this.props.reduxUser({myuser})
-                            this.setState({ render: 'render' })
-                        }
-                    }
-
-                }
-
-            }
-        }
-
-    }
-
-    showampm() {
-        const design= new Design();
-        const styles = MyStylesheet();
-        const headerFont = design.getHeaderFont.call(this)
-        const timeout = new TimeOut();
-        const showam = () => {
-            return (<div style={{ ...styles.generalContainer }}>
-                <button style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont, ...styles.alignCenter, ...design.getampmicon.call(this) }} onClick={() => { timeout.toggleampm.call(this, 'pm') }}>AM</button>
-            </div>)
-
-        }
-        const showpm = () => {
-
-            return (<div style={{ ...styles.generalContainer }}>
-                <button style={{ ...styles.headerFamily, ...headerFont, ...styles.boldFont, ...styles.alignCenter, ...design.getampmicon.call(this) }} onClick={() => { timeout.toggleampm.call(this, 'am') }}>PM</button>
-            </div>)
-
-        }
-
-
-
-
-        if (this.state.timeoutampm === 'am') {
-            return showam()
-        } else if (this.state.timeoutampm === 'pm') {
-            return showpm()
-        }
-
-
-    }
-
-    showtimeout() {
-        const styles = MyStylesheet();
-        const design= new Design();
-        const headerFont = design.getHeaderFont.call(this)
-        const regularFont = design.getRegularFont.call(this)
-        const timeout = new TimeOut();
-        const calender = new CalenderTimeOut();
-        return (
-            <div style={{ ...styles.generalFlex, ...styles.bottomMargin15 }}>
-                <div style={{ ...styles.flex1, ...styles.calenderContainer }}>
-
-                    <div style={{ ...styles.generalFlex }}>
-                        <div style={{ ...styles.flex1 }}>
-                            <span style={{ ...styles.generalFont, ...regularFont }}>Time Out (MM-DD-YYYY HH mm) </span>
-                        </div>
-                    </div>
-
-                    <div style={{ ...styles.generalFlex }}>
-                        <div style={{ ...styles.flex1, ...styles.addMargin }}>
-
-                            <input type="text" style={{ ...styles.generalFont, ...headerFont, ...styles.generalField, ...styles.alignCenter }} value={this.state.timeoutmonth}
-                                onChange={event => { timeout.handlemonth.call(this, event.target.value) }} />
-                        </div>
-                        <div style={{ ...styles.flex1, ...styles.addMargin }}>
-
-                            <input type="text" style={{ ...styles.generalFont, ...headerFont, ...styles.generalField, ...styles.alignCenter }}
-                                value={this.state.timeoutday}
-                                onChange={event => { timeout.handleday.call(this, event.target.value) }} />
-                        </div>
-                        <div style={{ ...styles.flex2, ...styles.addMargin }}>
-
-                            <input type="text" style={{ ...styles.generalFont, ...headerFont, ...styles.generalField, ...styles.alignCenter }}
-                                value={this.state.timeoutyear}
-                                onChange={event => { timeout.handleyear.call(this, event.target.value) }} />
-                        </div>
-                        <div style={{ ...styles.flex1, ...styles.addMargin }}>
-
-                            <input type="text" style={{ ...styles.generalFont, ...headerFont, ...styles.generalField, ...styles.alignCenter }}
-                                value={this.state.timeouthours}
-                                onChange={event => { timeout.handlehours.call(this, event.target.value) }} />
-                        </div>
-                        <div style={{ ...styles.flex1, ...styles.addMargin }}>
-
-                            <input type="text" style={{ ...styles.generalFont, ...headerFont, ...styles.generalField, ...styles.alignCenter }}
-                                value={this.state.timeoutminutes}
-                                onChange={event => { timeout.handleminutes.call(this, event.target.value) }}
-                            />
-                        </div>
-                        <div style={{ ...styles.flex1, ...styles.addMargin }}>
-                            {timeout.showampm.call(this)}
-                        </div>
-                    </div>
-
-                    {calender.showCalenderTimeOut.call(this)}
-
-                </div>
-            </div>)
-    }
+    return equipmentrate;
 
 }
 
-export default TimeOut;
+calculateequipmentratebyownership(equipmentid) {
+    const dynamicstyles = new DynamicStyles();
+    const myequipment = dynamicstyles.getequipmentfromid.call(this, equipmentid);
+    const i = (Number(myequipment.ownership.loaninterest) / 100) / 12;
+    const workinghours = Math.round(Number(myequipment.ownership.workinghours) / 12);
+    let equipmentrate = 0;
+
+    const P = () => {
+        let P = 0;
+        const costs = dynamicstyles.getequipmentcostsbyid.call(this, myequipment.equipmentid)
+        if (costs) {
+            // eslint-disable-next-line
+            costs.map(cost => {
+                let n = calculateTotalMonths(myequipment.ownership.purchasedate, cost.timein);
+                let F = Number(cost.cost)
+                P += FutureCostPresent(i, n, F);
+
+            })
+        }
+        return (P)
+    }
+    const Period = () => {
+        let purchasedate = myequipment.ownership.purchasedate;
+        let saledate = myequipment.ownership.saledate;
+        if (purchasedate && saledate) {
+            let totalmonths = calculateTotalMonths(purchasedate, saledate)
+            return (totalmonths)
+        } else {
+            return 0;
+        }
+
+    }
+    const AFactor = () => {
+        const T = Period();
+        const i = Number(myequipment.ownership.loaninterest);
+    
+        if (T) {
+         
+            return (AmmortizeFactor(i, T))
+        } else {
+
+            return 0;
+        }
+
+    }
+
+    const totalworkinghours = () => {
+        let annual = Number(myequipment.ownership.workinghours);
+        let years = Period() / 12;
+
+        return (Math.round(annual * years))
+    }
+
+    if (i > 0) {
+        equipmentrate = (P() * AFactor()) / (workinghours);
+    } else {
+      
+        equipmentrate = P() / (totalworkinghours())
+    }
+
+    return equipmentrate;
+}
+
+
+export function FutureCostPresent(i, n, F) {
+    // let F=540;
+    // let i=(.058/12);
+    // let n = 40;
+    return (F * (Math.pow((1 + i), n)))
+
+}
+
+
+export function calculateTotalMonths(purchasedate, saledate) {
+    //     let purchasedate = '2018-05-24';
+    // let saledate = '2025-01-24'
+    const datePurchase = new Date(`${purchasedate.replace(/-/g, '/')} UTC`);
+    const saleDate = new Date(`${saledate.replace(/-/g, '/')} UTC`);
+    const datePurchaseYear = datePurchase.getFullYear();
+    const purchaseMonth = datePurchase.getMonth() + 1;
+    const saleDateYear = saleDate.getFullYear();
+    const saleMonth = saleDate.getMonth() + 1;
+    const yearsinterval = saleDateYear - datePurchaseYear;
+    const monthInterval = saleMonth - purchaseMonth;
+    const totalMonths = (yearsinterval) * 12 + monthInterval;
+    return (totalMonths)
+}
+
+export function AmmortizeFactor(i, n) {
+    i = ((i / 1200));
+    // let n = 80;
+
+    const num = i * Math.pow((1 + i), n)
+
+    const deno = Math.pow((1 + i), n) - 1;
+
+    const factor = num / deno;
+
+    return factor;
+}
+
+getequipmentrentalratebyid(equipmentid, timein, timeout) {
+    const dynamicstyles = new DynamicStyles();
+    const myequipment = dynamicstyles.getequipmentfromid.call(this, equipmentid);
+    const hourlyrate = Number(myequipment.rentalrates.hour);
+    const dailyrate = Number(myequipment.rentalrates.day);
+    const weeklyrate = Number(myequipment.rentalrates.week);
+    const monthlyrate = Number(myequipment.rentalrates.month);
+    const rentalObj = getEquipmentRentalObj(timein, timeout);
+
+    const hours = rentalObj.hours;
+    const days = rentalObj.days;
+    const weeks = rentalObj.weeks;
+    const months = rentalObj.months;
+    let rentalcost = (hourlyrate * hours) + (days * dailyrate) + (weeks * weeklyrate) + (months * monthlyrate);
+    let totalhours = calculatetotalhours(timeout, timein);
+    let rentalrate = rentalcost / totalhours;
+    return rentalrate;
+
+}
+
+
+
+export function getEquipmentRentalObj(timein, timeout) {
+    // let timein = '2021-03-06 17:52:33';
+    // let timeout = '2021-04-17 19:52:33';
+
+    let datein = new Date(`${timein.replace(/-/g, '/')} UTC`);
+    let offset = datein.getTimezoneOffset() / 60;
+    let sym = "";
+    if (offset < 0) {
+        offset = -offset;
+        sym = "+"
+    } else {
+        sym = "-"
+    }
+    if (offset < 10) {
+        offset = `0${offset}`
+    }
+    offset = `${sym}${offset}:00`
+    let dateout = new Date(`${timeout.replace(/-/g, '/')} UTC`);
+    let dateinYear = datein.getFullYear();
+    let dateoutYear = dateout.getFullYear();
+    let dateinMonth = datein.getMonth() + 1;
+    let dateoutMonth = dateout.getMonth() + 1;
+    let dateoutDate = dateout.getDate();
+    let dateinDate = datein.getDate();
+    let months = 0;
+    let weeks = 0;
+    let days = 0;
+    let hours = 0;
+    hours = (dateout.getTime() - datein.getTime()) / (1000 * 3600);
+
+
+    if (dateoutYear !== dateinYear) {
+
+
+        months += (dateoutYear - dateinYear) * 12;
+        months += dateoutMonth - dateinMonth;
+        if (dateoutDate < dateinDate) {
+            months -= 1
+        }
+    } else if (dateoutMonth !== dateinMonth) {
+        if (dateoutDate > dateinDate) {
+            months += 1
+        }
+    }
+
+    if (months > 0) {
+
+        let monthCutoff = dateoutMonth;
+        if (monthCutoff < 10) {
+            monthCutoff = `0${monthCutoff}`
+        }
+        let dayCutoff = dateinDate
+        if (dayCutoff < 10) {
+            dayCutoff = `0${dayCutoff}`
+        }
+        let yearCutoff = dateoutYear
+        let hourCutoff = datein.getHours()
+        if (hourCutoff < 10) {
+            hourCutoff = `0${hourCutoff}`
+        }
+        let minuteCutoff = datein.getMinutes();
+        if (minuteCutoff < 10) {
+            minuteCutoff = `0${minuteCutoff}`
+        }
+        let secondCutoff = datein.getSeconds();
+        if (secondCutoff < 10) {
+            secondCutoff = `0${secondCutoff}`
+        }
+        let cutDate = `${yearCutoff}-${monthCutoff}-${dayCutoff} ${hourCutoff}:${minuteCutoff}:${secondCutoff}`
+        let cutOffDate = new Date(`${cutDate.replace(/-/g, '/')}${offset}`)
+        let timecutoff = cutOffDate.getTime();
+        hours = (dateout.getTime() - timecutoff) / (1000 * 3600)
+    }
+
+
+    if (hours > (24 * 7)) {
+        weeks = Math.floor(hours / (24 * 7))
+        hours = hours - (weeks * 24 * 7);
+    }
+    if (hours > 24) {
+        days = Math.floor(hours / 24)
+        hours = hours - (24 * days)
+    }
+
+    let obj = { hours, days, weeks, months }
+
+    return (obj)
+}
+
+
+export function calculatetotalhours(timeout, timein) {
+
+    let datein = new Date(`${timein.replace(/-/g, '/')}`)
+    let dateout = new Date(`${timeout.replace(/-/g, '/')}`)
+    let totalhours = ((dateout.getTime() - datein.getTime()) / (1000 * 60 * 60))
+    return totalhours;
+}
