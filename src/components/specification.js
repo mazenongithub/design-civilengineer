@@ -193,8 +193,10 @@ class Specification extends Component {
                         const list = this.getspecbyid(spec, this.state.activecontentid)
                         if (list) {
                             const speckeys = this.getspeckeybyid(spec, this.state.activecontentid)
-
+                            
                             if (list.hasOwnProperty("sublist")) {
+                                if(list.sublist.list.length>0) {
+
                                 if (speckeys.length === 1) {
                                     let k = speckeys[0]
                                     myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.listType = value
@@ -236,53 +238,14 @@ class Specification extends Component {
                                 }
 
                             } else {
+                                this.createnewsublist(value,i,j,speckeys,myuser)   
+                            }
+
+                            } else {
                                 // create new sublist
+                                this.createnewsublist(value,i,j,speckeys,myuser)
 
-                                const sublist = { listType: value, list: [{ contentid: makeid.contentid.call(this), content: '' }] }
-                                if (speckeys.length === 1) {
-                                    let k = speckeys[0]
-                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist = sublist;
-                                    this.props.reduxUser({ myuser })
-                                    this.setState({ activecontentid: sublist.list[0].contentid })
-                                } else if (speckeys.length === 2) {
-
-                                    let k = speckeys[0];
-                                    let l = speckeys[1];
-                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist = sublist;
-                                    this.props.reduxUser({ myuser })
-                                    this.setState({ activecontentid: sublist.list[0].contentid })
-                                } else if (speckeys.length === 3) {
-
-                                    let k = speckeys[0];
-                                    let l = speckeys[1];
-                                    let m = speckeys[2]
-                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist = sublist;
-                                    this.setState({ activecontentid: sublist.list[0].contentid })
-                                } else if (speckeys.length === 4) {
-
-                                    let k = speckeys[0];
-                                    let l = speckeys[1];
-                                    let m = speckeys[2]
-                                    let n = speckeys[3]
-                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist = sublist;
-                                    this.props.reduxUser({ myuser })
-                                    this.setState({ activecontentid: sublist.list[0].contentid })
-                                } else if (speckeys.length === 5) {
-
-                                    let k = speckeys[0];
-                                    let l = speckeys[1];
-                                    let m = speckeys[2]
-                                    let n = speckeys[3]
-                                    let o = speckeys[4]
-                                    myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o].sublist = sublist;
-                                    this.props.reduxUser({ myuser })
-                                    this.setState({ activecontentid: sublist.list[0].contentid })
-                                }
-
-
-
-
-
+                                //
 
                             }
                         }
@@ -301,6 +264,50 @@ class Specification extends Component {
 
         }
 
+    }
+
+    createnewsublist(value,i,j,speckeys,myuser) {
+        const makeid = new MakeID();
+        const sublist = { listType: value, list: [{ contentid: makeid.contentid.call(this), content: '' }] }
+        if (speckeys.length === 1) {
+            let k = speckeys[0]
+            myuser.company.projects[i].specifications[j].paragraph.list[k].sublist = sublist;
+            this.props.reduxUser({ myuser })
+            this.setState({ activecontentid: sublist.list[0].contentid })
+        } else if (speckeys.length === 2) {
+
+            let k = speckeys[0];
+            let l = speckeys[1];
+            myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist = sublist;
+            this.props.reduxUser({ myuser })
+            this.setState({ activecontentid: sublist.list[0].contentid })
+        } else if (speckeys.length === 3) {
+
+            let k = speckeys[0];
+            let l = speckeys[1];
+            let m = speckeys[2]
+            myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist = sublist;
+            this.setState({ activecontentid: sublist.list[0].contentid })
+        } else if (speckeys.length === 4) {
+
+            let k = speckeys[0];
+            let l = speckeys[1];
+            let m = speckeys[2]
+            let n = speckeys[3]
+            myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist = sublist;
+            this.props.reduxUser({ myuser })
+            this.setState({ activecontentid: sublist.list[0].contentid })
+        } else if (speckeys.length === 5) {
+
+            let k = speckeys[0];
+            let l = speckeys[1];
+            let m = speckeys[2]
+            let n = speckeys[3]
+            let o = speckeys[4]
+            myuser.company.projects[i].specifications[j].paragraph.list[k].sublist.list[l].sublist.list[m].sublist.list[n].sublist.list[o].sublist = sublist;
+            this.props.reduxUser({ myuser })
+            this.setState({ activecontentid: sublist.list[0].contentid })
+        }
     }
 
     createnewspec(listType) {
